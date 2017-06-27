@@ -8,7 +8,9 @@
   "scripts": {
     "build": "webpack",
     "client": "webpack-dev-server --port 3000",
-    "start": "yarn run client"
+    "start": "yarn run client",
+    "test": "elm-test ",
+    "test:watch": "elm-test --watch"
   },
   "dependencies": {
     "css-loader": "^0.28.4",
@@ -18,5 +20,8 @@
     "url-loader": "^0.5.9",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0"
+  },
+  "devDependencies": {
+    "elm-test": "^0.18.6"
   }
 }
