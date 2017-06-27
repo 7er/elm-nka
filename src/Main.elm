@@ -1,18 +1,25 @@
-module Main exposing (..)
+port module Main exposing (..)
 
-import Html exposing (Html, div, text, program)
+import Html exposing (Html, div, input, program, text)
+import Html.Events exposing (onInput)
+
+
+port printMediaType : (Bool -> msg) -> Sub msg
+
 
 
 -- MODEL
 
 
 type alias Model =
-    String
+    { message : String
+    , printMediaType : Bool
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( "Hello", Cmd.none )
+    ( { message = "Hello", printMediaType = False }, Cmd.none )
 
 
 
@@ -21,6 +28,8 @@ init =
 
 type Msg
     = NoOp
+    | Update String
+    | MediaTypeChanged Bool
 
 
 
@@ -30,7 +39,11 @@ type Msg
 view : Model -> Html Msg
 view model =
     div []
-        [ text model ]
+        [ text model.message
+        , input [ onInput Update ] []
+        --        , div [] [text ("is print " ++ (toString model.printMediaType))]
+        ]
+
 
 
 
@@ -39,9 +52,15 @@ view model =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
+    case Debug.log "update: " msg of
         NoOp ->
             ( model, Cmd.none )
+
+        Update inputString ->
+            ( {model | message = inputString}, Cmd.none )
+
+        MediaTypeChanged isPrintType ->
+            ( { model | printMediaType = isPrintType }, Cmd.none )
 
 
 
@@ -50,7 +69,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    printMediaType MediaTypeChanged
 
 
 
@@ -65,4 +84,3 @@ main =
         , update = update
         , subscriptions = subscriptions
         }
-
