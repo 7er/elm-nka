@@ -5,6 +5,11 @@
   "main": "index.js",
   "author": "Syver Enstad <syver.enstad@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "webpack",
+    "client": "webpack-dev-server --port 3000",
+    "start": "yarn run client"
+  },
   "dependencies": {
     "css-loader": "^0.28.4",
     "elm-webpack-loader": "^4.3.1",
