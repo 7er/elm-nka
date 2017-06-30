@@ -79,10 +79,5 @@ afaktorVekst =
     (1 / drenteVekst) * (1 - (1 / ((1 + drenteVekst) ^ analysePeriode)))
 
 
-
-{-
-   afaktor: function () {
-     return (1/this.drente) * (1 - (1/ Math.pow((1 + this.drente), this.analysePeriode)));
-   }
-
--}
+afaktor =
+    (1 / drente) * (1 - (1 / ((1 + drente) ^ analysePeriode)))

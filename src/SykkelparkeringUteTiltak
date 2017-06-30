@@ -1,4 +1,4 @@
-module Sykkeltiltak exposing (..)
+module SykkelparkeringUteTiltak exposing (..)
 
 import GeneralForutsetninger
 
@@ -6,7 +6,7 @@ import GeneralForutsetninger
 type alias SykkelParkeringUteTiltakModel =
     { tripsPerYear : Int
     , installationCost : Float
-    , yearlyMaintenance : Int
+    , yearlyMaintenance : Float
     }
 
 
@@ -71,3 +71,49 @@ yearlyNytte forutsetninger =
 nytte : SykkelParkeringUteTiltakModel -> Float
 nytte model =
     yearlyNytte model * GeneralForutsetninger.afaktorVekst
+
+
+totalCostNowValue forutsetninger =
+    investmentKostInklRestverdiValueToday forutsetninger.installationCost
+        + maintenanceCost forutsetninger.yearlyMaintenance
+
+
+maintenanceCost yearlyMaintenance =
+    yearlyMaintenance * GeneralForutsetninger.afaktor
+
+
+kost forutsetninger =
+    let
+        totalCostNow =
+            totalCostNowValue forutsetninger
+    in
+        totalCostNow * (1 + GeneralForutsetninger.skyggepris)
+
+
+nettoNytte forutsetninger =
+    nytte forutsetninger - kost forutsetninger
+
+
+investmentKostInklRestverdiValueToday : Float -> Float
+investmentKostInklRestverdiValueToday installationCost =
+    installationCost * investmentFactor
+
+
+levetid =
+    10
+
+
+investmentFactor =
+    let
+        beregningsTekniskMellomregning =
+            toFloat <| (GeneralForutsetninger.analysePeriode // levetid) + 1
+
+        ledd1 =
+            (1 - ((1 + GeneralForutsetninger.drente) ^ ((negate levetid) * beregningsTekniskMellomregning)))
+                / (1 - ((1 + GeneralForutsetninger.drente) ^ (negate levetid)))
+
+        ledd2 =
+            (GeneralForutsetninger.analysePeriode - (levetid * beregningsTekniskMellomregning))
+                / (levetid * ((1 + GeneralForutsetninger.drente) ^ GeneralForutsetninger.analysePeriode))
+    in
+        ledd1 + ledd2
