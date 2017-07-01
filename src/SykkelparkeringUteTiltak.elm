@@ -3,11 +3,39 @@ module SykkelparkeringUteTiltak exposing (..)
 import GeneralForutsetninger
 
 
+type VariableToGraph
+    = TripsPerYear
+    | YearlyMaintenance
+    | InstallationCost
+
+
 type alias SykkelParkeringUteTiltakModel =
     { tripsPerYear : Int
     , installationCost : Float
     , yearlyMaintenance : Float
     }
+
+
+tripsPerYearNettoNytteNullpunkt model =
+    let
+        forutsetningerCopy =
+            { model | tripsPerYear = 1 }
+    in
+        (kost forutsetningerCopy)
+            / (yearlyNytte forutsetningerCopy)
+            / GeneralForutsetninger.afaktorVekst
+
+
+nettoNytteNullPunkt : VariableToGraph -> SykkelParkeringUteTiltakModel -> Float
+nettoNytteNullPunkt variable model =
+    case variable of
+        TripsPerYear ->
+            tripsPerYearNettoNytteNullpunkt model
+
+
+schemaVariablesToGraph : List VariableToGraph
+schemaVariablesToGraph =
+    [ TripsPerYear, YearlyMaintenance, InstallationCost ]
 
 
 nytteMultiplier =

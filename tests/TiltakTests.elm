@@ -75,16 +75,27 @@ suite =
             , sykkelParkeringUteTest "calculates the nettoNytte" <|
                 \model ->
                     SykkelparkeringUteTiltak.nettoNytte model |> closeTo 0 3
-            , beforeWithModel <|
-                (\model ->
+            , generateTestWithModel <|
+                (\_ ->
                     let
-                        schemaProperties =
-                            (SykkelparkeringUteTiltak.forutsetningsSchema).properties
+                        model =
+                            { tripsPerYear = 965
+                            , yearlyMaintenance = 10000
+                            , installationCost = 1.044111345e5
+                            }
 
-                        variableToGrapth =
-                            schemaProperties.variableToGraph
+                        testGenerator variable =
+                            test ("for " ++ (toString variable)) <|
+                                \_ ->
+                                    let
+                                        variableValue =
+                                            case variable of
+                                                SykkelparkeringUteTiltak.TripsPerYear ->
+                                                    model.tripsPerYear
+                                    in
+                                        SykkelparkeringUteTiltak.nettoNytteNullPunkt variable model |> closeTo
                     in
-                        []
+                        SykkelparkeringUteTiltak.schemaVariablesToGraph |> List.map testGenerator
                 )
 
             {-
@@ -113,13 +124,10 @@ sykkelParkeringUteTest description testCase =
                 testCase model
 
 
-beforeWithModel : (SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel -> List Test) -> Test
-beforeWithModel testLambda =
+generateTestWithModel : (() -> List Test) -> Test
+generateTestWithModel testLambda =
     let
-        model =
-            { tripsPerYear = 965
-            , yearlyMaintenance = 10000
-            , installationCost = 1.044111345e5
-            }
+        flesk =
+            []
     in
-        testLambda model |> Test.concat
+        testLambda () |> Test.concat
