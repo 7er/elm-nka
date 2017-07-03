@@ -20,7 +20,9 @@ type alias TiltaksGruppe =
 
 
 type Route
-    = GruppeSide TiltaksGruppe
+    = Root
+    | GruppeRoute TiltaksGruppe
+    | NotFoundRoute
 
 
 type alias Model =
@@ -50,12 +52,23 @@ toggleTiltak model tiltaket =
                 False ->
                     { tiltak | visible = False }
 
-        tiltaksGruppe =
+        maybeTiltaksGruppe =
             case model.route of
-                GruppeSide tiltaksGruppa ->
-                    { tiltaksGruppa | tiltakene = List.map toggleVisible tiltaksGruppa.tiltakene }
+                GruppeRoute tiltaksGruppa ->
+                    Just { tiltaksGruppa | tiltakene = List.map toggleVisible tiltaksGruppa.tiltakene }
+
+                NotFoundRoute ->
+                    Nothing
+
+                Root ->
+                    Nothing
     in
-        { model | route = GruppeSide tiltaksGruppe }
+        case maybeTiltaksGruppe of
+            Just tiltaksGruppe ->
+                { model | route = GruppeRoute tiltaksGruppe }
+
+            Nothing ->
+                model
 
 
 updateData : Model -> Tiltak -> String -> Model
@@ -69,9 +82,30 @@ updateData model tiltaket newData =
                 False ->
                     tiltak
 
-        tiltaksGruppe =
+        maybeTiltaksGruppe =
             case model.route of
-                GruppeSide tiltaksGruppa ->
-                    { tiltaksGruppa | tiltakene = List.map update tiltaksGruppa.tiltakene }
+                GruppeRoute tiltaksGruppa ->
+                    Just { tiltaksGruppa | tiltakene = List.map update tiltaksGruppa.tiltakene }
+
+                NotFoundRoute ->
+                    Nothing
+
+                Root ->
+                    Nothing
     in
-        { model | route = GruppeSide tiltaksGruppe }
+        case maybeTiltaksGruppe of
+            Just tiltaksGruppe ->
+                { model | route = GruppeRoute tiltaksGruppe }
+
+            Nothing ->
+                model
+
+
+tiltaksGruppePath : TiltaksGruppe -> String
+tiltaksGruppePath { tag } =
+    tag |> toString |> String.toLower |> (++) "#"
+
+
+tiltaksGruppeTittel : TiltaksGruppe -> String
+tiltaksGruppeTittel { tag } =
+    tag |> toString

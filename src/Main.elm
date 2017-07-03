@@ -43,11 +43,46 @@ type Msg
 
 init : Location -> ( Model, Cmd Msg )
 init location =
-    ( { message = "Hello"
-      , printMediaType = False
-      , tiltaksGrupper = []
-      , route =
-            GruppeSide
+    let
+        model =
+            { message = "Hello"
+            , printMediaType = False
+            , tiltaksGrupper =
+                [ { tag = Holdeplasser
+                  , tiltakene =
+                        [ createTiltak "Sykkelparkering" "Foobar"
+                        , createTiltak "Leskur u sitteplass" "Zppt"
+                        , createTiltak "Sitteplass på hpl" "Syver"
+                        ]
+                  }
+                , { tag = Informasjon
+                  , tiltakene =
+                        [ createTiltak "Skilting i buss" "Foobar"
+                        , createTiltak "Hpl. opprop" "Zppt"
+                        ]
+                  }
+                ]
+            , route = routeFromLocation location
+            }
+    in
+        ( model
+        , case model.route of
+            Root ->
+                Navigation.modifyUrl (location.href ++ "#holdeplasser")
+
+            _ ->
+                Cmd.none
+        )
+
+
+routeFromLocation : Location -> Route
+routeFromLocation location =
+    case location.hash of
+        "" ->
+            Root
+
+        "#holdeplasser" ->
+            GruppeRoute
                 { tag = Holdeplasser
                 , tiltakene =
                     [ createTiltak "Sykkelparkering" "Foobar"
@@ -55,9 +90,9 @@ init location =
                     , createTiltak "Sitteplass på hpl" "Syver"
                     ]
                 }
-      }
-    , Cmd.none
-    )
+
+        _ ->
+            NotFoundRoute
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -79,7 +114,7 @@ update msg model =
             ( updateData model tiltak newData, Cmd.none )
 
         OnLocationChange location ->
-            ( model, Cmd.none )
+            ( { model | route = routeFromLocation location }, Cmd.none )
 
 
 
@@ -98,8 +133,14 @@ subscriptions model =
 groupTitle : Model -> Html Msg
 groupTitle { route } =
     case route of
-        GruppeSide tiltaksGruppe ->
+        GruppeRoute tiltaksGruppe ->
             text (toString tiltaksGruppe.tag)
+
+        NotFoundRoute ->
+            text "Finner ikke siden"
+
+        Root ->
+            text "Rotsiden"
 
 
 renderTiltak : Tiltak -> Html Msg
@@ -125,19 +166,29 @@ renderTiltak tiltak =
 renderTiltakene : Model -> Html Msg
 renderTiltakene { route } =
     case route of
-        GruppeSide { tiltakene } ->
+        GruppeRoute { tiltakene } ->
             ul [] (List.map renderTiltak tiltakene)
 
+        NotFoundRoute ->
+            text "Ikke tilgjengelig"
 
-renderNav : Model -> List (Html Msg)
+        Root ->
+            text "Er det MULIG??"
+
+
+renderNav : Model -> Html Msg
 renderNav model =
-    [ div [] [] ]
+    let
+        groupToNavLi tiltaksGruppe =
+            li [] [ a [ href (tiltaksGruppePath tiltaksGruppe) ] [ text (tiltaksGruppeTittel tiltaksGruppe) ] ]
+    in
+        ul [] <| List.map groupToNavLi model.tiltaksGrupper
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ nav [] (renderNav model)
+        [ nav [] [ renderNav model ]
         , article []
             [ div [] [ groupTitle model ]
             , text model.message
