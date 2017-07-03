@@ -111,7 +111,7 @@ update msg model =
             ( { model | route = toggleTiltak model.route tiltak }, Cmd.none )
 
         UpdateData tiltak newData ->
-            ( updateData model tiltak newData, Cmd.none )
+            ( { model | route = updateData model.route tiltak newData }, Cmd.none )
 
         OnLocationChange location ->
             ( { model | route = routeFromLocation location }, Cmd.none )

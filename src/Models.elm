@@ -63,8 +63,8 @@ toggleTiltak route tiltaket =
                 route
 
 
-updateData : Model -> Tiltak -> String -> Model
-updateData model tiltaket newData =
+updateData : Route -> Tiltak -> String -> Route
+updateData route tiltaket newData =
     let
         update tiltak =
             case tiltaket == tiltak of
@@ -73,24 +73,16 @@ updateData model tiltaket newData =
 
                 False ->
                     tiltak
-
-        maybeTiltaksGruppe =
-            case model.route of
-                GruppeRoute tiltaksGruppa ->
-                    Just { tiltaksGruppa | tiltakene = List.map update tiltaksGruppa.tiltakene }
-
-                NotFoundRoute ->
-                    Nothing
-
-                Root ->
-                    Nothing
     in
-        case maybeTiltaksGruppe of
-            Just tiltaksGruppe ->
-                { model | route = GruppeRoute tiltaksGruppe }
+        case route of
+            GruppeRoute tiltaksGruppa ->
+                GruppeRoute { tiltaksGruppa | tiltakene = List.map update tiltaksGruppa.tiltakene }
 
-            Nothing ->
-                model
+            NotFoundRoute ->
+                route
+
+            Root ->
+                route
 
 
 tiltaksGruppePath : TiltaksGruppe -> String
