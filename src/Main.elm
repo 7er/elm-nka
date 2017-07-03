@@ -1,6 +1,7 @@
 port module Main exposing (..)
 
-import Html exposing (Html, h3, ul, li, div, input, program, text)
+import Html exposing (..)
+import Html.Attributes exposing (href)
 import Html.Events exposing (onInput, onClick)
 
 
@@ -60,6 +61,7 @@ init =
                 , tiltakene =
                     [ createTiltak "Sykkelparkering" "Foobar"
                     , createTiltak "Leskur u sitteplass" "Zppt "
+                    , createTiltak "Sitteplass på hpl" "Syver "
                     ]
                 }
       }
@@ -93,7 +95,7 @@ renderTiltak : Tiltak -> Html Msg
 renderTiltak tiltak =
     let
         baseContent =
-            [ h3 [ onClick (ToggleVisible tiltak) ] [ text tiltak.name ] ]
+            [ h3 [] [ a [ href "#", onClick (ToggleVisible tiltak) ] [ text tiltak.name ] ] ]
 
         content =
             case tiltak.visible of
@@ -129,6 +131,25 @@ view model =
 -- UPDATE
 
 
+toggleTiltak : Model -> Tiltak -> Model
+toggleTiltak model tiltaket =
+    let
+        toggleVisible tiltak =
+            case tiltaket == tiltak of
+                True ->
+                    { tiltak | visible = not tiltak.visible }
+
+                False ->
+                    { tiltak | visible = False }
+
+        tiltaksGruppe =
+            case model.route of
+                GruppeSide tiltaksGruppa ->
+                    { tiltaksGruppa | tiltakene = List.map toggleVisible tiltaksGruppa.tiltakene }
+    in
+        { model | route = GruppeSide tiltaksGruppe }
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case Debug.log "update: " msg of
@@ -142,7 +163,7 @@ update msg model =
             ( { model | printMediaType = isPrintType }, Cmd.none )
 
         ToggleVisible tiltak ->
-            ( model, Cmd.none )
+            ( toggleTiltak model tiltak, Cmd.none )
 
 
 
