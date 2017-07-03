@@ -32,6 +32,9 @@ nettoNytteNullPunkt variable model =
         TripsPerYear ->
             tripsPerYearNettoNytteNullpunkt model
 
+        _ ->
+            0
+
 
 schemaVariablesToGraph : List VariableToGraph
 schemaVariablesToGraph =

@@ -75,33 +75,35 @@ suite =
             , sykkelParkeringUteTest "calculates the nettoNytte" <|
                 \model ->
                     SykkelparkeringUteTiltak.nettoNytte model |> closeTo 0 3
-            , generateTestWithModel <|
-                (\_ ->
-                    let
-                        model =
-                            { tripsPerYear = 965
-                            , yearlyMaintenance = 10000
-                            , installationCost = 1.044111345e5
-                            }
 
-                        testGenerator variable =
-                            test ("for " ++ (toString variable)) <|
-                                \_ ->
-                                    let
-                                        variableValue =
-                                            case variable of
-                                                SykkelparkeringUteTiltak.TripsPerYear ->
-                                                    model.tripsPerYear
-                                    in
-                                        SykkelparkeringUteTiltak.nettoNytteNullPunkt variable model |> closeTo
-                    in
-                        SykkelparkeringUteTiltak.schemaVariablesToGraph |> List.map testGenerator
-                )
+            {- , generateTestWithModel <|
+                   \_ ->
+                       let
+                           model =
+                               { tripsPerYear = 965
+                               , yearlyMaintenance = 10000
+                               , installationCost = 1.044111345e5
+                               }
 
-            {-
-               it('calculates the correct nettoNytteNullpunkt', function() {
-                 checkNytteNullPunktForNullModel(tiltak, model);
-               });
+                           testGenerator variable =
+                               test ("for " ++ (toString variable)) <|
+                                   \_ ->
+                                       let
+                                           variableValue =
+                                               case variable of
+                                                   SykkelparkeringUteTiltak.TripsPerYear ->
+                                                       model.tripsPerYear
+                                       in
+                                           SykkelparkeringUteTiltak.nettoNytteNullPunkt variable model |> closeTo
+                       in
+                           SykkelparkeringUteTiltak.schemaVariablesToGraph |> List.map testGenerator
+
+
+               {-
+                  it('calculates the correct nettoNytteNullpunkt', function() {
+                    checkNytteNullPunktForNullModel(tiltak, model);
+                  });
+               -}
             -}
             ]
         ]
