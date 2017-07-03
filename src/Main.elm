@@ -163,11 +163,16 @@ renderTiltak tiltak =
         li [] content
 
 
+renderGruppe : TiltaksGruppe -> Html Msg
+renderGruppe { tiltakene } =
+    ul [] (List.map renderTiltak tiltakene)
+
+
 renderTiltakene : Model -> Html Msg
 renderTiltakene { route } =
     case route of
-        GruppeRoute { tiltakene } ->
-            ul [] (List.map renderTiltak tiltakene)
+        GruppeRoute gruppe ->
+            renderGruppe gruppe
 
         NotFoundRoute ->
             text "Ikke tilgjengelig"
