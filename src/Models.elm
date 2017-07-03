@@ -41,8 +41,8 @@ createTiltak name data =
     }
 
 
-toggleTiltak : Model -> Tiltak -> Model
-toggleTiltak model tiltaket =
+toggleTiltak : Route -> Tiltak -> Route
+toggleTiltak route tiltaket =
     let
         toggleVisible tiltak =
             case tiltaket == tiltak of
@@ -51,24 +51,16 @@ toggleTiltak model tiltaket =
 
                 False ->
                     { tiltak | visible = False }
-
-        maybeTiltaksGruppe =
-            case model.route of
-                GruppeRoute tiltaksGruppa ->
-                    Just { tiltaksGruppa | tiltakene = List.map toggleVisible tiltaksGruppa.tiltakene }
-
-                NotFoundRoute ->
-                    Nothing
-
-                Root ->
-                    Nothing
     in
-        case maybeTiltaksGruppe of
-            Just tiltaksGruppe ->
-                { model | route = GruppeRoute tiltaksGruppe }
+        case route of
+            GruppeRoute tiltaksGruppa ->
+                GruppeRoute { tiltaksGruppa | tiltakene = List.map toggleVisible tiltaksGruppa.tiltakene }
 
-            Nothing ->
-                model
+            NotFoundRoute ->
+                route
+
+            Root ->
+                route
 
 
 updateData : Model -> Tiltak -> String -> Model

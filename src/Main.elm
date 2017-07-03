@@ -108,7 +108,7 @@ update msg model =
             ( { model | printMediaType = isPrintType }, Cmd.none )
 
         ToggleVisible tiltak ->
-            ( toggleTiltak model tiltak, Cmd.none )
+            ( { model | route = toggleTiltak model.route tiltak }, Cmd.none )
 
         UpdateData tiltak newData ->
             ( updateData model tiltak newData, Cmd.none )
