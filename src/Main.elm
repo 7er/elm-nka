@@ -118,7 +118,14 @@ update msg model =
             )
 
         UpdateData tiltak newData ->
-            ( { model | route = updateData model.route tiltak newData }, Cmd.none )
+            ( case model.route of
+                GruppeRoute gruppe ->
+                    { model | route = GruppeRoute (updateData gruppe tiltak newData) }
+
+                _ ->
+                    model
+            , Cmd.none
+            )
 
         OnLocationChange location ->
             ( { model | route = routeFromLocation location }, Cmd.none )

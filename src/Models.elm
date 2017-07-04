@@ -55,8 +55,8 @@ toggleTiltak gruppe tiltaket =
         { gruppe | tiltakene = List.map toggleVisible gruppe.tiltakene }
 
 
-updateData : Route -> Tiltak -> String -> Route
-updateData route tiltaket newData =
+updateData : TiltaksGruppe -> Tiltak -> String -> TiltaksGruppe
+updateData gruppe tiltaket newData =
     let
         update tiltak =
             case tiltaket == tiltak of
@@ -66,15 +66,7 @@ updateData route tiltaket newData =
                 False ->
                     tiltak
     in
-        case route of
-            GruppeRoute tiltaksGruppa ->
-                GruppeRoute { tiltaksGruppa | tiltakene = List.map update tiltaksGruppa.tiltakene }
-
-            NotFoundRoute ->
-                route
-
-            Root ->
-                route
+        { gruppe | tiltakene = List.map update gruppe.tiltakene }
 
 
 tiltaksGruppePath : TiltaksGruppe -> String
