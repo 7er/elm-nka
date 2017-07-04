@@ -21,7 +21,7 @@ type alias TiltaksGruppe =
 
 type Route
     = Root
-    | GruppeRoute TiltaksGruppe
+    | GruppeRoute TiltaksGruppeType
     | NotFoundRoute
 
 

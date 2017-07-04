@@ -82,18 +82,10 @@ routeFromLocation location =
             Root
 
         "#holdeplasser" ->
-            GruppeRoute
-                { tag = Holdeplasser
-                , tiltakene =
-                    []
-                }
+            GruppeRoute Holdeplasser
 
         "#informasjon" ->
-            GruppeRoute
-                { tag = Informasjon
-                , tiltakene =
-                    []
-                }
+            GruppeRoute Informasjon
 
         _ ->
             NotFoundRoute
@@ -141,8 +133,8 @@ subscriptions model =
 groupTitle : Model -> Html Msg
 groupTitle { route } =
     case route of
-        GruppeRoute tiltaksGruppe ->
-            text (toString tiltaksGruppe.tag)
+        GruppeRoute tag ->
+            text (toString tag)
 
         NotFoundRoute ->
             text "Finner ikke siden"
@@ -179,7 +171,7 @@ renderGruppe { tiltakene } =
 renderTiltakene : Model -> Html Msg
 renderTiltakene model =
     case model.route of
-        GruppeRoute { tag } ->
+        GruppeRoute tag ->
             case activeGruppe model tag of
                 Just gruppe ->
                     renderGruppe gruppe
