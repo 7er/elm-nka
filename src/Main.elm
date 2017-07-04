@@ -88,6 +88,13 @@ routeFromLocation location =
                     []
                 }
 
+        "#informasjon" ->
+            GruppeRoute
+                { tag = Informasjon
+                , tiltakene =
+                    []
+                }
+
         _ ->
             NotFoundRoute
 
