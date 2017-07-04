@@ -85,10 +85,7 @@ routeFromLocation location =
             GruppeRoute
                 { tag = Holdeplasser
                 , tiltakene =
-                    [ createTiltak "Sykkelparkering" "Foobar"
-                    , createTiltak "Leskur u sitteplass" "Zppt"
-                    , createTiltak "Sitteplass på hpl" "Syver"
-                    ]
+                    []
                 }
 
         _ ->
