@@ -1,5 +1,7 @@
 module Models exposing (..)
 
+import Navigation exposing (Location)
+
 
 type TiltaksGruppeType
     = Holdeplasser
@@ -86,3 +88,19 @@ activeGruppe model activeTag =
             tag == activeTag
     in
         List.head (List.filter filter model.tiltaksGrupper)
+
+
+routeFromLocation : Location -> Route
+routeFromLocation location =
+    case location.hash of
+        "" ->
+            Root
+
+        "#holdeplasser" ->
+            GruppeRoute Holdeplasser
+
+        "#informasjon" ->
+            GruppeRoute Informasjon
+
+        _ ->
+            NotFoundRoute
