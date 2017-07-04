@@ -41,8 +41,8 @@ createTiltak name data =
     }
 
 
-toggleTiltak : TiltaksGruppe -> Tiltak -> TiltaksGruppe
-toggleTiltak gruppe tiltaket =
+toggleTiltak : Tiltak -> TiltaksGruppe -> TiltaksGruppe
+toggleTiltak tiltaket gruppe =
     let
         toggleVisible tiltak =
             case tiltaket == tiltak of
@@ -55,8 +55,8 @@ toggleTiltak gruppe tiltaket =
         { gruppe | tiltakene = List.map toggleVisible gruppe.tiltakene }
 
 
-updateData : TiltaksGruppe -> Tiltak -> String -> TiltaksGruppe
-updateData gruppe tiltaket newData =
+updateData : Tiltak -> String -> TiltaksGruppe -> TiltaksGruppe
+updateData tiltaket newData gruppe =
     let
         update tiltak =
             case tiltaket == tiltak of
@@ -77,3 +77,12 @@ tiltaksGruppePath { tag } =
 tiltaksGruppeTittel : TiltaksGruppe -> String
 tiltaksGruppeTittel { tag } =
     tag |> toString
+
+
+activeGruppe : Model -> TiltaksGruppeType -> Maybe TiltaksGruppe
+activeGruppe model activeTag =
+    let
+        filter { tag } =
+            tag == activeTag
+    in
+        List.head (List.filter filter model.tiltaksGrupper)

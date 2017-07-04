@@ -108,22 +108,12 @@ update msg model =
             ( { model | printMediaType = isPrintType }, Cmd.none )
 
         ToggleVisible tiltak ->
-            ( case model.route of
-                GruppeRoute gruppe ->
-                    { model | route = GruppeRoute (toggleTiltak gruppe tiltak) }
-
-                _ ->
-                    model
+            ( { model | tiltaksGrupper = List.map (toggleTiltak tiltak) model.tiltaksGrupper }
             , Cmd.none
             )
 
         UpdateData tiltak newData ->
-            ( case model.route of
-                GruppeRoute gruppe ->
-                    { model | route = GruppeRoute (updateData gruppe tiltak newData) }
-
-                _ ->
-                    model
+            ( { model | tiltaksGrupper = List.map (updateData tiltak newData) model.tiltaksGrupper }
             , Cmd.none
             )
 
@@ -183,10 +173,15 @@ renderGruppe { tiltakene } =
 
 
 renderTiltakene : Model -> Html Msg
-renderTiltakene { route } =
-    case route of
-        GruppeRoute gruppe ->
-            renderGruppe gruppe
+renderTiltakene model =
+    case model.route of
+        GruppeRoute { tag } ->
+            case activeGruppe model tag of
+                Just gruppe ->
+                    renderGruppe gruppe
+
+                Nothing ->
+                    text "Gruppen er ikke lagt til"
 
         NotFoundRoute ->
             text "Ikke tilgjengelig"
