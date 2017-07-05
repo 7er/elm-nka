@@ -5,9 +5,6 @@ import Models exposing (..)
 
 
 type Msg
-    = NoOp
-    | Update String
-    | MediaTypeChanged Bool
-    | ToggleVisible Tiltak
+    = ToggleVisible Tiltak
     | UpdateData Tiltak String
     | OnLocationChange Location

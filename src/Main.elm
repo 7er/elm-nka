@@ -9,6 +9,7 @@ import Views exposing (view)
 -- MAIN
 
 
+main : Program Never Model Msg
 main =
     Navigation.program
         OnLocationChange
@@ -19,9 +20,6 @@ main =
         }
 
 
-port printMediaType : (Bool -> msg) -> Sub msg
-
-
 
 -- UPDATE
 
@@ -30,9 +28,7 @@ init : Location -> ( Model, Cmd Msg )
 init location =
     let
         model =
-            { message = "Hello"
-            , printMediaType = False
-            , tiltaksGrupper =
+            { tiltaksGrupper =
                 [ { tag = Holdeplasser
                   , tiltakene =
                         [ createTiltak "Sykkelparkering" "Foobar"
@@ -63,15 +59,6 @@ init location =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case Debug.log "update: " msg of
-        NoOp ->
-            ( model, Cmd.none )
-
-        Update inputString ->
-            ( { model | message = inputString }, Cmd.none )
-
-        MediaTypeChanged isPrintType ->
-            ( { model | printMediaType = isPrintType }, Cmd.none )
-
         ToggleVisible tiltak ->
             ( { model | tiltaksGrupper = List.map (toggleTiltak tiltak) model.tiltaksGrupper }
             , Cmd.none
@@ -92,4 +79,4 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    printMediaType MediaTypeChanged
+    Sub.none

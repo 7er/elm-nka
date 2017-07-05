@@ -28,9 +28,7 @@ type Route
 
 
 type alias Model =
-    { message : String
-    , printMediaType : Bool
-    , tiltaksGrupper : List TiltaksGruppe
+    { tiltaksGrupper : List TiltaksGruppe
     , route : Route
     }
 
