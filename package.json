@@ -8,7 +8,8 @@
   "scripts": {
     "prebuild": "yarn run test",
     "build": "webpack",
-    "client": "webpack-dev-server --port 3000 --host 0.0.0.0 --public 10.0.2.2:3000",
+    "client-for-virtualbox-ie-testing": "webpack-dev-server --host 0.0.0.0 --public 10.0.2.2:3000",
+    "client": "webpack-dev-server --port 3000",
     "start": "yarn run client",
     "test": "elm-test",
     "test:watch": "elm-test --watch --warn",

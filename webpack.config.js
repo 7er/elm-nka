@@ -1,6 +1,10 @@
 var path = require("path");
+var webpack = require("webpack");
 
 module.exports = {
+  plugins: [
+    new webpack.EnvironmentPlugin({'USE_TILTAK_MAIN': false})
+  ],
   entry: {
     app: [
       './src/index.js'
