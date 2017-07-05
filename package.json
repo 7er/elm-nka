@@ -6,11 +6,14 @@
   "author": "Syver Enstad <syver.enstad@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "prebuild": "yarn run test",
     "build": "webpack",
-    "client": "webpack-dev-server --port 3000",
+    "client": "webpack-dev-server --port 3000 --host 0.0.0.0 --public 10.0.2.2:3000",
     "start": "yarn run client",
-    "test": "elm-test ",
-    "test:watch": "elm-test --watch"
+    "test": "elm-test",
+    "test:watch": "elm-test --watch --warn",
+    "predeploy": "yarn run build",
+    "deploy": "./sspa deploy_bucket nka-verktoy.7ern.no"
   },
   "dependencies": {
     "css-loader": "^0.28.4",

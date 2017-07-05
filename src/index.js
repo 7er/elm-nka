@@ -9,7 +9,7 @@ var mountNode = document.getElementById('main');
 var app = Elm.Main.embed(mountNode);
 
 // unused for now
-window.matchMedia("print").addListener((mediaQueryList) => {
+window.matchMedia("print").addListener(function (mediaQueryList) {
    console.log("forandret media", mediaQueryList);
    app.ports.printMediaType.send(mediaQueryList.matches);
 });

@@ -1,30 +1,31 @@
 # elm-nka
 
-Nytte- og kostnadsanalyse verktøy for universel utforming tiltak i kollektivtrafikken.
+Nytte- og kostnadsanalyse verktøy for tiltak knyttet til universell
+utforming i kollektivtrafikken.
 
-Author: Syver Endstad, Thomas Flemming
+Author: Syver Enstad, Thomas Flemming
 
 # Installering
 
-```javascript:
+```
     $ yarn install
 ```
 
 # Kjøring
 
-```javascript:
+```
     $ yarn start
 ```
 
 # Test
 
-```javascript:
+```
     $ yarn test
 ```
 
 Kontinuerlig testing:
 
-```javascript:
+```
     $ yarn test:watch
 ```
 
