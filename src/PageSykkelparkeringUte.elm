@@ -4,8 +4,8 @@ import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
 import Bootstrap.Form.Select as Select
 import Bootstrap.Button as Button
-import Html exposing (Html, text)
-import Html.Attributes exposing (for, value)
+import Html exposing (Html, text, div)
+import Html.Attributes exposing (for, value, id)
 import Html.Events exposing (onSubmit)
 import ModelAndMsg exposing (..)
 
@@ -16,7 +16,7 @@ type alias Title =
 
 initialFormState : SykkelparkeringUteFormState
 initialFormState =
-    { tripsPerYear = Nothing }
+    { tripsPerYear = Nothing, submitted = False }
 
 
 updateFormState : SykkelparkeringUteFormState -> VariableName -> String -> SykkelparkeringUteFormState
@@ -24,14 +24,28 @@ updateFormState formState variableName stringValue =
     case variableName of
         "tripsPerYear" ->
             -- maybeValue : Maybe Int
-            let maybeValue = case String.toInt stringValue of
-                Ok value -> Just value
-                Err message -> Debug.log message Nothing
+            let
+                maybeValue =
+                    case String.toInt stringValue of
+                        Ok value ->
+                            Just value
+
+                        Err message ->
+                            Debug.log message Nothing
             in
-                { formState | tripsPerYear = maybeValue  }
+                { formState | tripsPerYear = maybeValue }
+
         _ ->
             Debug.crash "TODO"
 
+
+c3GraphId =
+    "sykkelparkeringUteGraph"
+
+
+loadGraph : Cmd msg
+loadGraph =
+    generateC3 c3GraphId
 
 
 
@@ -73,4 +87,5 @@ page model =
             ]
         , Button.button [ Button.primary ] [ text "Submit" ]
         ]
+    , div [ id c3GraphId ] [ text "Her skal grafen rendres" ]
     ]

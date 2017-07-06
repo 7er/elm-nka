@@ -1,8 +1,11 @@
-module ModelAndMsg exposing (..)
+port module ModelAndMsg exposing (..)
 
 import Navigation exposing (Location)
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
+
+
+port generateC3 : String -> Cmd msg
 
 
 type alias VariableName =
@@ -11,6 +14,7 @@ type alias VariableName =
 
 type alias SykkelparkeringUteFormState =
     { tripsPerYear : Maybe Int
+    , submitted : Bool
     }
 
 

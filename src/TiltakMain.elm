@@ -63,7 +63,14 @@ update msg model =
             )
 
         SykkelparkeringUteSubmit ->
-            Debug.crash "TODO"
+            let
+                oldState =
+                    model.sykkelParkeringUteFormState
+
+                newState =
+                    { oldState | submitted = True }
+            in
+                ( { model | sykkelParkeringUteFormState = newState }, PageSykkelparkeringUte.loadGraph )
 
         SykkelparkeringUteForm variableName stringValue ->
             ( { model
