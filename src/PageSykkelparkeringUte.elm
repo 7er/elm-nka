@@ -78,19 +78,11 @@ fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     }
 
 
-brukerNytte : SykkelparkeringUteFormState -> String
-brukerNytte form =
+modelComputation : SykkelparkeringUteFormState -> (SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel -> Maybe Float) -> String
+modelComputation form computationFunc =
     form
         |> fromForm
-        |> SykkelparkeringUteTiltak.brukerNytte
-        |> NumberFormat.maybePretty
-
-
-kostUtenSkyggepris : SykkelparkeringUteFormState -> String
-kostUtenSkyggepris form =
-    form
-        |> fromForm
-        |> SykkelparkeringUteTiltak.kostUtenSkyggepris
+        |> computationFunc
         |> NumberFormat.maybePretty
 
 
@@ -130,10 +122,20 @@ page model =
     , h2 [] [ text "Samfunnsøkonomisk analyse" ]
     , Grid.row []
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
-        , Grid.col [ Col.attrs [ class "text-right" ] ] [ text (brukerNytte model.sykkelParkeringUteFormState) ]
+        , Grid.col [ Col.attrs [ class "text-right" ] ]
+            [ text
+                (SykkelparkeringUteTiltak.brukerNytte
+                    |> modelComputation model.sykkelParkeringUteFormState
+                )
+            ]
         ]
     , Grid.row []
         [ Grid.col [] [ text "Sum kostnader over 40 år" ]
-        , Grid.col [ Col.attrs [ class "text-right" ] ] [ text (kostUtenSkyggepris model.sykkelParkeringUteFormState) ]
+        , Grid.col [ Col.attrs [ class "text-right" ] ]
+            [ text
+                (SykkelparkeringUteTiltak.kostUtenSkyggepris
+                    |> modelComputation model.sykkelParkeringUteFormState
+                )
+            ]
         ]
     ]
