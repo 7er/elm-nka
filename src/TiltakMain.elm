@@ -3,6 +3,7 @@ module Main exposing (main)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
+import ModelAndMsg exposing (..)
 import Navigation exposing (Location)
 import UrlParser exposing ((</>))
 import Bootstrap.Navbar as Navbar
@@ -12,6 +13,7 @@ import Bootstrap.Card as Card
 import Bootstrap.Button as Button
 import Bootstrap.ListGroup as Listgroup
 import Bootstrap.Modal as Modal
+import PageSykkelparkeringUte
 
 
 main : Program Never Model Msg
@@ -24,37 +26,19 @@ main =
         }
 
 
-type alias Model =
-    { page : Page
-    , navState : Navbar.State
-    , modalState : Modal.State
-    }
-
-
-type Page
-    = Home
-    | GettingStarted
-    | Modules
-    | SykkelparkeringUte
-    | NotFound
-
-
 init : Location -> ( Model, Cmd Msg )
 init location =
     let
         ( navState, navCmd ) =
             Navbar.initialState NavMsg
 
+        initialModel =
+            { navState = navState, page = Home, modalState = Modal.hiddenState, sykkelParkeringUteFormState = PageSykkelparkeringUte.initialFormState }
+
         ( model, urlCmd ) =
-            urlUpdate location { navState = navState, page = Home, modalState = Modal.hiddenState }
+            urlUpdate location initialModel
     in
         ( model, Cmd.batch [ urlCmd, navCmd ] )
-
-
-type Msg
-    = UrlChange Location
-    | NavMsg Navbar.State
-    | ModalMsg Modal.State
 
 
 subscriptions : Model -> Sub Msg
@@ -75,6 +59,17 @@ update msg model =
 
         ModalMsg state ->
             ( { model | modalState = state }
+            , Cmd.none
+            )
+
+        SykkelparkeringUteSubmit ->
+            Debug.crash "TODO"
+
+        SykkelparkeringUteForm variableName stringValue ->
+            ( { model
+                | sykkelParkeringUteFormState =
+                    PageSykkelparkeringUte.updateFormState model.sykkelParkeringUteFormState variableName stringValue
+              }
             , Cmd.none
             )
 
@@ -142,6 +137,9 @@ mainContent model =
 
             NotFound ->
                 pageNotFound
+
+            SykkelparkeringUte ->
+                PageSykkelparkeringUte.page model
 
 
 pageHome : Model -> List (Html Msg)
