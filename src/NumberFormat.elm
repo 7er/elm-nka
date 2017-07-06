@@ -1,4 +1,4 @@
-module NumberFormat exposing (pretty)
+module NumberFormat exposing (pretty, maybePretty)
 
 
 prettyHelper : List String -> String -> String
@@ -26,3 +26,13 @@ pretty value =
 
         False ->
             negate value |> pretty |> String.cons '-'
+
+
+maybePretty : Maybe Float -> String
+maybePretty maybeValue =
+    case maybeValue of
+        Just value ->
+            pretty value
+
+        Nothing ->
+            "Ugyldig kalkulasjon"

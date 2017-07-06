@@ -72,30 +72,22 @@ variableNameAndTitle =
 
 brukerNytte : SykkelparkeringUteFormState -> String
 brukerNytte { tripsPerYear, yearlyMaintenance, installationCost } =
-    let
-        maybeValue =
-            SykkelparkeringUteTiltak.brukerNytte { tripsPerYear = tripsPerYear, yearlyMaintenance = yearlyMaintenance, installationCost = installationCost }
-    in
-        case maybeValue of
-            Just value ->
-                NumberFormat.pretty value
-
-            Nothing ->
-                "Ugyldig kalkulasjon"
+    SykkelparkeringUteTiltak.brukerNytte
+        { tripsPerYear = tripsPerYear
+        , yearlyMaintenance = yearlyMaintenance
+        , installationCost = installationCost
+        }
+        |> NumberFormat.maybePretty
 
 
 kostUtenSkyggepris : SykkelparkeringUteFormState -> String
 kostUtenSkyggepris { tripsPerYear, yearlyMaintenance, installationCost } =
-    let
-        maybeValue =
-            SykkelparkeringUteTiltak.kostUtenSkyggepris { tripsPerYear = tripsPerYear, yearlyMaintenance = yearlyMaintenance, installationCost = installationCost }
-    in
-        case maybeValue of
-            Just value ->
-                NumberFormat.pretty value
-
-            Nothing ->
-                "Ugyldig kalkulasjon"
+    SykkelparkeringUteTiltak.kostUtenSkyggepris
+        { tripsPerYear = tripsPerYear
+        , yearlyMaintenance = yearlyMaintenance
+        , installationCost = installationCost
+        }
+        |> NumberFormat.maybePretty
 
 
 page : Model -> List (Html Msg)
