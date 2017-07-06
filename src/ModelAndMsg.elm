@@ -14,6 +14,8 @@ type alias VariableName =
 
 type alias SykkelparkeringUteFormState =
     { tripsPerYear : Maybe Int
+    , yearlyMaintenance : Maybe Int
+    , installationCost : Maybe Int
     , submitted : Bool
     }
 

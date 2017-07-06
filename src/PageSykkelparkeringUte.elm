@@ -4,10 +4,14 @@ import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
 import Bootstrap.Form.Select as Select
 import Bootstrap.Button as Button
-import Html exposing (Html, text, div)
-import Html.Attributes exposing (for, value, id)
+import Bootstrap.Grid as Grid
+import Bootstrap.Grid.Col as Col
+import Html exposing (Html, text, div, h2)
+import Html.Attributes exposing (for, value, id, class)
 import Html.Events exposing (onSubmit)
 import ModelAndMsg exposing (..)
+import SykkelparkeringUteTiltak
+import NumberFormat
 
 
 type alias Title =
@@ -16,7 +20,11 @@ type alias Title =
 
 initialFormState : SykkelparkeringUteFormState
 initialFormState =
-    { tripsPerYear = Nothing, submitted = False }
+    { tripsPerYear = Nothing
+    , yearlyMaintenance = Just 10000
+    , installationCost = Just 300004
+    , submitted = False
+    }
 
 
 updateFormState : SykkelparkeringUteFormState -> VariableName -> String -> SykkelparkeringUteFormState
@@ -59,6 +67,22 @@ variableNameAndTitle =
     ]
 
 
+brukerNytte : SykkelparkeringUteFormState -> String
+brukerNytte { tripsPerYear, yearlyMaintenance, installationCost } =
+    case ( tripsPerYear, yearlyMaintenance, installationCost ) of
+        ( Just a, Just b, Just c ) ->
+            NumberFormat.pretty
+                (SykkelparkeringUteTiltak.brukerNytte
+                    { tripsPerYear = a
+                    , yearlyMaintenance = toFloat b
+                    , installationCost = toFloat c
+                    }
+                )
+
+        _ ->
+            "ugyldige inputverdier"
+
+
 page : Model -> List (Html Msg)
 page model =
     [ Form.form [ onSubmit SykkelparkeringUteSubmit ]
@@ -88,4 +112,9 @@ page model =
         , Button.button [ Button.primary ] [ text "Submit" ]
         ]
     , div [ id c3GraphId ] [ text "Her skal grafen rendres" ]
+    , h2 [] [ text "Samfunnsøkonomisk analyse" ]
+    , Grid.row []
+        [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
+        , Grid.col [ Col.attrs [ class "text-right" ] ] [ text (brukerNytte model.sykkelParkeringUteFormState) ]
+        ]
     ]

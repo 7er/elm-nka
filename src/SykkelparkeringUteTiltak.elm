@@ -81,6 +81,11 @@ parkeringSyklistNytte tripsPerYear =
     (toFloat tripsPerYear) * nytteMultiplier
 
 
+brukerNytte : SykkelParkeringUteTiltakModel -> Float
+brukerNytte forutsetninger =
+    (yearlySyklistNytte forutsetninger) * GeneralForutsetninger.afaktorVekst
+
+
 yearlySyklistNytte forutsetninger =
     (parkeringSyklistNytte forutsetninger.tripsPerYear)
         + (0.5 * (parkeringSyklistNytte forutsetninger.tripsPerYear) * usageIncrease)
