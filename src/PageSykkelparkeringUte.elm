@@ -70,23 +70,27 @@ variableNameAndTitle =
     ]
 
 
+fromForm : SykkelparkeringUteFormState -> SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel
+fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
+    { tripsPerYear = tripsPerYear
+    , yearlyMaintenance = yearlyMaintenance
+    , installationCost = installationCost
+    }
+
+
 brukerNytte : SykkelparkeringUteFormState -> String
-brukerNytte { tripsPerYear, yearlyMaintenance, installationCost } =
-    SykkelparkeringUteTiltak.brukerNytte
-        { tripsPerYear = tripsPerYear
-        , yearlyMaintenance = yearlyMaintenance
-        , installationCost = installationCost
-        }
+brukerNytte form =
+    form
+        |> fromForm
+        |> SykkelparkeringUteTiltak.brukerNytte
         |> NumberFormat.maybePretty
 
 
 kostUtenSkyggepris : SykkelparkeringUteFormState -> String
-kostUtenSkyggepris { tripsPerYear, yearlyMaintenance, installationCost } =
-    SykkelparkeringUteTiltak.kostUtenSkyggepris
-        { tripsPerYear = tripsPerYear
-        , yearlyMaintenance = yearlyMaintenance
-        , installationCost = installationCost
-        }
+kostUtenSkyggepris form =
+    form
+        |> fromForm
+        |> SykkelparkeringUteTiltak.kostUtenSkyggepris
         |> NumberFormat.maybePretty
 
 
