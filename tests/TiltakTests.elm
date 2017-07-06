@@ -1,12 +1,8 @@
 module TiltakTests exposing (..)
 
 import Expect exposing (Expectation)
-
-
--- import Fuzz exposing (Fuzzer, list, int, string)
-
-import Test exposing (..)
-import SykkelparkeringUteTiltak
+import Test exposing (Test, describe, test)
+import SykkelparkeringUteTiltak exposing (SykkelParkeringUteTiltakModel)
 
 
 closeTo : Float -> Int -> Float -> Expectation
@@ -24,8 +20,19 @@ closeTo expected precision actual =
             (toString actual) ++ " is not near enough to " ++ (toString expected) ++ " using " ++ (toString precision) ++ " digits of precision" |> Expect.fail
 
 
+checkMaybe : (a -> Expectation) -> Maybe a -> Expectation
+checkMaybe expectation maybeValue =
+    case maybeValue of
+        Just value ->
+            expectation value
+
+        Nothing ->
+            Expect.fail "Got nothing"
+
+
+checkNytteNullPunktForNullModel : SykkelParkeringUteTiltakModel -> Expectation
 checkNytteNullPunktForNullModel model =
-    SykkelparkeringUteTiltak.nettoNytte model |> closeTo 0 3
+    SykkelparkeringUteTiltak.nettoNytte model |> checkMaybe (closeTo 0 3)
 
 
 
@@ -49,17 +56,29 @@ checkNytteNullPunktForNullModel model =
 suite : Test
 suite =
     describe "Tiltak Models"
-        [ describe "SykkelparkeringUteTiltak"
+        [ describe "checkMaybe"
+            [ test "it always fails for Nothing" <|
+                \_ ->
+                    let
+                        expectation =
+                            Nothing |> checkMaybe (Expect.equal 80)
+                    in
+                        expectation |> Expect.equal (Expect.fail "Got nothing")
+            , test "it can check equality for Just" <|
+                \_ ->
+                    Just 80 |> checkMaybe (Expect.equal 80)
+            ]
+        , describe "SykkelparkeringUteTiltak"
             [ sykkelParkeringUteTest "calculates the nytte" <|
                 \model ->
-                    SykkelparkeringUteTiltak.nytte model |> closeTo 543262.891 3
+                    SykkelparkeringUteTiltak.nytte model |> checkMaybe (closeTo 543262.891 3)
             , describe "kost"
                 [ sykkelParkeringUteTest "calculates the kost" <|
                     \model ->
-                        SykkelparkeringUteTiltak.kost model |> closeTo 543262.89 3
+                        SykkelparkeringUteTiltak.kost model |> checkMaybe (closeTo 543262.89 3)
                 , sykkelParkeringUteTest "calculates totalCostNowValue" <|
                     \model ->
-                        SykkelparkeringUteTiltak.totalCostNowValue model |> closeTo 452719 0
+                        SykkelparkeringUteTiltak.totalCostNowValue model |> checkMaybe (closeTo 452719 0)
                 ]
             , describe "investmentKostInklRestverdiValueToday calculations"
                 [ test "investmentFactor" <|
@@ -67,14 +86,14 @@ suite =
                         SykkelparkeringUteTiltak.investmentFactor |> closeTo 2.4402698 7
                 , sykkelParkeringUteTest "investmentKostInklRestverdiValueToday" <|
                     \model ->
-                        SykkelparkeringUteTiltak.investmentKostInklRestverdiValueToday model.installationCost |> closeTo 254791 0
+                        SykkelparkeringUteTiltak.investmentKostInklRestverdiValueToday model.installationCost |> checkMaybe (closeTo 254791 0)
                 ]
             , sykkelParkeringUteTest "calculates the maintenanceCost" <|
                 \model ->
-                    SykkelparkeringUteTiltak.maintenanceCost model.yearlyMaintenance |> closeTo 197928 0
+                    SykkelparkeringUteTiltak.maintenanceCost model.yearlyMaintenance |> checkMaybe (closeTo 197928 0)
             , sykkelParkeringUteTest "calculates the nettoNytte" <|
                 \model ->
-                    SykkelparkeringUteTiltak.nettoNytte model |> closeTo 0 3
+                    SykkelparkeringUteTiltak.nettoNytte model |> checkMaybe (closeTo 0 3)
 
             {- , generateTestWithModel <|
                    \_ ->
@@ -109,16 +128,13 @@ suite =
         ]
 
 
-sykkelParkeringUteTest :
-    String
-    -> (SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel -> Expectation)
-    -> Test
+sykkelParkeringUteTest : String -> (SykkelParkeringUteTiltakModel -> Expectation) -> Test
 sykkelParkeringUteTest description testCase =
     let
         model =
-            { tripsPerYear = 965
-            , yearlyMaintenance = 10000
-            , installationCost = 1.044111345e5
+            { tripsPerYear = Just 965
+            , yearlyMaintenance = Just 10000
+            , installationCost = Just 1.044111345e5
             }
     in
         test description <|

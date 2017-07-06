@@ -21,7 +21,7 @@ type alias Title =
 initialFormState : SykkelparkeringUteFormState
 initialFormState =
     { tripsPerYear = Nothing
-    , yearlyMaintenance = Just 10000
+    , yearlyMaintenance = Nothing
     , installationCost = Just 300004
     , submitted = False
     }
@@ -34,14 +34,17 @@ updateFormState formState variableName stringValue =
             -- maybeValue : Maybe Int
             let
                 maybeValue =
-                    case String.toInt stringValue of
-                        Ok value ->
-                            Just value
-
-                        Err message ->
-                            Debug.log message Nothing
+                    String.toInt stringValue |> Result.toMaybe
             in
                 { formState | tripsPerYear = maybeValue }
+
+        "yearlyMaintenance" ->
+            -- maybeValue : Maybe Int
+            let
+                maybeValue =
+                    String.toFloat stringValue |> Result.toMaybe
+            in
+                { formState | yearlyMaintenance = maybeValue }
 
         _ ->
             Debug.crash "TODO"
@@ -69,18 +72,30 @@ variableNameAndTitle =
 
 brukerNytte : SykkelparkeringUteFormState -> String
 brukerNytte { tripsPerYear, yearlyMaintenance, installationCost } =
-    case ( tripsPerYear, yearlyMaintenance, installationCost ) of
-        ( Just a, Just b, Just c ) ->
-            NumberFormat.pretty
-                (SykkelparkeringUteTiltak.brukerNytte
-                    { tripsPerYear = a
-                    , yearlyMaintenance = toFloat b
-                    , installationCost = toFloat c
-                    }
-                )
+    let
+        maybeValue =
+            SykkelparkeringUteTiltak.brukerNytte { tripsPerYear = tripsPerYear, yearlyMaintenance = yearlyMaintenance, installationCost = installationCost }
+    in
+        case maybeValue of
+            Just value ->
+                NumberFormat.pretty value
 
-        _ ->
-            "ugyldige inputverdier"
+            Nothing ->
+                "Ugyldig kalkulasjon"
+
+
+kostUtenSkyggepris : SykkelparkeringUteFormState -> String
+kostUtenSkyggepris { tripsPerYear, yearlyMaintenance, installationCost } =
+    let
+        maybeValue =
+            SykkelparkeringUteTiltak.kostUtenSkyggepris { tripsPerYear = tripsPerYear, yearlyMaintenance = yearlyMaintenance, installationCost = installationCost }
+    in
+        case maybeValue of
+            Just value ->
+                NumberFormat.pretty value
+
+            Nothing ->
+                "Ugyldig kalkulasjon"
 
 
 page : Model -> List (Html Msg)
@@ -100,7 +115,11 @@ page model =
             ]
         , Form.group []
             [ Form.label [ for "yearlyMaintenance" ] [ text "Årlige drifts- og vedlikeholdskostnader" ]
-            , Input.number [ Input.id "yearlyMaintenance" ]
+            , Input.number
+                [ Input.id "yearlyMaintenance"
+                , Input.placeholder "Kostnaden ved å installere tiltaket en gang, kroner"
+                , Input.onInput (SykkelparkeringUteForm "yearlyMaintenance")
+                ]
             ]
         , Form.group []
             [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
@@ -116,5 +135,9 @@ page model =
     , Grid.row []
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ] [ text (brukerNytte model.sykkelParkeringUteFormState) ]
+        ]
+    , Grid.row []
+        [ Grid.col [] [ text "Sum kostnader over 40 år" ]
+        , Grid.col [ Col.attrs [ class "text-right" ] ] [ text (kostUtenSkyggepris model.sykkelParkeringUteFormState) ]
         ]
     ]
