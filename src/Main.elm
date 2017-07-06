@@ -43,7 +43,7 @@ init location =
                         ]
                   }
                 ]
-            , route = routeFromLocation location
+            , route = Root
             }
     in
         ( model
@@ -70,7 +70,7 @@ update msg model =
             )
 
         OnLocationChange location ->
-            ( { model | route = routeFromLocation location }, Cmd.none )
+            ( { model | route = routeFromLocation model location }, Cmd.none )
 
 
 

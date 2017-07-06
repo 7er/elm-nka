@@ -88,17 +88,30 @@ activeGruppe model activeTag =
         List.head (List.filter filter model.tiltaksGrupper)
 
 
-routeFromLocation : Location -> Route
-routeFromLocation location =
-    case location.hash of
-        "" ->
-            Root
+gruppeFromHash : Model -> String -> Maybe TiltaksGruppeType
+gruppeFromHash model hash =
+    let
+        filter gruppe =
+            hash == tiltaksGruppePath gruppe
+    in
+        case List.head (List.filter filter model.tiltaksGrupper) of
+            Just gruppe ->
+                Just gruppe.tag
 
-        "#holdeplasser" ->
-            GruppeRoute Holdeplasser
+            Nothing ->
+                Nothing
 
-        "#informasjon" ->
-            GruppeRoute Informasjon
 
-        _ ->
-            NotFoundRoute
+routeFromLocation : Model -> Location -> Route
+routeFromLocation model location =
+    case gruppeFromHash model location.hash of
+        Just tag ->
+            GruppeRoute tag
+
+        Nothing ->
+            case location.hash of
+                "" ->
+                    Root
+
+                _ ->
+                    NotFoundRoute
