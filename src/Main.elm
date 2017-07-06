@@ -35,7 +35,12 @@ init location =
         ( model
         , case model.route of
             Root ->
-                Navigation.modifyUrl (location.href ++ "#holdeplasser")
+                case List.head tiltaksGrupper of
+                    Just gruppe ->
+                        Navigation.modifyUrl (location.href ++ tiltaksGruppePath gruppe)
+
+                    _ ->
+                        Cmd.none
 
             _ ->
                 Cmd.none
