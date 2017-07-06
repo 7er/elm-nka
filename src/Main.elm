@@ -28,22 +28,8 @@ init : Location -> ( Model, Cmd Msg )
 init location =
     let
         model =
-            { tiltaksGrupper =
-                [ { tag = Holdeplasser
-                  , tiltakene =
-                        [ createTiltak "Sykkelparkering" "Foobar"
-                        , createTiltak "Leskur u sitteplass" "Zppt"
-                        , createTiltak "Sitteplass på hpl" "Syver"
-                        ]
-                  }
-                , { tag = Informasjon
-                  , tiltakene =
-                        [ createTiltak "Skilting i buss" "Foobar"
-                        , createTiltak "Hpl. opprop" "Zppt"
-                        ]
-                  }
-                ]
-            , route = Root
+            { tiltaksGrupper = tiltaksGrupper
+            , route = routeFromLocation location
             }
     in
         ( model
@@ -70,7 +56,7 @@ update msg model =
             )
 
         OnLocationChange location ->
-            ( { model | route = routeFromLocation model location }, Cmd.none )
+            ( { model | route = routeFromLocation location }, Cmd.none )
 
 
 

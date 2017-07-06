@@ -41,6 +41,24 @@ createTiltak name data =
     }
 
 
+tiltaksGrupper : List TiltaksGruppe
+tiltaksGrupper =
+    [ { tag = Holdeplasser
+      , tiltakene =
+            [ createTiltak "Sykkelparkering" "Foobar"
+            , createTiltak "Leskur u sitteplass" "Zppt"
+            , createTiltak "Sitteplass på hpl" "Syver"
+            ]
+      }
+    , { tag = Informasjon
+      , tiltakene =
+            [ createTiltak "Skilting i buss" "Foobar"
+            , createTiltak "Hpl. opprop" "Zppt"
+            ]
+      }
+    ]
+
+
 toggleTiltak : Tiltak -> TiltaksGruppe -> TiltaksGruppe
 toggleTiltak tiltaket gruppe =
     let
@@ -88,13 +106,13 @@ activeGruppe model activeTag =
         List.head (List.filter filter model.tiltaksGrupper)
 
 
-gruppeFromHash : Model -> String -> Maybe TiltaksGruppeType
-gruppeFromHash model hash =
+gruppeFromHash : String -> Maybe TiltaksGruppeType
+gruppeFromHash hash =
     let
         filter gruppe =
             hash == tiltaksGruppePath gruppe
     in
-        case List.head (List.filter filter model.tiltaksGrupper) of
+        case List.head (List.filter filter tiltaksGrupper) of
             Just gruppe ->
                 Just gruppe.tag
 
@@ -102,9 +120,9 @@ gruppeFromHash model hash =
                 Nothing
 
 
-routeFromLocation : Model -> Location -> Route
-routeFromLocation model location =
-    case gruppeFromHash model location.hash of
+routeFromLocation : Location -> Route
+routeFromLocation location =
+    case gruppeFromHash location.hash of
         Just tag ->
             GruppeRoute tag
 

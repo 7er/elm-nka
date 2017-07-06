@@ -38,13 +38,13 @@ renderGruppe { tiltakene } =
     ul [] (List.map renderTiltak tiltakene)
 
 
-renderNav : Model -> Html Msg
-renderNav model =
+renderNav : Html Msg
+renderNav =
     let
         groupToNavLi tiltaksGruppe =
             li [] [ a [ href (tiltaksGruppePath tiltaksGruppe) ] [ text (tiltaksGruppeTittel tiltaksGruppe) ] ]
     in
-        ul [] <| List.map groupToNavLi model.tiltaksGrupper
+        ul [] <| List.map groupToNavLi tiltaksGrupper
 
 
 gruppePageView tiltaksGruppe =
@@ -56,7 +56,7 @@ gruppePageView tiltaksGruppe =
 view : Model -> Html Msg
 view model =
     div []
-        [ nav [] [ renderNav model ]
+        [ nav [] [ renderNav ]
         , article []
             (case model.route of
                 GruppeRoute typeTag ->
