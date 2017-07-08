@@ -89,35 +89,38 @@ modelComputation form computationFunc =
 page : Model -> List (Html Msg)
 page model =
     [ Form.form [ onSubmit SykkelparkeringUteSubmit ]
-        [ Form.group []
-            [ Form.label [ for "tripsPerYear" ] [ text "Antall sykkelreiser per år" ]
-            , Input.number
-                [ Input.id "tripsPerYear"
-                , Input.placeholder "Sykkelreiser som bruker tiltaket"
-                , Input.onInput (SykkelparkeringUteForm "tripsPerYear")
+        (List.append
+            [ Form.group []
+                [ Form.label [ for "tripsPerYear" ] [ text "Antall sykkelreiser per år" ]
+                , Input.number
+                    [ Input.id "tripsPerYear"
+                    , Input.placeholder "Sykkelreiser som bruker tiltaket"
+                    , Input.onInput (SykkelparkeringUteForm "tripsPerYear")
+                    ]
+                ]
+            , Form.group []
+                [ Form.label [ for "installationCost" ] [ text "Installasjonskostnad" ]
+                , Input.number [ Input.id "installationCost" ]
+                ]
+            , Form.group []
+                [ Form.label [ for "yearlyMaintenance" ] [ text "Årlige drifts- og vedlikeholdskostnader" ]
+                , Input.number
+                    [ Input.id "yearlyMaintenance"
+                    , Input.placeholder "Kostnaden ved å installere tiltaket en gang, kroner"
+                    , Input.onInput (SykkelparkeringUteForm "yearlyMaintenance")
+                    ]
                 ]
             ]
-        , Form.group []
-            [ Form.label [ for "installationCost" ] [ text "Installasjonskostnad" ]
-            , Input.number [ Input.id "installationCost" ]
-            ]
-        , Form.group []
-            [ Form.label [ for "yearlyMaintenance" ] [ text "Årlige drifts- og vedlikeholdskostnader" ]
-            , Input.number
-                [ Input.id "yearlyMaintenance"
-                , Input.placeholder "Kostnaden ved å installere tiltaket en gang, kroner"
-                , Input.onInput (SykkelparkeringUteForm "yearlyMaintenance")
+            [ Form.group []
+                [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
+                , Select.select [ Select.id "variableToGraph" ]
+                    (variableNameAndTitleAndPlaceholder
+                        |> List.map (\( name, title, _ ) -> Select.item [ value name ] [ text title ])
+                    )
                 ]
+            , Button.button [ Button.primary ] [ text "Submit" ]
             ]
-        , Form.group []
-            [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
-            , Select.select [ Select.id "variableToGraph" ]
-                (variableNameAndTitleAndPlaceholder
-                    |> List.map (\( name, title, _ ) -> Select.item [ value name ] [ text title ])
-                )
-            ]
-        , Button.button [ Button.primary ] [ text "Submit" ]
-        ]
+        )
     , div [ id c3GraphId ] [ text "Her skal grafen rendres" ]
     , h2 [] [ text "Samfunnsøkonomisk analyse" ]
     , Grid.row []
