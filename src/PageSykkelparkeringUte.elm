@@ -31,20 +31,10 @@ updateFormState : SykkelparkeringUteFormState -> VariableName -> String -> Sykke
 updateFormState formState variableName stringValue =
     case variableName of
         "tripsPerYear" ->
-            -- maybeValue : Maybe Int
-            let
-                maybeValue =
-                    String.toInt stringValue |> Result.toMaybe
-            in
-                { formState | tripsPerYear = maybeValue }
+            { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
 
         "yearlyMaintenance" ->
-            -- maybeValue : Maybe Int
-            let
-                maybeValue =
-                    String.toFloat stringValue |> Result.toMaybe
-            in
-                { formState | yearlyMaintenance = maybeValue }
+            { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
 
         _ ->
             Debug.crash "TODO"
