@@ -65,8 +65,8 @@ loadGraph =
 
 variableNameAndTitle =
     [ ( "tripsPerYear", "Antall sykkelreiser per år" )
-    , ( "yearlyMaintenance", "Årlige drifts- og vedlikeholdskostnader" )
     , ( "installationCost", "Installasjonskostnad" )
+    , ( "yearlyMaintenance", "Årlige drifts- og vedlikeholdskostnader" )
     ]
 
 
