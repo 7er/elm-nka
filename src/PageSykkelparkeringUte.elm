@@ -18,6 +18,10 @@ type alias Title =
     String
 
 
+type alias Field =
+    ( String, String, String, SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState )
+
+
 initialFormState : SykkelparkeringUteFormState
 initialFormState =
     { tripsPerYear = Nothing
@@ -27,7 +31,7 @@ initialFormState =
     }
 
 
-findField : String -> Maybe ( String, String, String, SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState )
+findField : String -> Maybe Field
 findField variableName =
     fields
         |> List.filter (\( name, _, _, _ ) -> name == variableName)
@@ -53,7 +57,7 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fields : List ( String, String, String, SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState )
+fields : List Field
 fields =
     [ ( "tripsPerYear"
       , "Antall sykkelreiser per år"
