@@ -63,10 +63,10 @@ loadGraph =
 --variableNameAndTitle : (List (VariableName, Title))
 
 
-variableNameAndTitle =
-    [ ( "tripsPerYear", "Antall sykkelreiser per år" )
-    , ( "installationCost", "Installasjonskostnad" )
-    , ( "yearlyMaintenance", "Årlige drifts- og vedlikeholdskostnader" )
+variableNameAndTitleAndPlaceholder =
+    [ ( "tripsPerYear", "Antall sykkelreiser per år", "Sykkelreiser som bruker tiltaket" )
+    , ( "installationCost", "Installasjonskostnad", "" )
+    , ( "yearlyMaintenance", "Årlige drifts- og vedlikeholdskostnader", "Kostnaden ved å installere tiltaket en gang, kroner" )
     ]
 
 
@@ -112,8 +112,8 @@ page model =
         , Form.group []
             [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
             , Select.select [ Select.id "variableToGraph" ]
-                (variableNameAndTitle
-                    |> List.map (\( name, title ) -> Select.item [ value name ] [ text title ])
+                (variableNameAndTitleAndPlaceholder
+                    |> List.map (\( name, title, _ ) -> Select.item [ value name ] [ text title ])
                 )
             ]
         , Button.button [ Button.primary ] [ text "Submit" ]
