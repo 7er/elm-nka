@@ -53,10 +53,20 @@ loadGraph =
 --variableNameAndTitle : (List (VariableName, Title))
 
 
-variableNameAndTitleAndPlaceholder =
-    [ ( "tripsPerYear", "Antall sykkelreiser per år", "Sykkelreiser som bruker tiltaket" )
-    , ( "installationCost", "Installasjonskostnad", "" )
-    , ( "yearlyMaintenance", "Årlige drifts- og vedlikeholdskostnader", "Kostnaden ved å installere tiltaket en gang, kroner" )
+fields : List ( String, String, String )
+fields =
+    [ ( "tripsPerYear"
+      , "Antall sykkelreiser per år"
+      , "Sykkelreiser som bruker tiltaket"
+      )
+    , ( "installationCost"
+      , "Installasjonskostnad"
+      , ""
+      )
+    , ( "yearlyMaintenance"
+      , "Årlige drifts- og vedlikeholdskostnader"
+      , "Kostnaden ved å installere tiltaket en gang, kroner"
+      )
     ]
 
 
@@ -80,7 +90,7 @@ page : Model -> List (Html Msg)
 page model =
     [ Form.form [ onSubmit SykkelparkeringUteSubmit ]
         (List.append
-            (variableNameAndTitleAndPlaceholder
+            (fields
                 |> List.map
                     (\( name, title, placeholder ) ->
                         Form.group []
@@ -96,7 +106,7 @@ page model =
             [ Form.group []
                 [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
                 , Select.select [ Select.id "variableToGraph" ]
-                    (variableNameAndTitleAndPlaceholder
+                    (fields
                         |> List.map (\( name, title, _ ) -> Select.item [ value name ] [ text title ])
                     )
                 ]
