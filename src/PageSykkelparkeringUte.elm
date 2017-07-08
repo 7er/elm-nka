@@ -90,27 +90,19 @@ page : Model -> List (Html Msg)
 page model =
     [ Form.form [ onSubmit SykkelparkeringUteSubmit ]
         (List.append
-            [ Form.group []
-                [ Form.label [ for "tripsPerYear" ] [ text "Antall sykkelreiser per år" ]
-                , Input.number
-                    [ Input.id "tripsPerYear"
-                    , Input.placeholder "Sykkelreiser som bruker tiltaket"
-                    , Input.onInput (SykkelparkeringUteForm "tripsPerYear")
-                    ]
-                ]
-            , Form.group []
-                [ Form.label [ for "installationCost" ] [ text "Installasjonskostnad" ]
-                , Input.number [ Input.id "installationCost" ]
-                ]
-            , Form.group []
-                [ Form.label [ for "yearlyMaintenance" ] [ text "Årlige drifts- og vedlikeholdskostnader" ]
-                , Input.number
-                    [ Input.id "yearlyMaintenance"
-                    , Input.placeholder "Kostnaden ved å installere tiltaket en gang, kroner"
-                    , Input.onInput (SykkelparkeringUteForm "yearlyMaintenance")
-                    ]
-                ]
-            ]
+            (variableNameAndTitleAndPlaceholder
+                |> List.map
+                    (\( name, title, placeholder ) ->
+                        Form.group []
+                            [ Form.label [ for name ] [ text title ]
+                            , Input.number
+                                [ Input.id name
+                                , Input.placeholder placeholder
+                                , Input.onInput (SykkelparkeringUteForm name)
+                                ]
+                            ]
+                    )
+            )
             [ Form.group []
                 [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
                 , Select.select [ Select.id "variableToGraph" ]
