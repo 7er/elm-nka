@@ -116,10 +116,9 @@ page model =
             )
             [ Form.group []
                 [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
-                , Select.select [ Select.id "variableToGraph" ]
-                    (fields
-                        |> List.map (\{ name, title } -> Select.item [ value name ] [ text title ])
-                    )
+                , fields
+                    |> List.map (\{ name, title } -> Select.item [ value name ] [ text title ])
+                    |> Select.select [ Select.id "variableToGraph" ]
                 ]
             , Button.button [ Button.primary ] [ text "Submit" ]
             ]
