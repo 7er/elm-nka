@@ -19,7 +19,11 @@ type alias Title =
 
 
 type alias Field =
-    ( String, String, String, SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState )
+    { name : String
+    , title : String
+    , placeholder : String
+    , storeFunc : SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState
+    }
 
 
 initialFormState : SykkelparkeringUteFormState
@@ -34,15 +38,15 @@ initialFormState =
 findField : String -> Maybe Field
 findField variableName =
     fields
-        |> List.filter (\( name, _, _, _ ) -> name == variableName)
+        |> List.filter (\{ name } -> name == variableName)
         |> List.head
 
 
 updateFormState : SykkelparkeringUteFormState -> VariableName -> String -> SykkelparkeringUteFormState
 updateFormState formState variableName stringValue =
     case findField variableName of
-        Just ( _, _, _, func ) ->
-            func formState stringValue
+        Just { storeFunc } ->
+            storeFunc formState stringValue
 
         _ ->
             Debug.crash "TODO"
@@ -59,21 +63,21 @@ loadGraph =
 
 fields : List Field
 fields =
-    [ ( "tripsPerYear"
-      , "Antall sykkelreiser per år"
-      , "Sykkelreiser som bruker tiltaket"
-      , \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
-      )
-    , ( "installationCost"
-      , "Installasjonskostnad"
-      , ""
-      , \formState -> \stringValue -> Debug.crash "TODO"
-      )
-    , ( "yearlyMaintenance"
-      , "Årlige drifts- og vedlikeholdskostnader"
-      , "Kostnaden ved å installere tiltaket en gang, kroner"
-      , \formState -> \stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
-      )
+    [ Field "tripsPerYear"
+        "Antall sykkelreiser per år"
+        "Sykkelreiser som bruker tiltaket"
+      <|
+        \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
+    , Field "installationCost"
+        "Installasjonskostnad"
+        ""
+      <|
+        \formState -> \stringValue -> Debug.crash "TODO"
+    , Field "yearlyMaintenance"
+        "Årlige drifts- og vedlikeholdskostnader"
+        "Kostnaden ved å installere tiltaket en gang, kroner"
+      <|
+        \formState -> \stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
     ]
 
 
@@ -99,7 +103,7 @@ page model =
         (List.append
             (fields
                 |> List.map
-                    (\( name, title, placeholder, _ ) ->
+                    (\{ name, title, placeholder } ->
                         Form.group []
                             [ Form.label [ for name ] [ text title ]
                             , Input.number
@@ -114,7 +118,7 @@ page model =
                 [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
                 , Select.select [ Select.id "variableToGraph" ]
                     (fields
-                        |> List.map (\( name, title, _, _ ) -> Select.item [ value name ] [ text title ])
+                        |> List.map (\{ name, title } -> Select.item [ value name ] [ text title ])
                     )
                 ]
             , Button.button [ Button.primary ] [ text "Submit" ]
