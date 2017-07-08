@@ -26,6 +26,26 @@ type alias Field =
     }
 
 
+fields : List Field
+fields =
+    [ Field "tripsPerYear"
+        "Antall sykkelreiser per år"
+        "Sykkelreiser som bruker tiltaket"
+      <|
+        \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
+    , Field "installationCost"
+        "Installasjonskostnad"
+        ""
+      <|
+        \formState -> \stringValue -> Debug.crash "TODO"
+    , Field "yearlyMaintenance"
+        "Årlige drifts- og vedlikeholdskostnader"
+        "Kostnaden ved å installere tiltaket en gang, kroner"
+      <|
+        \formState -> \stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
+    ]
+
+
 initialFormState : SykkelparkeringUteFormState
 initialFormState =
     { tripsPerYear = Nothing
@@ -59,26 +79,6 @@ c3GraphId =
 loadGraph : Cmd msg
 loadGraph =
     generateC3 c3GraphId
-
-
-fields : List Field
-fields =
-    [ Field "tripsPerYear"
-        "Antall sykkelreiser per år"
-        "Sykkelreiser som bruker tiltaket"
-      <|
-        \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
-    , Field "installationCost"
-        "Installasjonskostnad"
-        ""
-      <|
-        \formState -> \stringValue -> Debug.crash "TODO"
-    , Field "yearlyMaintenance"
-        "Årlige drifts- og vedlikeholdskostnader"
-        "Kostnaden ved å installere tiltaket en gang, kroner"
-      <|
-        \formState -> \stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
-    ]
 
 
 fromForm : SykkelparkeringUteFormState -> SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel
