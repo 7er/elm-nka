@@ -27,14 +27,18 @@ initialFormState =
     }
 
 
+findField : String -> Maybe ( String, String, String, SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState )
+findField variableName =
+    fields
+        |> List.filter (\( name, _, _, _ ) -> name == variableName)
+        |> List.head
+
+
 updateFormState : SykkelparkeringUteFormState -> VariableName -> String -> SykkelparkeringUteFormState
 updateFormState formState variableName stringValue =
-    case variableName of
-        "tripsPerYear" ->
-            { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
-
-        "yearlyMaintenance" ->
-            { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
+    case findField variableName of
+        Just ( _, _, _, func ) ->
+            func formState stringValue
 
         _ ->
             Debug.crash "TODO"
@@ -53,19 +57,22 @@ loadGraph =
 --variableNameAndTitle : (List (VariableName, Title))
 
 
-fields : List ( String, String, String )
+fields : List ( String, String, String, SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState )
 fields =
     [ ( "tripsPerYear"
       , "Antall sykkelreiser per år"
       , "Sykkelreiser som bruker tiltaket"
+      , \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
       )
     , ( "installationCost"
       , "Installasjonskostnad"
       , ""
+      , \formState -> \stringValue -> Debug.crash "TODO"
       )
     , ( "yearlyMaintenance"
       , "Årlige drifts- og vedlikeholdskostnader"
       , "Kostnaden ved å installere tiltaket en gang, kroner"
+      , \formState -> \stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
       )
     ]
 
@@ -92,7 +99,7 @@ page model =
         (List.append
             (fields
                 |> List.map
-                    (\( name, title, placeholder ) ->
+                    (\( name, title, placeholder, _ ) ->
                         Form.group []
                             [ Form.label [ for name ] [ text title ]
                             , Input.number
@@ -107,7 +114,7 @@ page model =
                 [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
                 , Select.select [ Select.id "variableToGraph" ]
                     (fields
-                        |> List.map (\( name, title, _ ) -> Select.item [ value name ] [ text title ])
+                        |> List.map (\( name, title, _, _ ) -> Select.item [ value name ] [ text title ])
                     )
                 ]
             , Button.button [ Button.primary ] [ text "Submit" ]
