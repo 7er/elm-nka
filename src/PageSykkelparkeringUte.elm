@@ -53,10 +53,6 @@ loadGraph =
     generateC3 c3GraphId
 
 
-
---variableNameAndTitle : (List (VariableName, Title))
-
-
 fields : List ( String, String, String, SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState )
 fields =
     [ ( "tripsPerYear"
