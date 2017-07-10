@@ -33,11 +33,15 @@ init location =
             Navbar.initialState NavMsg
 
         initialModel =
-            { navState = navState
-            , page = Home
-            , modalState = Modal.hiddenState
-            , sykkelParkeringUteFormState = PageSykkelparkeringUte.initialFormState
-            }
+            PageSykkelparkeringUte.initialFormState
+                { tripsPerYear = Nothing
+                , yearlyMaintenance = Nothing
+                , installationCost = Nothing
+                , submitted = False
+                , navState = navState
+                , page = Home
+                , modalState = Modal.hiddenState
+                }
 
         ( model, urlCmd ) =
             urlUpdate location initialModel
@@ -69,18 +73,15 @@ update msg model =
         SykkelparkeringUteSubmit ->
             let
                 oldState =
-                    model.sykkelParkeringUteFormState
+                    model
 
                 newState =
                     { oldState | submitted = True }
             in
-                ( { model | sykkelParkeringUteFormState = newState }, PageSykkelparkeringUte.loadGraph )
+                ( newState, PageSykkelparkeringUte.loadGraph )
 
         SykkelparkeringUteForm variableName stringValue ->
-            ( { model
-                | sykkelParkeringUteFormState =
-                    PageSykkelparkeringUte.updateFormState model.sykkelParkeringUteFormState variableName stringValue
-              }
+            ( PageSykkelparkeringUte.updateFormState model variableName stringValue
             , Cmd.none
             )
 

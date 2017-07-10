@@ -12,11 +12,12 @@ type alias VariableName =
     String
 
 
-type alias SykkelparkeringUteFormState =
-    { tripsPerYear : Maybe Int
-    , yearlyMaintenance : Maybe Float
-    , installationCost : Maybe Float
-    , submitted : Bool
+type alias SykkelparkeringUteFormState a =
+    { a
+        | tripsPerYear : Maybe Int
+        , yearlyMaintenance : Maybe Float
+        , installationCost : Maybe Float
+        , submitted : Bool
     }
 
 
@@ -29,11 +30,11 @@ type Page
 
 
 type alias Model =
-    { page : Page
-    , navState : Navbar.State
-    , modalState : Modal.State
-    , sykkelParkeringUteFormState : SykkelparkeringUteFormState
-    }
+    SykkelparkeringUteFormState
+        { page : Page
+        , navState : Navbar.State
+        , modalState : Modal.State
+        }
 
 
 type Msg

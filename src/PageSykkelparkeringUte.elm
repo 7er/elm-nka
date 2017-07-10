@@ -18,15 +18,15 @@ type alias Title =
     String
 
 
-type alias Field =
+type alias Field a =
     { name : String
     , title : String
     , placeholder : String
-    , storeFunc : SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState
+    , storeFunc : SykkelparkeringUteFormState a -> String -> SykkelparkeringUteFormState a
     }
 
 
-fields : List Field
+fields : List (Field a)
 fields =
     [ Field "tripsPerYear"
         "Antall sykkelreiser per år"
@@ -46,23 +46,24 @@ fields =
     ]
 
 
-initialFormState : SykkelparkeringUteFormState
-initialFormState =
-    { tripsPerYear = Nothing
-    , yearlyMaintenance = Nothing
-    , installationCost = Just 300004
-    , submitted = False
+initialFormState : SykkelparkeringUteFormState a -> SykkelparkeringUteFormState a
+initialFormState a =
+    { a
+        | tripsPerYear = Nothing
+        , yearlyMaintenance = Nothing
+        , installationCost = Just 300004
+        , submitted = False
     }
 
 
-findField : String -> Maybe Field
+findField : String -> Maybe (Field a)
 findField variableName =
     fields
         |> List.filter (\{ name } -> name == variableName)
         |> List.head
 
 
-updateFormState : SykkelparkeringUteFormState -> VariableName -> String -> SykkelparkeringUteFormState
+updateFormState : SykkelparkeringUteFormState a -> VariableName -> String -> SykkelparkeringUteFormState a
 updateFormState formState variableName stringValue =
     case findField variableName of
         Just { storeFunc } ->
@@ -113,7 +114,7 @@ page model =
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (model.sykkelParkeringUteFormState
+                (model
                     |> SykkelparkeringUteTiltak.brukerNytte
                     |> NumberFormat.maybePretty
                 )
@@ -123,7 +124,7 @@ page model =
         [ Grid.col [] [ text "Sum kostnader over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (model.sykkelParkeringUteFormState
+                (model
                     |> SykkelparkeringUteTiltak.kostUtenSkyggepris
                     |> NumberFormat.maybePretty
                 )
