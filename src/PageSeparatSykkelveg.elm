@@ -1,5 +1,7 @@
-module PageSykkelparkeringUte exposing (..)
+module PageSeparatSykkelveg exposing (..)
 
+import Html exposing (Html)
+import ModelAndMsg exposing (..)
 import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
 import Bootstrap.Form.Select as Select
@@ -10,60 +12,61 @@ import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
 import Html.Events exposing (onSubmit)
 import ModelAndMsg exposing (..)
-import SykkelparkeringUteTiltak
 import NumberFormat
+import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
 
 
-type alias Title =
-    String
-
-
-type alias Field a =
+type alias Field =
     { name : String
     , title : String
     , placeholder : String
-    , storeFunc : SykkelparkeringUteFormState a -> String -> SykkelparkeringUteFormState a
+    , storeFunc : SeparatSykkelvegFormState -> String -> SeparatSykkelvegFormState
     }
 
 
-fields : List (Field a)
+fields : List Field
 fields =
-    [ Field "tripsPerYear"
+    [ Field "lengthKm"
+        "Sykkelveiens lengde"
+        "Lengde"
+      <|
+        \formState -> \stringValue -> { formState | lengthKm = String.toFloat stringValue |> Result.toMaybe }
+    , Field "tripsPerYear"
         "Antall sykkelreiser per år"
         "Sykkelreiser som bruker tiltaket"
       <|
         \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
-    , Field "installationCost"
-        "Installasjonskostnad"
+    , Field "minutesSaved"
+        "Minutter spart"
         ""
       <|
-        \formState -> \stringValue -> { formState | installationCost = String.toFloat stringValue |> Result.toMaybe }
-    , Field "yearlyMaintenance"
-        "Årlige drifts- og vedlikeholdskostnader"
-        "Kostnaden ved å installere tiltaket en gang, kroner"
+        \formState -> \stringValue -> { formState | minutesSaved = String.toFloat stringValue |> Result.toMaybe }
+    , Field "investmentCost"
+        "Investeringskostander"
+        "Investeringskostnaden"
       <|
-        \formState -> \stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
+        \formState -> \stringValue -> { formState | investmentCost = String.toFloat stringValue |> Result.toMaybe }
     ]
 
 
-initialFormState : SykkelparkeringUteFormState a -> SykkelparkeringUteFormState a
-initialFormState a =
-    { a
-        | tripsPerYear = Nothing
-        , yearlyMaintenance = Nothing
-        , installationCost = Just 300004
-        , submitted = False
+initialFormState : SeparatSykkelvegFormState
+initialFormState =
+    { lengthKm = Nothing
+    , tripsPerYear = Nothing
+    , minutesSaved = Nothing
+    , investmentCost = Nothing
+    , submitted = False
     }
 
 
-findField : String -> Maybe (Field a)
+findField : String -> Maybe Field
 findField variableName =
     fields
         |> List.filter (\{ name } -> name == variableName)
         |> List.head
 
 
-updateFormState : SykkelparkeringUteFormState a -> VariableName -> String -> SykkelparkeringUteFormState a
+updateFormState : SeparatSykkelvegFormState -> VariableName -> String -> SeparatSykkelvegFormState
 updateFormState formState variableName stringValue =
     case findField variableName of
         Just { storeFunc } ->
@@ -83,9 +86,26 @@ loadGraph =
     generateC3 c3GraphId
 
 
+fromForm : SeparatSykkelvegFormState -> SeparatSykkelvegTiltakModel
+fromForm { lengthKm, tripsPerYear, minutesSaved, investmentCost } =
+    { lengthKm = lengthKm
+    , tripsPerYear = tripsPerYear
+    , minutesSaved = minutesSaved
+    , investmentCost = investmentCost
+    }
+
+
+modelComputation : SeparatSykkelvegFormState -> (SeparatSykkelvegTiltakModel -> Maybe Float) -> String
+modelComputation form computationFunc =
+    form
+        |> fromForm
+        |> computationFunc
+        |> NumberFormat.maybePretty
+
+
 page : Model -> List (Html Msg)
 page model =
-    [ Form.form [ onSubmit SykkelparkeringUteSubmit ]
+    [ Form.form [ onSubmit SeparatSykkelvegSubmit ]
         (List.append
             (fields
                 |> List.map
@@ -95,7 +115,7 @@ page model =
                             , Input.number
                                 [ Input.id name
                                 , Input.placeholder placeholder
-                                , Input.onInput (SykkelparkeringUteForm name)
+                                , Input.onInput (SeparatSykkelvegForm name)
                                 ]
                             ]
                     )
@@ -115,9 +135,8 @@ page model =
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (model
-                    |> SykkelparkeringUteTiltak.brukerNytte
-                    |> NumberFormat.maybePretty
+                (SeparatSykkelvegTiltak.brukerNytte
+                    |> modelComputation model.separatSykkelvegFormState
                 )
             ]
         ]
@@ -125,9 +144,8 @@ page model =
         [ Grid.col [] [ text "Sum kostnader over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (model
-                    |> SykkelparkeringUteTiltak.kostUtenSkyggepris
-                    |> NumberFormat.maybePretty
+                (SeparatSykkelvegTiltak.kostUtenSkyggepris
+                    |> modelComputation model.separatSykkelvegFormState
                 )
             ]
         ]

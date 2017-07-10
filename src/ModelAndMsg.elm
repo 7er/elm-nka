@@ -21,11 +21,21 @@ type alias SykkelparkeringUteFormState a =
     }
 
 
+type alias SeparatSykkelvegFormState =
+    { lengthKm : Maybe Float
+    , tripsPerYear : Maybe Int
+    , minutesSaved : Maybe Float
+    , investmentCost : Maybe Float
+    , submitted : Bool
+    }
+
+
 type Page
     = Home
     | GettingStarted
     | Modules
     | SykkelparkeringUte
+    | SeparatSykkelveg
     | NotFound
 
 
@@ -34,6 +44,7 @@ type alias Model =
         { page : Page
         , navState : Navbar.State
         , modalState : Modal.State
+        , separatSykkelvegFormState : SeparatSykkelvegFormState
         }
 
 
@@ -43,3 +54,5 @@ type Msg
     | ModalMsg Modal.State
     | SykkelparkeringUteSubmit
     | SykkelparkeringUteForm VariableName String
+    | SeparatSykkelvegSubmit
+    | SeparatSykkelvegForm VariableName String
