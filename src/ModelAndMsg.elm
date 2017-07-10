@@ -14,7 +14,6 @@ port generateC3 : String -> Cmd msg
 type Page
     = Home
     | GettingStarted
-    | Modules
     | SykkelparkeringUte
     | SeparatSykkelveg
     | NotFound

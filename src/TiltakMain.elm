@@ -125,7 +125,6 @@ routeParser =
     UrlParser.oneOf
         [ UrlParser.map Home UrlParser.top
         , UrlParser.map GettingStarted (UrlParser.s "getting-started")
-        , UrlParser.map Modules (UrlParser.s "modules")
         , UrlParser.map SykkelparkeringUte (UrlParser.s "sykkelparkering-ute")
         , UrlParser.map SeparatSykkelveg (UrlParser.s "separat-sykkelveg")
         ]
@@ -147,8 +146,7 @@ menu navState =
         |> Navbar.container
         |> Navbar.brand [ href "#" ] [ text "TØI NKA-verktøy for kollektivtiltak" ]
         |> Navbar.items
-            [ Navbar.itemLink [ href "#getting-started" ] [ text "Getting started" ]
-            , Navbar.itemLink [ href "#modules" ] [ text "Modules" ]
+            [ Navbar.itemLink [ href "#getting-started" ] [ text "Komme i gang" ]
             , Navbar.itemLink [ href "#sykkelparkering-ute" ] [ text "Sykkelparkering ute" ]
             , Navbar.itemLink [ href "#separat-sykkelveg" ] [ text "Separat sykkelveg" ]
             ]
@@ -165,9 +163,6 @@ mainContent model =
             GettingStarted ->
                 pageGettingStarted model
 
-            Modules ->
-                pageModules model
-
             NotFound ->
                 pageNotFound
 
@@ -180,29 +175,17 @@ mainContent model =
 
 pageHome : Model -> List (Html Msg)
 pageHome model =
-    [ h1 [] [ text "Home" ]
+    [ h1 [] [ text "Hjem" ]
     , Grid.row []
         [ Grid.col []
             [ Card.config [ Card.outlinePrimary ]
-                |> Card.headerH4 [] [ text "Getting started" ]
+                |> Card.headerH4 [] [ text "Komme i gang" ]
                 |> Card.block []
-                    [ Card.text [] [ text "Getting started is real easy. Just click the start button." ]
+                    [ Card.text [] [ text "Hvordan komme i gang" ]
                     , Card.custom <|
                         Button.linkButton
                             [ Button.primary, Button.attrs [ href "#getting-started" ] ]
                             [ text "Start" ]
-                    ]
-                |> Card.view
-            ]
-        , Grid.col []
-            [ Card.config [ Card.outlineDanger ]
-                |> Card.headerH4 [] [ text "Modules" ]
-                |> Card.block []
-                    [ Card.text [] [ text "Check out the modules overview" ]
-                    , Card.custom <|
-                        Button.linkButton
-                            [ Button.primary, Button.attrs [ href "#modules" ] ]
-                            [ text "Module" ]
                     ]
                 |> Card.view
             ]
