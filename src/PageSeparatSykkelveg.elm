@@ -14,7 +14,8 @@ import Html.Events exposing (onSubmit)
 import ModelAndMsg exposing (..)
 import NumberFormat
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
-import Field exposing (Field, FormState, VariableName)
+import Field exposing (Field, FormState, VariableName, FieldValue)
+import TiltakPage
 
 
 fields : List (Field SeparatSykkelvegTiltakModel)
@@ -52,20 +53,6 @@ initialFormState =
     }
 
 
-updateFormState :
-    FormState SeparatSykkelvegTiltakModel
-    -> String
-    -> FieldValue
-    -> FormState SeparatSykkelvegTiltakModel
-updateFormState formState variableName stringValue =
-    case Field.findField variableName fields of
-        Just { storeFunc } ->
-            storeFunc formState stringValue
-
-        _ ->
-            Debug.crash "TODO"
-
-
 c3GraphId : String
 c3GraphId =
     "sykkelparkeringUteGraph"
@@ -92,7 +79,7 @@ modelComputation form computationFunc =
 updateFieldInModel : String -> FieldValue -> Model -> Model
 updateFieldInModel variableName stringValue ({ separatSykkelvegFormState } as model) =
     { model
-        | separatSykkelvegFormState = updateFormState separatSykkelvegFormState variableName stringValue
+        | separatSykkelvegFormState = TiltakPage.updateFormState separatSykkelvegFormState variableName stringValue fields
     }
 
 

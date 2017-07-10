@@ -28,10 +28,6 @@ type alias Model =
     }
 
 
-type alias FieldValue =
-    String
-
-
 type alias UpdateFunc =
     FieldValue -> Model -> Model
 
