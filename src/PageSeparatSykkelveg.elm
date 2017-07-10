@@ -86,23 +86,6 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : SeparatSykkelvegFormState -> SeparatSykkelvegTiltakModel
-fromForm { lengthKm, tripsPerYear, minutesSaved, investmentCost } =
-    { lengthKm = lengthKm
-    , tripsPerYear = tripsPerYear
-    , minutesSaved = minutesSaved
-    , investmentCost = investmentCost
-    }
-
-
-modelComputation : SeparatSykkelvegFormState -> (SeparatSykkelvegTiltakModel -> Maybe Float) -> String
-modelComputation form computationFunc =
-    form
-        |> fromForm
-        |> computationFunc
-        |> NumberFormat.maybePretty
-
-
 page : Model -> List (Html Msg)
 page model =
     [ Form.form [ onSubmit SeparatSykkelvegSubmit ]
@@ -135,8 +118,9 @@ page model =
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SeparatSykkelvegTiltak.brukerNytte
-                    |> modelComputation model.separatSykkelvegFormState
+                (model.separatSykkelvegFormState
+                    |> SeparatSykkelvegTiltak.brukerNytte
+                    |> NumberFormat.maybePretty
                 )
             ]
         ]
@@ -144,8 +128,9 @@ page model =
         [ Grid.col [] [ text "Sum kostnader over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SeparatSykkelvegTiltak.kostUtenSkyggepris
-                    |> modelComputation model.separatSykkelvegFormState
+                (model.separatSykkelvegFormState
+                    |> SeparatSykkelvegTiltak.kostUtenSkyggepris
+                    |> NumberFormat.maybePretty
                 )
             ]
         ]
