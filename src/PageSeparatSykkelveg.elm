@@ -38,7 +38,7 @@ fields =
         \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
     , Field "minutesSaved"
         "Minutter spart"
-        ""
+        "Blabla"
       <|
         \formState -> \stringValue -> { formState | minutesSaved = String.toFloat stringValue |> Result.toMaybe }
     , Field "investmentCost"

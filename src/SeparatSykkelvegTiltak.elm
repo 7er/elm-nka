@@ -99,11 +99,40 @@ brukerNytte forutsetninger =
     yearlySyklistNytte forutsetninger |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
 
+syklistNytteCalculation : Float -> Float -> Float -> Float
+syklistNytteCalculation tripsPerYear lengthKm minutesSaved =
+    tripsPerYear
+        * (lengthKm
+            * GeneralForutsetninger.wtpSeparatSykkelveg
+            + minutesSaved
+            * GeneralForutsetninger.nokPrMinPrSyklist
+          )
+
+
 yearlySyklistNytte : SeparatSykkelvegTiltakModel -> Maybe Float
 yearlySyklistNytte forutsetninger =
-    Maybe.map2 (+)
-        (parkeringSyklistNytte forutsetninger.tripsPerYear)
-        (Maybe.map (\nytte -> 0.5 * nytte * usageIncrease) <| parkeringSyklistNytte forutsetninger.tripsPerYear)
+    let
+        usageIncrease =
+            GeneralForutsetninger.usageIncrease
+    in
+        Maybe.map3
+            (\tripsPerYear lengthKm minutesSaved ->
+                (syklistNytteCalculation
+                    (toFloat tripsPerYear)
+                    lengthKm
+                    minutesSaved
+                )
+                    + (0.5
+                        * (syklistNytteCalculation
+                            ((toFloat tripsPerYear) * usageIncrease.separatSykkelveg)
+                            lengthKm
+                            minutesSaved
+                          )
+                      )
+            )
+            forutsetninger.tripsPerYear
+            forutsetninger.lengthKm
+            forutsetninger.minutesSaved
 
 
 yearlyMiljoOgKlimaeffekt : Maybe Int -> Maybe Float
