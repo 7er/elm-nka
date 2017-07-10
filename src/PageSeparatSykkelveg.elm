@@ -26,21 +26,26 @@ type alias Field =
 
 fields : List Field
 fields =
-    [ Field "tripsPerYear"
+    [ Field "lengthKm"
+        "Sykkelveiens lengde"
+        "Lengde"
+      <|
+        \formState -> \stringValue -> { formState | lengthKm = String.toFloat stringValue |> Result.toMaybe }
+    , Field "tripsPerYear"
         "Antall sykkelreiser per år"
         "Sykkelreiser som bruker tiltaket"
       <|
         \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
-    , Field "installationCost"
-        "Installasjonskostnad"
+    , Field "minutesSaved"
+        "Minutter spart"
         ""
       <|
-        \formState -> \stringValue -> { formState | installationCost = String.toFloat stringValue |> Result.toMaybe }
-    , Field "yearlyMaintenance"
-        "Årlige drifts- og vedlikeholdskostnader"
-        "Kostnaden ved å installere tiltaket en gang, kroner"
+        \formState -> \stringValue -> { formState | minutesSaved = String.toFloat stringValue |> Result.toMaybe }
+    , Field "investmentCost"
+        "Investeringskostander"
+        "Investeringskostnaden"
       <|
-        \formState -> \stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
+        \formState -> \stringValue -> { formState | investmentCost = String.toFloat stringValue |> Result.toMaybe }
     ]
 
 
@@ -61,7 +66,7 @@ findField variableName =
         |> List.head
 
 
-updateFormState : SykkelparkeringUteFormState -> VariableName -> String -> SykkelparkeringUteFormState
+updateFormState : SeparatSykkelvegFormState -> VariableName -> String -> SeparatSykkelvegFormState
 updateFormState formState variableName stringValue =
     case findField variableName of
         Just { storeFunc } ->
@@ -82,10 +87,11 @@ loadGraph =
 
 
 fromForm : SeparatSykkelvegFormState -> SeparatSykkelvegTiltakModel
-fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
-    { tripsPerYear = tripsPerYear
-    , yearlyMaintenance = yearlyMaintenance
-    , installationCost = installationCost
+fromForm { lengthKm, tripsPerYear, minutesSaved, investmentCost } =
+    { lengthKm = lengthKm
+    , tripsPerYear = tripsPerYear
+    , minutesSaved = minutesSaved
+    , investmentCost = investmentCost
     }
 
 
@@ -130,7 +136,7 @@ page model =
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
                 (SeparatSykkelvegTiltak.brukerNytte
-                    |> modelComputation model.sykkelParkeringUteFormState
+                    |> modelComputation model.separatSykkelvegFormState
                 )
             ]
         ]
@@ -139,7 +145,7 @@ page model =
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
                 (SeparatSykkelvegTiltak.kostUtenSkyggepris
-                    |> modelComputation model.sykkelParkeringUteFormState
+                    |> modelComputation model.separatSykkelvegFormState
                 )
             ]
         ]
