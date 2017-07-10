@@ -3,30 +3,12 @@ port module ModelAndMsg exposing (..)
 import Navigation exposing (Location)
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
+import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
+import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
+import Field exposing (..)
 
 
 port generateC3 : String -> Cmd msg
-
-
-type alias VariableName =
-    String
-
-
-type alias SykkelparkeringUteFormState =
-    { tripsPerYear : Maybe Int
-    , yearlyMaintenance : Maybe Float
-    , installationCost : Maybe Float
-    , submitted : Bool
-    }
-
-
-type alias SeparatSykkelvegFormState =
-    { lengthKm : Maybe Float
-    , tripsPerYear : Maybe Int
-    , minutesSaved : Maybe Float
-    , investmentCost : Maybe Float
-    , submitted : Bool
-    }
 
 
 type Page
@@ -42,8 +24,8 @@ type alias Model =
     { page : Page
     , navState : Navbar.State
     , modalState : Modal.State
-    , sykkelParkeringUteFormState : SykkelparkeringUteFormState
-    , separatSykkelvegFormState : SeparatSykkelvegFormState
+    , sykkelParkeringUteFormState : FormState SykkelparkeringUteTiltakModel
+    , separatSykkelvegFormState : FormState SeparatSykkelvegTiltakModel
     }
 
 

@@ -10,43 +10,36 @@ import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
 import Html.Events exposing (onSubmit)
 import ModelAndMsg exposing (..)
-import SykkelparkeringUteTiltak
+import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
 import NumberFormat
+import Field exposing (Field, FormState, VariableName)
 
 
 type alias Title =
     String
 
 
-type alias Field =
-    { name : String
-    , title : String
-    , placeholder : String
-    , storeFunc : SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState
-    }
-
-
-fields : List Field
+fields : List (Field SykkelparkeringUteTiltakModel)
 fields =
     [ Field "tripsPerYear"
         "Antall sykkelreiser per år"
         "Sykkelreiser som bruker tiltaket"
       <|
-        \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
+        \formState stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
     , Field "installationCost"
         "Installasjonskostnad"
         ""
       <|
-        \formState -> \stringValue -> { formState | installationCost = String.toFloat stringValue |> Result.toMaybe }
+        \formState stringValue -> { formState | installationCost = String.toFloat stringValue |> Result.toMaybe }
     , Field "yearlyMaintenance"
         "Årlige drifts- og vedlikeholdskostnader"
         "Kostnaden ved å installere tiltaket en gang, kroner"
       <|
-        \formState -> \stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
+        \formState stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
     ]
 
 
-initialFormState : SykkelparkeringUteFormState
+initialFormState : FormState SykkelparkeringUteTiltakModel
 initialFormState =
     { tripsPerYear = Nothing
     , yearlyMaintenance = Nothing
@@ -55,16 +48,9 @@ initialFormState =
     }
 
 
-findField : String -> Maybe Field
-findField variableName =
-    fields
-        |> List.filter (\{ name } -> name == variableName)
-        |> List.head
-
-
-updateFormState : SykkelparkeringUteFormState -> VariableName -> String -> SykkelparkeringUteFormState
+updateFormState : FormState SykkelparkeringUteTiltakModel -> VariableName -> String -> FormState SykkelparkeringUteTiltakModel
 updateFormState formState variableName stringValue =
-    case findField variableName of
+    case Field.findField variableName fields of
         Just { storeFunc } ->
             storeFunc formState stringValue
 
@@ -82,7 +68,7 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : SykkelparkeringUteFormState -> SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel
+fromForm : FormState SykkelparkeringUteTiltakModel -> SykkelparkeringUteTiltakModel
 fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     { tripsPerYear = tripsPerYear
     , yearlyMaintenance = yearlyMaintenance
@@ -90,7 +76,7 @@ fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     }
 
 
-modelComputation : SykkelparkeringUteFormState -> (SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel -> Maybe Float) -> String
+modelComputation : FormState SykkelparkeringUteTiltakModel -> (SykkelparkeringUteTiltakModel -> Maybe Float) -> String
 modelComputation form computationFunc =
     form
         |> fromForm

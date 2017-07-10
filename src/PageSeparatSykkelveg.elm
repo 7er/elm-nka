@@ -14,42 +14,35 @@ import Html.Events exposing (onSubmit)
 import ModelAndMsg exposing (..)
 import NumberFormat
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
+import Field exposing (Field, FormState, VariableName)
 
 
-type alias Field =
-    { name : String
-    , title : String
-    , placeholder : String
-    , storeFunc : SeparatSykkelvegFormState -> String -> SeparatSykkelvegFormState
-    }
-
-
-fields : List Field
+fields : List (Field SeparatSykkelvegTiltakModel)
 fields =
     [ Field "lengthKm"
         "Sykkelveiens lengde"
         "Lengde"
       <|
-        \formState -> \stringValue -> { formState | lengthKm = String.toFloat stringValue |> Result.toMaybe }
+        \formState stringValue -> { formState | lengthKm = String.toFloat stringValue |> Result.toMaybe }
     , Field "tripsPerYear"
         "Antall sykkelreiser per år"
         "Sykkelreiser som bruker tiltaket"
       <|
-        \formState -> \stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
+        \formState stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
     , Field "minutesSaved"
         "Minutter spart"
         "Blabla"
       <|
-        \formState -> \stringValue -> { formState | minutesSaved = String.toFloat stringValue |> Result.toMaybe }
+        \formState stringValue -> { formState | minutesSaved = String.toFloat stringValue |> Result.toMaybe }
     , Field "investmentCost"
         "Investeringskostander"
         "Investeringskostnaden"
       <|
-        \formState -> \stringValue -> { formState | investmentCost = String.toFloat stringValue |> Result.toMaybe }
+        \formState stringValue -> { formState | investmentCost = String.toFloat stringValue |> Result.toMaybe }
     ]
 
 
-initialFormState : SeparatSykkelvegFormState
+initialFormState : FormState SeparatSykkelvegTiltakModel
 initialFormState =
     { lengthKm = Nothing
     , tripsPerYear = Nothing
@@ -59,16 +52,12 @@ initialFormState =
     }
 
 
-findField : String -> Maybe Field
-findField variableName =
-    fields
-        |> List.filter (\{ name } -> name == variableName)
-        |> List.head
+
+--updateFormState : FormState a -> VariableName -> String -> FormState a
 
 
-updateFormState : SeparatSykkelvegFormState -> VariableName -> String -> SeparatSykkelvegFormState
 updateFormState formState variableName stringValue =
-    case findField variableName of
+    case Field.findField variableName fields of
         Just { storeFunc } ->
             storeFunc formState stringValue
 
@@ -86,16 +75,12 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : SeparatSykkelvegFormState -> SeparatSykkelvegTiltakModel
+fromForm : FormState SeparatSykkelvegTiltakModel -> SeparatSykkelvegTiltakModel
 fromForm { lengthKm, tripsPerYear, minutesSaved, investmentCost } =
-    { lengthKm = lengthKm
-    , tripsPerYear = tripsPerYear
-    , minutesSaved = minutesSaved
-    , investmentCost = investmentCost
-    }
+    { lengthKm = lengthKm, tripsPerYear = tripsPerYear, minutesSaved = minutesSaved, investmentCost = investmentCost }
 
 
-modelComputation : SeparatSykkelvegFormState -> (SeparatSykkelvegTiltakModel -> Maybe Float) -> String
+modelComputation : FormState SeparatSykkelvegTiltakModel -> (SeparatSykkelvegTiltakModel -> Maybe Float) -> String
 modelComputation form computationFunc =
     form
         |> fromForm
