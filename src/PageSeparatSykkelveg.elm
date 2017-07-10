@@ -1,5 +1,7 @@
-module PageSykkelparkeringUte exposing (..)
+module PageSeparatSykkelveg exposing (..)
 
+import Html exposing (Html)
+import ModelAndMsg exposing (..)
 import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
 import Bootstrap.Form.Select as Select
@@ -10,19 +12,15 @@ import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
 import Html.Events exposing (onSubmit)
 import ModelAndMsg exposing (..)
-import SykkelparkeringUteTiltak
 import NumberFormat
-
-
-type alias Title =
-    String
+import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
 
 
 type alias Field =
     { name : String
     , title : String
     , placeholder : String
-    , storeFunc : SykkelparkeringUteFormState -> String -> SykkelparkeringUteFormState
+    , storeFunc : SeparatSykkelvegFormState -> String -> SeparatSykkelvegFormState
     }
 
 
@@ -46,11 +44,12 @@ fields =
     ]
 
 
-initialFormState : SykkelparkeringUteFormState
+initialFormState : SeparatSykkelvegFormState
 initialFormState =
-    { tripsPerYear = Nothing
-    , yearlyMaintenance = Nothing
-    , installationCost = Just 300004
+    { lengthKm = Nothing
+    , tripsPerYear = Nothing
+    , minutesSaved = Nothing
+    , investmentCost = Nothing
     , submitted = False
     }
 
@@ -82,7 +81,7 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : SykkelparkeringUteFormState -> SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel
+fromForm : SeparatSykkelvegFormState -> SeparatSykkelvegTiltakModel
 fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     { tripsPerYear = tripsPerYear
     , yearlyMaintenance = yearlyMaintenance
@@ -90,7 +89,7 @@ fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     }
 
 
-modelComputation : SykkelparkeringUteFormState -> (SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel -> Maybe Float) -> String
+modelComputation : SeparatSykkelvegFormState -> (SeparatSykkelvegTiltakModel -> Maybe Float) -> String
 modelComputation form computationFunc =
     form
         |> fromForm
@@ -100,7 +99,7 @@ modelComputation form computationFunc =
 
 page : Model -> List (Html Msg)
 page model =
-    [ Form.form [ onSubmit SykkelparkeringUteSubmit ]
+    [ Form.form [ onSubmit SeparatSykkelvegSubmit ]
         (List.append
             (fields
                 |> List.map
@@ -110,7 +109,7 @@ page model =
                             , Input.number
                                 [ Input.id name
                                 , Input.placeholder placeholder
-                                , Input.onInput (SykkelparkeringUteForm name)
+                                , Input.onInput (SeparatSykkelvegForm name)
                                 ]
                             ]
                     )
@@ -130,7 +129,7 @@ page model =
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SykkelparkeringUteTiltak.brukerNytte
+                (SeparatSykkelvegTiltak.brukerNytte
                     |> modelComputation model.sykkelParkeringUteFormState
                 )
             ]
@@ -139,7 +138,7 @@ page model =
         [ Grid.col [] [ text "Sum kostnader over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SykkelparkeringUteTiltak.kostUtenSkyggepris
+                (SeparatSykkelvegTiltak.kostUtenSkyggepris
                     |> modelComputation model.sykkelParkeringUteFormState
                 )
             ]

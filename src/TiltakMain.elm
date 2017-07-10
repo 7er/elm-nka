@@ -14,6 +14,7 @@ import Bootstrap.Button as Button
 import Bootstrap.ListGroup as Listgroup
 import Bootstrap.Modal as Modal
 import PageSykkelparkeringUte
+import PageSeparatSykkelveg
 
 
 main : Program Never Model Msg
@@ -37,6 +38,7 @@ init location =
             , page = Home
             , modalState = Modal.hiddenState
             , sykkelParkeringUteFormState = PageSykkelparkeringUte.initialFormState
+            , separatSykkelvegFormState = PageSeparatSykkelveg.initialFormState
             }
 
         ( model, urlCmd ) =
@@ -107,6 +109,7 @@ routeParser =
         , UrlParser.map GettingStarted (UrlParser.s "getting-started")
         , UrlParser.map Modules (UrlParser.s "modules")
         , UrlParser.map SykkelparkeringUte (UrlParser.s "sykkelparkering-ute")
+        , UrlParser.map SeparatSykkelveg (UrlParser.s "separat-sykkelveg")
         ]
 
 
@@ -129,6 +132,7 @@ menu navState =
             [ Navbar.itemLink [ href "#getting-started" ] [ text "Getting started" ]
             , Navbar.itemLink [ href "#modules" ] [ text "Modules" ]
             , Navbar.itemLink [ href "#sykkelparkering-ute" ] [ text "Sykkelparkering ute" ]
+            , Navbar.itemLink [ href "#separat-sykkelveg" ] [ text "Separat sykkelveg" ]
             ]
         |> Navbar.view navState
 
@@ -151,6 +155,9 @@ mainContent model =
 
             SykkelparkeringUte ->
                 PageSykkelparkeringUte.page model
+
+            SeparatSykkelveg ->
+                PageSeparatSykkelveg.page model
 
 
 pageHome : Model -> List (Html Msg)
