@@ -68,41 +68,11 @@ update msg model =
             , Cmd.none
             )
 
-        SykkelparkeringUteSubmit ->
-            let
-                oldState =
-                    model.sykkelParkeringUteFormState
+        FieldUpdate updateFunc stringValue ->
+            ( (updateFunc stringValue model), Cmd.none )
 
-                newState =
-                    { oldState | submitted = True }
-            in
-                ( { model | sykkelParkeringUteFormState = newState }, PageSykkelparkeringUte.loadGraph )
-
-        SykkelparkeringUteForm variableName stringValue ->
-            ( { model
-                | sykkelParkeringUteFormState =
-                    PageSykkelparkeringUte.updateFormState model.sykkelParkeringUteFormState variableName stringValue
-              }
-            , Cmd.none
-            )
-
-        SeparatSykkelvegSubmit ->
-            let
-                oldState =
-                    model.separatSykkelvegFormState
-
-                newState =
-                    { oldState | submitted = True }
-            in
-                ( { model | separatSykkelvegFormState = newState }, PageSeparatSykkelveg.loadGraph )
-
-        SeparatSykkelvegForm variableName stringValue ->
-            ( { model
-                | separatSykkelvegFormState =
-                    PageSeparatSykkelveg.updateFormState model.separatSykkelvegFormState variableName stringValue
-              }
-            , Cmd.none
-            )
+        FormSubmit submitFunc ->
+            submitFunc model
 
 
 urlUpdate : Navigation.Location -> Model -> ( Model, Cmd Msg )

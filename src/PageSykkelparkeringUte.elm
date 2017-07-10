@@ -84,9 +84,25 @@ modelComputation form computationFunc =
         |> NumberFormat.maybePretty
 
 
+updateFieldInModel : String -> String -> Model -> Model
+updateFieldInModel variableName stringValue model =
+    { model
+        | sykkelParkeringUteFormState = updateFormState model.sykkelParkeringUteFormState variableName stringValue
+    }
+
+
+handleSubmit : Model -> ( Model, Cmd Msg )
+handleSubmit ({ sykkelParkeringUteFormState } as model) =
+    let
+        newFormState =
+            { sykkelParkeringUteFormState | submitted = True }
+    in
+        ( { model | sykkelParkeringUteFormState = newFormState }, loadGraph )
+
+
 page : Model -> List (Html Msg)
 page model =
-    [ Form.form [ onSubmit SykkelparkeringUteSubmit ]
+    [ Form.form [ onSubmit (FormSubmit handleSubmit) ]
         (List.append
             (fields
                 |> List.map
@@ -96,7 +112,7 @@ page model =
                             , Input.number
                                 [ Input.id name
                                 , Input.placeholder placeholder
-                                , Input.onInput (SykkelparkeringUteForm name)
+                                , Input.onInput (FieldUpdate (\stringValue model -> updateFieldInModel name stringValue model))
                                 ]
                             ]
                     )

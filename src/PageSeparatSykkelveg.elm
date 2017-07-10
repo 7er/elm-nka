@@ -52,10 +52,11 @@ initialFormState =
     }
 
 
-
---updateFormState : FormState a -> VariableName -> String -> FormState a
-
-
+updateFormState :
+    FormState SeparatSykkelvegTiltakModel
+    -> String
+    -> FieldValue
+    -> FormState SeparatSykkelvegTiltakModel
 updateFormState formState variableName stringValue =
     case Field.findField variableName fields of
         Just { storeFunc } ->
@@ -88,9 +89,25 @@ modelComputation form computationFunc =
         |> NumberFormat.maybePretty
 
 
+updateFieldInModel : String -> FieldValue -> Model -> Model
+updateFieldInModel variableName stringValue ({ separatSykkelvegFormState } as model) =
+    { model
+        | separatSykkelvegFormState = updateFormState separatSykkelvegFormState variableName stringValue
+    }
+
+
+handleSubmit : Model -> ( Model, Cmd Msg )
+handleSubmit ({ separatSykkelvegFormState } as model) =
+    let
+        newState =
+            { separatSykkelvegFormState | submitted = True }
+    in
+        ( { model | separatSykkelvegFormState = newState }, loadGraph )
+
+
 page : Model -> List (Html Msg)
 page model =
-    [ Form.form [ onSubmit SeparatSykkelvegSubmit ]
+    [ Form.form [ onSubmit (FormSubmit handleSubmit) ]
         (List.append
             (fields
                 |> List.map
@@ -100,7 +117,7 @@ page model =
                             , Input.number
                                 [ Input.id name
                                 , Input.placeholder placeholder
-                                , Input.onInput (SeparatSykkelvegForm name)
+                                , Input.onInput (FieldUpdate (\stringValue model -> updateFieldInModel name stringValue model))
                                 ]
                             ]
                     )

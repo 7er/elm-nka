@@ -28,11 +28,21 @@ type alias Model =
     }
 
 
+type alias FieldValue =
+    String
+
+
+type alias UpdateFunc =
+    FieldValue -> Model -> Model
+
+
+type alias SubmitFunc =
+    Model -> ( Model, Cmd Msg )
+
+
 type Msg
     = UrlChange Location
     | NavMsg Navbar.State
     | ModalMsg Modal.State
-    | SykkelparkeringUteSubmit
-    | SykkelparkeringUteForm VariableName String
-    | SeparatSykkelvegSubmit
-    | SeparatSykkelvegForm VariableName String
+    | FieldUpdate UpdateFunc String
+    | FormSubmit SubmitFunc
