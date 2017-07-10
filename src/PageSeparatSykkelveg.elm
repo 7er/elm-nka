@@ -16,15 +16,15 @@ import NumberFormat
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
 
 
-type alias Field =
+type alias Field a =
     { name : String
     , title : String
     , placeholder : String
-    , storeFunc : SeparatSykkelvegFormState -> String -> SeparatSykkelvegFormState
+    , storeFunc : SeparatSykkelvegFormState a -> String -> SeparatSykkelvegFormState a
     }
 
 
-fields : List Field
+fields : List (Field a)
 fields =
     [ Field "lengthKm"
         "Sykkelveiens lengde"
@@ -49,24 +49,25 @@ fields =
     ]
 
 
-initialFormState : SeparatSykkelvegFormState
-initialFormState =
-    { lengthKm = Nothing
-    , tripsPerYear = Nothing
-    , minutesSaved = Nothing
-    , investmentCost = Nothing
-    , submitted = False
+initialFormState : SeparatSykkelvegFormState a -> SeparatSykkelvegFormState a
+initialFormState a =
+    { a
+        | lengthKm = Nothing
+        , tripsPerYear = Nothing
+        , minutesSaved = Nothing
+        , investmentCost = Nothing
+        , submitted = False
     }
 
 
-findField : String -> Maybe Field
+findField : String -> Maybe (Field a)
 findField variableName =
     fields
         |> List.filter (\{ name } -> name == variableName)
         |> List.head
 
 
-updateFormState : SeparatSykkelvegFormState -> VariableName -> String -> SeparatSykkelvegFormState
+updateFormState : SeparatSykkelvegFormState a -> VariableName -> String -> SeparatSykkelvegFormState a
 updateFormState formState variableName stringValue =
     case findField variableName of
         Just { storeFunc } ->
@@ -118,7 +119,7 @@ page model =
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (model.separatSykkelvegFormState
+                (model
                     |> SeparatSykkelvegTiltak.brukerNytte
                     |> NumberFormat.maybePretty
                 )
@@ -128,7 +129,7 @@ page model =
         [ Grid.col [] [ text "Sum kostnader over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (model.separatSykkelvegFormState
+                (model
                     |> SeparatSykkelvegTiltak.kostUtenSkyggepris
                     |> NumberFormat.maybePretty
                 )

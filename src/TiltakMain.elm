@@ -34,16 +34,19 @@ init location =
             Navbar.initialState NavMsg
 
         initialModel =
-            PageSykkelparkeringUte.initialFormState
-                { tripsPerYear = Nothing
-                , yearlyMaintenance = Nothing
-                , installationCost = Nothing
-                , submitted = False
-                , navState = navState
-                , page = Home
-                , modalState = Modal.hiddenState
-                , separatSykkelvegFormState = PageSeparatSykkelveg.initialFormState
-                }
+            PageSykkelparkeringUte.initialFormState <|
+                PageSeparatSykkelveg.initialFormState
+                    { tripsPerYear = Nothing
+                    , yearlyMaintenance = Nothing
+                    , installationCost = Nothing
+                    , lengthKm = Nothing
+                    , minutesSaved = Nothing
+                    , investmentCost = Nothing
+                    , submitted = False
+                    , navState = navState
+                    , page = Home
+                    , modalState = Modal.hiddenState
+                    }
 
         ( model, urlCmd ) =
             urlUpdate location initialModel
@@ -90,18 +93,15 @@ update msg model =
         SeparatSykkelvegSubmit ->
             let
                 oldState =
-                    model.separatSykkelvegFormState
+                    model
 
                 newState =
                     { oldState | submitted = True }
             in
-                ( { model | separatSykkelvegFormState = newState }, PageSeparatSykkelveg.loadGraph )
+                ( model, PageSeparatSykkelveg.loadGraph )
 
         SeparatSykkelvegForm variableName stringValue ->
-            ( { model
-                | separatSykkelvegFormState =
-                    PageSeparatSykkelveg.updateFormState model.separatSykkelvegFormState variableName stringValue
-              }
+            ( PageSeparatSykkelveg.updateFormState model variableName stringValue
             , Cmd.none
             )
 

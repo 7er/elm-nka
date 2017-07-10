@@ -21,12 +21,13 @@ type alias SykkelparkeringUteFormState a =
     }
 
 
-type alias SeparatSykkelvegFormState =
-    { lengthKm : Maybe Float
-    , tripsPerYear : Maybe Int
-    , minutesSaved : Maybe Float
-    , investmentCost : Maybe Float
-    , submitted : Bool
+type alias SeparatSykkelvegFormState a =
+    { a
+        | lengthKm : Maybe Float
+        , tripsPerYear : Maybe Int
+        , minutesSaved : Maybe Float
+        , investmentCost : Maybe Float
+        , submitted : Bool
     }
 
 
@@ -41,11 +42,12 @@ type Page
 
 type alias Model =
     SykkelparkeringUteFormState
-        { page : Page
-        , navState : Navbar.State
-        , modalState : Modal.State
-        , separatSykkelvegFormState : SeparatSykkelvegFormState
-        }
+        (SeparatSykkelvegFormState
+            { page : Page
+            , navState : Navbar.State
+            , modalState : Modal.State
+            }
+        )
 
 
 type Msg
