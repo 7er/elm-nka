@@ -33,7 +33,11 @@ init location =
             Navbar.initialState NavMsg
 
         initialModel =
-            { navState = navState, page = Home, modalState = Modal.hiddenState, sykkelParkeringUteFormState = PageSykkelparkeringUte.initialFormState }
+            { navState = navState
+            , page = Home
+            , modalState = Modal.hiddenState
+            , sykkelParkeringUteFormState = PageSykkelparkeringUte.initialFormState
+            }
 
         ( model, urlCmd ) =
             urlUpdate location initialModel

@@ -37,7 +37,7 @@ fields =
         "Installasjonskostnad"
         ""
       <|
-        \formState -> \stringValue -> Debug.crash "TODO"
+        \formState -> \stringValue -> { formState | installationCost = String.toFloat stringValue |> Result.toMaybe }
     , Field "yearlyMaintenance"
         "Årlige drifts- og vedlikeholdskostnader"
         "Kostnaden ved å installere tiltaket en gang, kroner"
