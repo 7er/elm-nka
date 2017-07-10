@@ -30,7 +30,7 @@ checkMaybe expectation maybeValue =
             Expect.fail "Got nothing"
 
 
-checkNytteNullPunktForNullModel : SykkelParkeringUteTiltakModel -> Expectation
+checkNytteNullPunktForNullModel : SykkelParkeringUteTiltakModel a -> Expectation
 checkNytteNullPunktForNullModel model =
     SykkelparkeringUteTiltak.nettoNytte model |> checkMaybe (closeTo 0 3)
 
@@ -128,7 +128,7 @@ suite =
         ]
 
 
-sykkelParkeringUteTest : String -> (SykkelParkeringUteTiltakModel -> Expectation) -> Test
+sykkelParkeringUteTest : String -> (SykkelParkeringUteTiltakModel {} -> Expectation) -> Test
 sykkelParkeringUteTest description testCase =
     let
         model =

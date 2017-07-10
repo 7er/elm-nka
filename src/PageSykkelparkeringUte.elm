@@ -81,22 +81,6 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : SykkelparkeringUteFormState -> SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel
-fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
-    { tripsPerYear = tripsPerYear
-    , yearlyMaintenance = yearlyMaintenance
-    , installationCost = installationCost
-    }
-
-
-modelComputation : SykkelparkeringUteFormState -> (SykkelparkeringUteTiltak.SykkelParkeringUteTiltakModel -> Maybe Float) -> String
-modelComputation form computationFunc =
-    form
-        |> fromForm
-        |> computationFunc
-        |> NumberFormat.maybePretty
-
-
 page : Model -> List (Html Msg)
 page model =
     [ Form.form [ onSubmit SykkelparkeringUteSubmit ]
@@ -129,8 +113,9 @@ page model =
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SykkelparkeringUteTiltak.brukerNytte
-                    |> modelComputation model.sykkelParkeringUteFormState
+                (model.sykkelParkeringUteFormState
+                    |> SykkelparkeringUteTiltak.brukerNytte
+                    |> NumberFormat.maybePretty
                 )
             ]
         ]
@@ -138,8 +123,9 @@ page model =
         [ Grid.col [] [ text "Sum kostnader over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SykkelparkeringUteTiltak.kostUtenSkyggepris
-                    |> modelComputation model.sykkelParkeringUteFormState
+                (model.sykkelParkeringUteFormState
+                    |> SykkelparkeringUteTiltak.kostUtenSkyggepris
+                    |> NumberFormat.maybePretty
                 )
             ]
         ]
