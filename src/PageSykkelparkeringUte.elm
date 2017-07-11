@@ -54,7 +54,7 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : FormState (SykkelparkeringUteTiltakModel a) -> SykkelparkeringUteTiltakModel {}
+fromForm : SykkelparkeringUteTiltakModel a -> SykkelparkeringUteTiltakModel {}
 fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     { tripsPerYear = tripsPerYear
     , yearlyMaintenance = yearlyMaintenance
@@ -62,7 +62,7 @@ fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     }
 
 
-modelComputation : FormState (SykkelparkeringUteTiltakModel a) -> (SykkelparkeringUteTiltakModel {} -> Maybe Float) -> String
+modelComputation : SykkelparkeringUteTiltakModel a -> (SykkelparkeringUteTiltakModel {} -> Maybe Float) -> String
 modelComputation form computationFunc =
     form
         |> fromForm
