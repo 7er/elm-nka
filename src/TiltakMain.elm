@@ -14,6 +14,7 @@ import Bootstrap.Button as Button
 import Bootstrap.Modal as Modal
 import PageSykkelparkeringUte
 import PageSeparatSykkelveg
+import GroupPage
 
 
 main : Program Never Model Msg
@@ -72,6 +73,9 @@ update msg model =
 
         FormSubmit submitFunc ->
             submitFunc model
+
+        ToggleVisible tiltak ->
+            Debug.crash "TODO"
 
 
 urlUpdate : Navigation.Location -> Model -> ( Model, Cmd Msg )
@@ -154,7 +158,7 @@ mainContent model =
                 PageSeparatSykkelveg.page model
 
             GroupPage tiltaksGruppeType ->
-                Debug.crash "TODO"
+                GroupPage.page tiltaksGruppeType model
 
 
 pageHome : Model -> List (Html Msg)

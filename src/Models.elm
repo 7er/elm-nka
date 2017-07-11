@@ -43,6 +43,11 @@ type Msg
     | ModalMsg Modal.State
     | FieldUpdate UpdateFunc String
     | FormSubmit SubmitFunc
+    | ToggleVisible Tiltak
+
+
+
+--    | UpdateData Tiltak String
 
 
 type TiltaksGruppeType
@@ -127,13 +132,13 @@ tiltaksGruppeTittel { tag } =
     tag |> toString
 
 
-activeGruppe : Model -> TiltaksGruppeType -> Maybe TiltaksGruppe
-activeGruppe model activeTag =
+activeGruppe : TiltaksGruppeType -> Maybe TiltaksGruppe
+activeGruppe activeTag =
     let
         filter { tag } =
             tag == activeTag
     in
-        List.head (List.filter filter tiltaksGrupper)
+        tiltaksGrupper |> List.filter filter |> List.head
 
 
 gruppeFromHash : String -> Maybe TiltaksGruppeType

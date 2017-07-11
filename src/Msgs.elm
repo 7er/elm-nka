@@ -4,7 +4,7 @@ import Navigation exposing (Location)
 import Models exposing (..)
 
 
-type Msg
+type Flesk
     = ToggleVisible Tiltak
     | UpdateData Tiltak String
     | OnLocationChange Location
