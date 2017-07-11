@@ -59,7 +59,7 @@ view model =
         [ nav [] [ renderNav ]
         , article []
             (case model.route of
-                GruppeRoute typeTag ->
+                GroupPage typeTag ->
                     case activeGruppe model typeTag of
                         Just tiltaksGruppe ->
                             gruppePageView tiltaksGruppe

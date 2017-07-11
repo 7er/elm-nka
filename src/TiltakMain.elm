@@ -86,7 +86,12 @@ urlUpdate location model =
 
 decode : Location -> Maybe Page
 decode location =
-    UrlParser.parseHash routeParser location
+    case UrlParser.parseHash routeParser location of
+        (Just page) as result ->
+            result
+
+        Nothing ->
+            gruppeFromHash location.hash |> Maybe.map GroupPage
 
 
 routeParser : UrlParser.Parser (Page -> a) a
@@ -147,6 +152,9 @@ mainContent model =
 
             SeparatSykkelveg ->
                 PageSeparatSykkelveg.page model
+
+            GroupPage tiltaksGruppeType ->
+                Debug.crash "TODO"
 
 
 pageHome : Model -> List (Html Msg)

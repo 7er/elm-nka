@@ -16,6 +16,7 @@ type Page
     | GettingStarted
     | SykkelparkeringUte
     | SeparatSykkelveg
+    | GroupPage TiltaksGruppeType
     | NotFound
 
 
@@ -60,12 +61,6 @@ type alias TiltaksGruppe =
     { tag : TiltaksGruppeType
     , tiltakene : List Tiltak
     }
-
-
-type Route
-    = Root
-    | GruppeRoute TiltaksGruppeType
-    | NotFoundRoute
 
 
 createTiltak : String -> String -> Tiltak
@@ -153,18 +148,3 @@ gruppeFromHash hash =
 
             Nothing ->
                 Nothing
-
-
-routeFromLocation : Location -> Route
-routeFromLocation location =
-    case gruppeFromHash location.hash of
-        Just tag ->
-            GruppeRoute tag
-
-        Nothing ->
-            case location.hash of
-                "" ->
-                    Root
-
-                _ ->
-                    NotFoundRoute
