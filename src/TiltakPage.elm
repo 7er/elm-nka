@@ -8,7 +8,8 @@ import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
 import Html.Events exposing (onSubmit)
 import Field exposing (..)
-import Models exposing (Msg(..), Model)
+import Models exposing (Model)
+import Msgs exposing (Msg(..), SubmitFunc)
 
 
 updateFormState :
@@ -27,7 +28,7 @@ updateFormState formState variableName stringValue fields =
 
 
 form :
-    Models.SubmitFunc
+    SubmitFunc
     -> (String -> FieldValue -> Model -> Model)
     -> List { a | placeholder : String, name : String, title : String }
     -> Model

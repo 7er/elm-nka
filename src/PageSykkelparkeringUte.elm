@@ -9,6 +9,7 @@ import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
 import NumberFormat
 import Field exposing (Field, FormState, VariableName, FieldValue)
 import TiltakPage
+import Msgs exposing (Msg)
 
 
 type alias Title =

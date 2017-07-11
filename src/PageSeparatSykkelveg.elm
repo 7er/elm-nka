@@ -11,6 +11,7 @@ import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
 import Html.Events exposing (onSubmit)
 import Models exposing (..)
+import Msgs exposing (Msg(..))
 import NumberFormat
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
 import Field exposing (Field, FormState, VariableName, FieldValue)

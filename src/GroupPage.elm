@@ -5,6 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onClick, defaultOptions, onWithOptions)
 import Models exposing (..)
+import Msgs exposing (Msg(..))
 
 
 renderTiltak : Tiltak -> Html Msg

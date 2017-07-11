@@ -5,7 +5,7 @@ import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
 import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
-import Field exposing (..)
+import Field exposing (FormState)
 
 
 port generateC3 : String -> Cmd msg
@@ -27,23 +27,6 @@ type alias Model =
     , sykkelParkeringUteFormState : FormState SykkelparkeringUteTiltakModel
     , separatSykkelvegFormState : FormState SeparatSykkelvegTiltakModel
     }
-
-
-type alias UpdateFunc =
-    FieldValue -> Model -> Model
-
-
-type alias SubmitFunc =
-    Model -> ( Model, Cmd Msg )
-
-
-type Msg
-    = UrlChange Location
-    | NavMsg Navbar.State
-    | ModalMsg Modal.State
-    | FieldUpdate UpdateFunc String
-    | FormSubmit SubmitFunc
-    | ToggleVisible Tiltak
 
 
 

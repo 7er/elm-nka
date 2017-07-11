@@ -3,7 +3,6 @@ module Main exposing (main)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Models exposing (..)
 import Navigation exposing (Location)
 import UrlParser exposing ((</>))
 import Bootstrap.Navbar as Navbar
@@ -15,6 +14,8 @@ import Bootstrap.Modal as Modal
 import PageSykkelparkeringUte
 import PageSeparatSykkelveg
 import GroupPage
+import Models exposing (..)
+import Msgs exposing (Msg(..))
 
 
 main : Program Never Model Msg
