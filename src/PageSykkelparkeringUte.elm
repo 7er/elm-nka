@@ -15,7 +15,7 @@ type alias Title =
     String
 
 
-fields : List (Field SykkelparkeringUteTiltakModel)
+fields : List (Field (SykkelparkeringUteTiltakModel a))
 fields =
     [ Field "tripsPerYear"
         "Antall sykkelreiser per år"
@@ -35,7 +35,7 @@ fields =
     ]
 
 
-initialFormState : FormState SykkelparkeringUteTiltakModel
+initialFormState : FormState (SykkelparkeringUteTiltakModel {})
 initialFormState =
     { tripsPerYear = Nothing
     , yearlyMaintenance = Nothing
@@ -54,7 +54,7 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : FormState SykkelparkeringUteTiltakModel -> SykkelparkeringUteTiltakModel
+fromForm : FormState (SykkelparkeringUteTiltakModel a) -> SykkelparkeringUteTiltakModel {}
 fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     { tripsPerYear = tripsPerYear
     , yearlyMaintenance = yearlyMaintenance
@@ -62,7 +62,7 @@ fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     }
 
 
-modelComputation : FormState SykkelparkeringUteTiltakModel -> (SykkelparkeringUteTiltakModel -> Maybe Float) -> String
+modelComputation : FormState (SykkelparkeringUteTiltakModel a) -> (SykkelparkeringUteTiltakModel {} -> Maybe Float) -> String
 modelComputation form computationFunc =
     form
         |> fromForm

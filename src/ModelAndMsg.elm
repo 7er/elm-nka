@@ -23,7 +23,7 @@ type alias Model =
     { page : Page
     , navState : Navbar.State
     , modalState : Modal.State
-    , sykkelParkeringUteFormState : FormState SykkelparkeringUteTiltakModel
+    , sykkelParkeringUteFormState : FormState (SykkelparkeringUteTiltakModel {})
     , separatSykkelvegFormState : FormState SeparatSykkelvegTiltakModel
     }
 
