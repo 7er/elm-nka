@@ -9,15 +9,16 @@ type VariableToGraph
     | InstallationCost
 
 
-type alias SeparatSykkelvegTiltakModel =
-    { lengthKm : Maybe Float
-    , tripsPerYear : Maybe Int
-    , minutesSaved : Maybe Float
-    , investmentCost : Maybe Float
+type alias SeparatSykkelvegTiltakModel a =
+    { a
+        | lengthKm : Maybe Float
+        , tripsPerYear : Maybe Int
+        , minutesSaved : Maybe Float
+        , investmentCost : Maybe Float
     }
 
 
-tripsPerYearNettoNytteNullpunkt : SeparatSykkelvegTiltakModel -> Maybe Float
+tripsPerYearNettoNytteNullpunkt : SeparatSykkelvegTiltakModel a -> Maybe Float
 tripsPerYearNettoNytteNullpunkt model =
     let
         forutsetningerCopy =
@@ -28,7 +29,7 @@ tripsPerYearNettoNytteNullpunkt model =
             (yearlyNytte forutsetningerCopy)
 
 
-nettoNytteNullPunkt : VariableToGraph -> SeparatSykkelvegTiltakModel -> Maybe Float
+nettoNytteNullPunkt : VariableToGraph -> SeparatSykkelvegTiltakModel a -> Maybe Float
 nettoNytteNullPunkt variable model =
     case variable of
         TripsPerYear ->
@@ -94,7 +95,7 @@ parkeringSyklistNytte tripsPerYear =
     Maybe.map (\trips -> (toFloat trips) * nytteMultiplier) tripsPerYear
 
 
-brukerNytte : SeparatSykkelvegTiltakModel -> Maybe Float
+brukerNytte : SeparatSykkelvegTiltakModel a -> Maybe Float
 brukerNytte forutsetninger =
     yearlySyklistNytte forutsetninger |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
@@ -109,7 +110,7 @@ syklistNytteCalculation tripsPerYear lengthKm minutesSaved =
           )
 
 
-yearlySyklistNytte : SeparatSykkelvegTiltakModel -> Maybe Float
+yearlySyklistNytte : SeparatSykkelvegTiltakModel a -> Maybe Float
 yearlySyklistNytte forutsetninger =
     let
         usageIncrease =
@@ -147,17 +148,17 @@ yearlyMiljoOgKlimaeffekt tripsPerYear =
             )
 
 
-yearlyNytte : SeparatSykkelvegTiltakModel -> Maybe Float
+yearlyNytte : SeparatSykkelvegTiltakModel a -> Maybe Float
 yearlyNytte forutsetninger =
     Maybe.map2 (+) (yearlySyklistNytte forutsetninger) (tripsPerYearEffects forutsetninger.tripsPerYear)
 
 
-nytte : SeparatSykkelvegTiltakModel -> Maybe Float
+nytte : SeparatSykkelvegTiltakModel a -> Maybe Float
 nytte model =
     yearlyNytte model |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
 
-kostUtenSkyggepris : SeparatSykkelvegTiltakModel -> Maybe Float
+kostUtenSkyggepris : SeparatSykkelvegTiltakModel a -> Maybe Float
 kostUtenSkyggepris forutsetninger =
     let
         func investmentCost =
@@ -171,7 +172,7 @@ maintenanceCost yearlyMaintenance =
     yearlyMaintenance |> Maybe.map ((*) GeneralForutsetninger.afaktor)
 
 
-kost : SeparatSykkelvegTiltakModel -> Maybe Float
+kost : SeparatSykkelvegTiltakModel a -> Maybe Float
 kost forutsetninger =
     Maybe.map kostByInvestmentCost forutsetninger.investmentCost
 
@@ -181,7 +182,7 @@ kostByInvestmentCost invCost =
     invCost * (1 + GeneralForutsetninger.skyggepris) * (1 + 0.07 * GeneralForutsetninger.afaktor)
 
 
-nettoNytte : SeparatSykkelvegTiltakModel -> Maybe Float
+nettoNytte : SeparatSykkelvegTiltakModel a -> Maybe Float
 nettoNytte forutsetninger =
     Maybe.map2 (-) (nytte forutsetninger) (kost forutsetninger)
 

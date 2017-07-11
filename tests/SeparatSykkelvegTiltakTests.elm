@@ -46,7 +46,7 @@ suite =
         ]
 
 
-separatSykkelvegTest : String -> (SeparatSykkelvegTiltakModel -> Expectation) -> Test
+separatSykkelvegTest : String -> (SeparatSykkelvegTiltakModel {} -> Expectation) -> Test
 separatSykkelvegTest description testCase =
     let
         model =

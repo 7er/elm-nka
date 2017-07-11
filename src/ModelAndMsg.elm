@@ -24,7 +24,7 @@ type alias Model =
     , navState : Navbar.State
     , modalState : Modal.State
     , sykkelParkeringUteFormState : FormState (SykkelparkeringUteTiltakModel {})
-    , separatSykkelvegFormState : FormState SeparatSykkelvegTiltakModel
+    , separatSykkelvegFormState : FormState (SeparatSykkelvegTiltakModel {})
     }
 
 

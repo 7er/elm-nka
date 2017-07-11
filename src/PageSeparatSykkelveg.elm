@@ -18,7 +18,7 @@ import Field exposing (Field, FormState, VariableName, FieldValue)
 import TiltakPage
 
 
-fields : List (Field SeparatSykkelvegTiltakModel)
+fields : List (Field (SeparatSykkelvegTiltakModel a))
 fields =
     [ Field "lengthKm"
         "Sykkelveiens lengde"
@@ -43,7 +43,7 @@ fields =
     ]
 
 
-initialFormState : FormState SeparatSykkelvegTiltakModel
+initialFormState : FormState (SeparatSykkelvegTiltakModel {})
 initialFormState =
     { lengthKm = Nothing
     , tripsPerYear = Nothing
@@ -61,19 +61,6 @@ c3GraphId =
 loadGraph : Cmd msg
 loadGraph =
     generateC3 c3GraphId
-
-
-fromForm : FormState SeparatSykkelvegTiltakModel -> SeparatSykkelvegTiltakModel
-fromForm { lengthKm, tripsPerYear, minutesSaved, investmentCost } =
-    { lengthKm = lengthKm, tripsPerYear = tripsPerYear, minutesSaved = minutesSaved, investmentCost = investmentCost }
-
-
-modelComputation : FormState SeparatSykkelvegTiltakModel -> (SeparatSykkelvegTiltakModel -> Maybe Float) -> String
-modelComputation form computationFunc =
-    form
-        |> fromForm
-        |> computationFunc
-        |> NumberFormat.maybePretty
 
 
 updateFieldInModel : String -> FieldValue -> Model -> Model
@@ -124,8 +111,9 @@ page model =
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SeparatSykkelvegTiltak.brukerNytte
-                    |> modelComputation model.separatSykkelvegFormState
+                (model.separatSykkelvegFormState
+                    |> SeparatSykkelvegTiltak.brukerNytte
+                    |> NumberFormat.maybePretty
                 )
             ]
         ]
@@ -133,8 +121,9 @@ page model =
         [ Grid.col [] [ text "Sum kostnader over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SeparatSykkelvegTiltak.kostUtenSkyggepris
-                    |> modelComputation model.separatSykkelvegFormState
+                (model.separatSykkelvegFormState
+                    |> SeparatSykkelvegTiltak.kostUtenSkyggepris
+                    |> NumberFormat.maybePretty
                 )
             ]
         ]
