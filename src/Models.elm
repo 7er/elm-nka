@@ -1,6 +1,47 @@
-module Models exposing (..)
+port module Models exposing (..)
 
 import Navigation exposing (Location)
+import Bootstrap.Navbar as Navbar
+import Bootstrap.Modal as Modal
+import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
+import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
+import Field exposing (..)
+
+
+port generateC3 : String -> Cmd msg
+
+
+type Page
+    = Home
+    | GettingStarted
+    | SykkelparkeringUte
+    | SeparatSykkelveg
+    | NotFound
+
+
+type alias Model =
+    { page : Page
+    , navState : Navbar.State
+    , modalState : Modal.State
+    , sykkelParkeringUteFormState : FormState SykkelparkeringUteTiltakModel
+    , separatSykkelvegFormState : FormState SeparatSykkelvegTiltakModel
+    }
+
+
+type alias UpdateFunc =
+    FieldValue -> Model -> Model
+
+
+type alias SubmitFunc =
+    Model -> ( Model, Cmd Msg )
+
+
+type Msg
+    = UrlChange Location
+    | NavMsg Navbar.State
+    | ModalMsg Modal.State
+    | FieldUpdate UpdateFunc String
+    | FormSubmit SubmitFunc
 
 
 type TiltaksGruppeType
@@ -25,12 +66,6 @@ type Route
     = Root
     | GruppeRoute TiltaksGruppeType
     | NotFoundRoute
-
-
-type alias Model =
-    { tiltaksGrupper : List TiltaksGruppe
-    , route : Route
-    }
 
 
 createTiltak : String -> String -> Tiltak
@@ -103,7 +138,7 @@ activeGruppe model activeTag =
         filter { tag } =
             tag == activeTag
     in
-        List.head (List.filter filter model.tiltaksGrupper)
+        List.head (List.filter filter tiltaksGrupper)
 
 
 gruppeFromHash : String -> Maybe TiltaksGruppeType

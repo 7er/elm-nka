@@ -1,7 +1,6 @@
 module PageSeparatSykkelveg exposing (..)
 
 import Html exposing (Html)
-import ModelAndMsg exposing (..)
 import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
 import Bootstrap.Form.Select as Select
@@ -11,7 +10,7 @@ import Bootstrap.Grid.Col as Col
 import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
 import Html.Events exposing (onSubmit)
-import ModelAndMsg exposing (..)
+import Models exposing (..)
 import NumberFormat
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
 import Field exposing (Field, FormState, VariableName, FieldValue)

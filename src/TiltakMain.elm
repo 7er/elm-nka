@@ -3,7 +3,7 @@ module Main exposing (main)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import ModelAndMsg exposing (..)
+import Models exposing (..)
 import Navigation exposing (Location)
 import UrlParser exposing ((</>))
 import Bootstrap.Navbar as Navbar
@@ -11,7 +11,6 @@ import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Card as Card
 import Bootstrap.Button as Button
-import Bootstrap.ListGroup as Listgroup
 import Bootstrap.Modal as Modal
 import PageSykkelparkeringUte
 import PageSeparatSykkelveg
@@ -111,16 +110,23 @@ view model =
 
 menu : Navbar.State -> Html Msg
 menu navState =
-    Navbar.config NavMsg
-        |> Navbar.withAnimation
-        |> Navbar.container
-        |> Navbar.brand [ href "#" ] [ text "TØI NKA-verktøy for kollektivtiltak" ]
-        |> Navbar.items
+    let
+        groupToItemLink group =
+            Navbar.itemLink [ href (tiltaksGruppePath group) ] [ text (tiltaksGruppeTittel group) ]
+
+        itemLinks =
             [ Navbar.itemLink [ href "#getting-started" ] [ text "Komme i gang" ]
             , Navbar.itemLink [ href "#sykkelparkering-ute" ] [ text "Sykkelparkering ute" ]
             , Navbar.itemLink [ href "#separat-sykkelveg" ] [ text "Separat sykkelveg" ]
             ]
-        |> Navbar.view navState
+                ++ List.map groupToItemLink tiltaksGrupper
+    in
+        Navbar.config NavMsg
+            |> Navbar.withAnimation
+            |> Navbar.container
+            |> Navbar.brand [ href "#" ] [ text "TØI NKA-verktøy for kollektivtiltak" ]
+            |> Navbar.items itemLinks
+            |> Navbar.view navState
 
 
 mainContent : Model -> Html Msg

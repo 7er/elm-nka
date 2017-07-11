@@ -4,13 +4,11 @@ import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
 import Bootstrap.Form.Select as Select
 import Bootstrap.Button as Button
-import Bootstrap.Grid as Grid
-import Bootstrap.Grid.Col as Col
 import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
 import Html.Events exposing (onSubmit)
 import Field exposing (..)
-import ModelAndMsg exposing (..)
+import Models exposing (Msg(..), Model)
 
 
 updateFormState :
@@ -28,6 +26,12 @@ updateFormState formState variableName stringValue fields =
             Debug.crash "TODO"
 
 
+form :
+    Models.SubmitFunc
+    -> (String -> FieldValue -> Model -> Model)
+    -> List { a | placeholder : String, name : String, title : String }
+    -> Model
+    -> List (Html Msg)
 form handleSubmit updateFieldInModel fields model =
     [ Form.form [ onSubmit (FormSubmit handleSubmit) ]
         (List.append
