@@ -159,38 +159,39 @@ pageHome model =
                     ]
                 |> Card.view
             ]
+        , Grid.col []
+            [ Card.config [ Card.outlineDanger ]
+                |> Card.headerH4 [] [ text "Underlagsmateriale" ]
+                |> Card.block []
+                    [ Card.text [] [ text "Bla bla om materiale som verktøyet baserer seg på" ]
+                    , Card.custom <|
+                        Button.linkButton
+                            [ Button.primary, Button.attrs [ href "http://www.toi.no" ] ]
+                            [ text "Underlag" ]
+                    ]
+                |> Card.view
+            ]
         ]
     ]
 
 
 pageGettingStarted : Model -> List (Html Msg)
 pageGettingStarted model =
-    [ h2 [] [ text "Getting started" ]
+    [ h2 [] [ text "Komme i gang" ]
     , Button.button
         [ Button.success
         , Button.large
         , Button.block
         , Button.attrs [ onClick <| ModalMsg Modal.visibleState ]
         ]
-        [ text "Click me" ]
-    ]
-
-
-pageModules : Model -> List (Html Msg)
-pageModules model =
-    [ h1 [] [ text "Modules" ]
-    , Listgroup.ul
-        [ Listgroup.li [] [ text "Alert" ]
-        , Listgroup.li [] [ text "Badge" ]
-        , Listgroup.li [] [ text "Card" ]
-        ]
+        [ text "Trykk meg" ]
     ]
 
 
 pageNotFound : List (Html Msg)
 pageNotFound =
-    [ h1 [] [ text "Not found" ]
-    , text "SOrry couldn't find that page"
+    [ h1 [] [ text "Ugyldig side" ]
+    , text "Beklager, kan ikke finne siden"
     ]
 
 
