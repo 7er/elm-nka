@@ -8,11 +8,7 @@ var d3 = require("d3");
 var c3 = require("c3");
 
 
-if (process.env.USE_TILTAK_MAIN) {
-  var Elm = require('./TiltakMain.elm');
-} else {
-  var Elm = require('./Main.elm');
-}
+var Elm = require('./Main.elm');
 
 var mountNode = document.querySelector('main');
 
