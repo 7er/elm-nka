@@ -54,13 +54,6 @@ loadGraph =
     generateC3 c3GraphId
 
 
-modelComputation : SykkelparkeringUteTiltakModel a -> (SykkelparkeringUteTiltakModel a -> Maybe Float) -> String
-modelComputation form computationFunc =
-    form
-        |> computationFunc
-        |> NumberFormat.maybePretty
-
-
 updateFieldInModel : String -> String -> Model -> Model
 updateFieldInModel variableName stringValue model =
     { model
@@ -91,8 +84,9 @@ samfunnsOkonomiskAnalyse model =
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SykkelparkeringUteTiltak.brukerNytte
-                    |> modelComputation model.sykkelParkeringUteFormState
+                (model.sykkelParkeringUteFormState
+                    |> SykkelparkeringUteTiltak.brukerNytte
+                    |> NumberFormat.maybePretty
                 )
             ]
         ]
@@ -100,8 +94,9 @@ samfunnsOkonomiskAnalyse model =
         [ Grid.col [] [ text "Sum kostnader over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
-                (SykkelparkeringUteTiltak.kostUtenSkyggepris
-                    |> modelComputation model.sykkelParkeringUteFormState
+                (model.sykkelParkeringUteFormState
+                    |> SykkelparkeringUteTiltak.kostUtenSkyggepris
+                    |> NumberFormat.maybePretty
                 )
             ]
         ]
