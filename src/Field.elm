@@ -6,7 +6,7 @@ type alias FieldValue =
 
 
 type alias FormState a =
-    { a | submitted : Bool }
+    { a | submitted : Bool, visible : Bool }
 
 
 type alias Field a =

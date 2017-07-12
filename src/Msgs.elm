@@ -5,6 +5,7 @@ import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
 import Models exposing (..)
 import Field exposing (..)
+import Html exposing (Html)
 
 
 type alias UpdateFunc =
@@ -21,4 +22,12 @@ type Msg
     | ModalMsg Modal.State
     | FieldUpdate UpdateFunc String
     | FormSubmit SubmitFunc
-    | ToggleVisible Tiltak
+    | ToggleVisible TiltakWidget
+
+
+type alias TiltakWidget =
+    { name : String
+    , page : Model -> List (Html Msg)
+    , toggleVisible : Model -> Model
+    , isVisible : Model -> Bool
+    }

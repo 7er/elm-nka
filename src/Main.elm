@@ -16,6 +16,7 @@ import PageSeparatSykkelveg
 import GroupPage
 import Models exposing (..)
 import Msgs exposing (Msg(..))
+import TiltaksGruppe
 
 
 main : Program Never Model Msg
@@ -40,6 +41,8 @@ init location =
             , modalState = Modal.hiddenState
             , sykkelParkeringUteFormState = PageSykkelparkeringUte.initialFormState
             , separatSykkelvegFormState = PageSeparatSykkelveg.initialFormState
+            , leskurUtenSitteplassFormState = { visible = False, submitted = False }
+            , skiltingIBussFormState = { visible = False, submitted = False }
             }
 
         ( model, urlCmd ) =
@@ -75,8 +78,8 @@ update msg model =
         FormSubmit submitFunc ->
             submitFunc model
 
-        ToggleVisible tiltak ->
-            Debug.crash "TODO"
+        ToggleVisible tiltakWidget ->
+            ( tiltakWidget.toggleVisible model, Cmd.none )
 
 
 urlUpdate : Navigation.Location -> Model -> ( Model, Cmd Msg )
@@ -96,7 +99,7 @@ decode location =
             result
 
         Nothing ->
-            gruppeFromHash location.hash |> Maybe.map GroupPage
+            TiltaksGruppe.gruppeFromHash location.hash |> Maybe.map GroupPage
 
 
 routeParser : UrlParser.Parser (Page -> a) a
@@ -122,14 +125,14 @@ menu : Navbar.State -> Html Msg
 menu navState =
     let
         groupToItemLink group =
-            Navbar.itemLink [ href (tiltaksGruppePath group) ] [ text (tiltaksGruppeTittel group) ]
+            Navbar.itemLink [ href (TiltaksGruppe.tiltaksGruppePath group) ] [ text (TiltaksGruppe.tiltaksGruppeTittel group) ]
 
         itemLinks =
             [ Navbar.itemLink [ href "#getting-started" ] [ text "Komme i gang" ]
             , Navbar.itemLink [ href "#sykkelparkering-ute" ] [ text "Sykkelparkering ute" ]
             , Navbar.itemLink [ href "#separat-sykkelveg" ] [ text "Separat sykkelveg" ]
             ]
-                ++ List.map groupToItemLink tiltaksGrupper
+                ++ List.map groupToItemLink TiltaksGruppe.tiltaksGrupper
     in
         Navbar.config NavMsg
             |> Navbar.withAnimation

@@ -5,37 +5,36 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onClick, defaultOptions, onWithOptions)
 import Models exposing (..)
-import Msgs exposing (Msg(..))
+import Msgs exposing (Msg(..), TiltakWidget)
+import TiltaksGruppe exposing (..)
 
 
-renderTiltak : Tiltak -> Html Msg
-renderTiltak tiltak =
+renderTiltak : Model -> TiltakWidget -> Html Msg
+renderTiltak model tiltak =
     let
         ourOnClick msg =
-            onWithOptions "click" { defaultOptions | preventDefault = True } (Json.succeed msg)
-
-        baseContent =
-            [ h3 [] [ a [ href "", ourOnClick (ToggleVisible tiltak) ] [ text tiltak.name ] ] ]
-
-        content =
-            case tiltak.visible of
-                True ->
-                    baseContent ++ [ input [ value tiltak.data ] [] ]
-
-                False ->
-                    baseContent
+            onWithOptions "click"
+                { defaultOptions | preventDefault = True }
+                (Json.succeed msg)
     in
-        li [] content
+        li []
+            (h3 []
+                [ a
+                    [ href "javascript:void();", ourOnClick (ToggleVisible tiltak) ]
+                    [ text tiltak.name ]
+                ]
+                :: tiltak.page model
+            )
 
 
-gruppePageView : TiltaksGruppe -> List (Html Msg)
-gruppePageView ({ tiltakene } as tiltaksGruppe) =
-    [ ul [] (List.map renderTiltak tiltakene)
+gruppePageView : Model -> TiltaksGruppe -> List (Html Msg)
+gruppePageView model ({ tiltakene } as tiltaksGruppe) =
+    [ ul [] (List.map (renderTiltak model) tiltakene)
     ]
 
 
 page : TiltaksGruppeType -> Model -> List (Html Msg)
 page tiltaksGruppeType model =
     activeGruppe tiltaksGruppeType
-        |> Maybe.map gruppePageView
+        |> Maybe.map (gruppePageView model)
         |> Maybe.withDefault [ h1 [] [ text "Ugyldig gruppe" ] ]
