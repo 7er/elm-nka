@@ -36,8 +36,8 @@ fields =
     ]
 
 
-initialFormState : FormState SykkelparkeringUteTiltakModel
-initialFormState =
+initialTiltakState : TiltakState SykkelparkeringUteTiltakModel
+initialTiltakState =
     { tripsPerYear = Nothing
     , yearlyMaintenance = Nothing
     , installationCost = Just 300004
@@ -56,7 +56,7 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : FormState SykkelparkeringUteTiltakModel -> SykkelparkeringUteTiltakModel
+fromForm : TiltakState SykkelparkeringUteTiltakModel -> SykkelparkeringUteTiltakModel
 fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     { tripsPerYear = tripsPerYear
     , yearlyMaintenance = yearlyMaintenance
@@ -64,7 +64,7 @@ fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
     }
 
 
-modelComputation : FormState SykkelparkeringUteTiltakModel -> (SykkelparkeringUteTiltakModel -> Maybe Float) -> String
+modelComputation : TiltakState SykkelparkeringUteTiltakModel -> (SykkelparkeringUteTiltakModel -> Maybe Float) -> String
 modelComputation form computationFunc =
     form
         |> fromForm
@@ -75,17 +75,17 @@ modelComputation form computationFunc =
 updateFieldInModel : String -> String -> Model -> Model
 updateFieldInModel variableName stringValue model =
     { model
-        | sykkelParkeringUteFormState = TiltakPage.updateFormState model.sykkelParkeringUteFormState variableName stringValue fields
+        | sykkelParkeringUteTiltakState = TiltakPage.updateTiltakState model.sykkelParkeringUteTiltakState variableName stringValue fields
     }
 
 
 handleSubmit : Model -> ( Model, Cmd Msg )
-handleSubmit ({ sykkelParkeringUteFormState } as model) =
+handleSubmit ({ sykkelParkeringUteTiltakState } as model) =
     let
-        newFormState =
-            { sykkelParkeringUteFormState | submitted = True }
+        newTiltakState =
+            { sykkelParkeringUteTiltakState | submitted = True }
     in
-        ( { model | sykkelParkeringUteFormState = newFormState }, loadGraph )
+        ( { model | sykkelParkeringUteTiltakState = newTiltakState }, loadGraph )
 
 
 page : Model -> List (Html Msg)
@@ -103,7 +103,7 @@ samfunnsOkonomiskAnalyse model =
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
                 (SykkelparkeringUteTiltak.brukerNytte
-                    |> modelComputation model.sykkelParkeringUteFormState
+                    |> modelComputation model.sykkelParkeringUteTiltakState
                 )
             ]
         ]
@@ -112,7 +112,7 @@ samfunnsOkonomiskAnalyse model =
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
                 (SykkelparkeringUteTiltak.kostUtenSkyggepris
-                    |> modelComputation model.sykkelParkeringUteFormState
+                    |> modelComputation model.sykkelParkeringUteTiltakState
                 )
             ]
         ]
@@ -120,9 +120,9 @@ samfunnsOkonomiskAnalyse model =
 
 
 toggleVisible : Model -> Model
-toggleVisible ({ sykkelParkeringUteFormState } as model) =
+toggleVisible ({ sykkelParkeringUteTiltakState } as model) =
     { model
-        | sykkelParkeringUteFormState = { sykkelParkeringUteFormState | visible = not sykkelParkeringUteFormState.visible }
+        | sykkelParkeringUteTiltakState = { sykkelParkeringUteTiltakState | visible = not sykkelParkeringUteTiltakState.visible }
     }
 
 
@@ -131,5 +131,5 @@ tiltakObject =
     { name = "Sikker sykkelparkering ute"
     , page = page
     , toggleVisible = toggleVisible
-    , isVisible = \{ sykkelParkeringUteFormState } -> sykkelParkeringUteFormState.visible
+    , isVisible = \{ sykkelParkeringUteTiltakState } -> sykkelParkeringUteTiltakState.visible
     }

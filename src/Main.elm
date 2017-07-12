@@ -39,10 +39,10 @@ init location =
             { navState = navState
             , page = Home
             , modalState = Modal.hiddenState
-            , sykkelParkeringUteFormState = PageSykkelparkeringUte.initialFormState
-            , separatSykkelvegFormState = PageSeparatSykkelveg.initialFormState
-            , leskurUtenSitteplassFormState = { visible = False, submitted = False }
-            , skiltingIBussFormState = { visible = False, submitted = False }
+            , sykkelParkeringUteTiltakState = PageSykkelparkeringUte.initialTiltakState
+            , separatSykkelvegTiltakState = PageSeparatSykkelveg.initialTiltakState
+            , leskurUtenSitteplassTiltakState = { visible = False, submitted = False }
+            , skiltingIBussTiltakState = { visible = False, submitted = False }
             }
 
         ( model, urlCmd ) =

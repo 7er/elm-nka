@@ -12,13 +12,13 @@ import Models exposing (Model)
 import Msgs exposing (Msg(..), SubmitFunc)
 
 
-updateFormState :
-    FormState a
+updateTiltakState :
+    TiltakState a
     -> String
     -> FieldValue
     -> List (Field a)
-    -> FormState a
-updateFormState formState variableName stringValue fields =
+    -> TiltakState a
+updateTiltakState formState variableName stringValue fields =
     case Field.findField variableName fields of
         Just { storeFunc } ->
             storeFunc formState stringValue

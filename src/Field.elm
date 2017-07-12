@@ -5,7 +5,7 @@ type alias FieldValue =
     String
 
 
-type alias FormState a =
+type alias TiltakState a =
     { a | submitted : Bool, visible : Bool }
 
 
@@ -13,7 +13,7 @@ type alias Field a =
     { name : String
     , title : String
     , placeholder : String
-    , storeFunc : FormState a -> FieldValue -> FormState a
+    , storeFunc : TiltakState a -> FieldValue -> TiltakState a
     }
 
 

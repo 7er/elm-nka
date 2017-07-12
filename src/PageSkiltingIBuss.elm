@@ -6,9 +6,9 @@ import Msgs exposing (TiltakObject)
 
 
 toggleVisible : Model -> Model
-toggleVisible ({ skiltingIBussFormState } as model) =
+toggleVisible ({ skiltingIBussTiltakState } as model) =
     { model
-        | skiltingIBussFormState = { skiltingIBussFormState | visible = not skiltingIBussFormState.visible }
+        | skiltingIBussTiltakState = { skiltingIBussTiltakState | visible = not skiltingIBussTiltakState.visible }
     }
 
 
@@ -17,5 +17,5 @@ tiltakObject =
     { name = "Skilting i buss"
     , page = \model -> [ text "Skilting i buss side" ]
     , toggleVisible = toggleVisible
-    , isVisible = \{ skiltingIBussFormState } -> skiltingIBussFormState.visible
+    , isVisible = \{ skiltingIBussTiltakState } -> skiltingIBussTiltakState.visible
     }

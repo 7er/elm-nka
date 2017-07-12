@@ -4,7 +4,7 @@ import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
 import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
-import Field exposing (FormState)
+import Field exposing (TiltakState)
 
 
 port generateC3 : String -> Cmd msg
@@ -28,8 +28,8 @@ type alias Model =
     { page : Page
     , navState : Navbar.State
     , modalState : Modal.State
-    , sykkelParkeringUteFormState : FormState SykkelparkeringUteTiltakModel
-    , separatSykkelvegFormState : FormState SeparatSykkelvegTiltakModel
-    , leskurUtenSitteplassFormState : FormState {}
-    , skiltingIBussFormState : FormState {}
+    , sykkelParkeringUteTiltakState : TiltakState SykkelparkeringUteTiltakModel
+    , separatSykkelvegTiltakState : TiltakState SeparatSykkelvegTiltakModel
+    , leskurUtenSitteplassTiltakState : TiltakState {}
+    , skiltingIBussTiltakState : TiltakState {}
     }

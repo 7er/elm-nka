@@ -9,7 +9,7 @@ import Models exposing (..)
 import Msgs exposing (Msg(..), TiltakObject)
 import NumberFormat
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
-import Field exposing (Field, FormState, VariableName, FieldValue)
+import Field exposing (Field, TiltakState, VariableName, FieldValue)
 import TiltakPage
 
 
@@ -38,8 +38,8 @@ fields =
     ]
 
 
-initialFormState : FormState SeparatSykkelvegTiltakModel
-initialFormState =
+initialTiltakState : TiltakState SeparatSykkelvegTiltakModel
+initialTiltakState =
     { lengthKm = Nothing
     , tripsPerYear = Nothing
     , minutesSaved = Nothing
@@ -59,12 +59,12 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : FormState SeparatSykkelvegTiltakModel -> SeparatSykkelvegTiltakModel
+fromForm : TiltakState SeparatSykkelvegTiltakModel -> SeparatSykkelvegTiltakModel
 fromForm { lengthKm, tripsPerYear, minutesSaved, investmentCost } =
     { lengthKm = lengthKm, tripsPerYear = tripsPerYear, minutesSaved = minutesSaved, investmentCost = investmentCost }
 
 
-modelComputation : FormState SeparatSykkelvegTiltakModel -> (SeparatSykkelvegTiltakModel -> Maybe Float) -> String
+modelComputation : TiltakState SeparatSykkelvegTiltakModel -> (SeparatSykkelvegTiltakModel -> Maybe Float) -> String
 modelComputation form computationFunc =
     form
         |> fromForm
@@ -73,23 +73,23 @@ modelComputation form computationFunc =
 
 
 updateFieldInModel : String -> FieldValue -> Model -> Model
-updateFieldInModel variableName stringValue ({ separatSykkelvegFormState } as model) =
+updateFieldInModel variableName stringValue ({ separatSykkelvegTiltakState } as model) =
     { model
-        | separatSykkelvegFormState = TiltakPage.updateFormState separatSykkelvegFormState variableName stringValue fields
+        | separatSykkelvegTiltakState = TiltakPage.updateTiltakState separatSykkelvegTiltakState variableName stringValue fields
     }
 
 
 handleSubmit : Model -> ( Model, Cmd Msg )
-handleSubmit ({ separatSykkelvegFormState } as model) =
+handleSubmit ({ separatSykkelvegTiltakState } as model) =
     let
         newState =
-            { separatSykkelvegFormState | submitted = True }
+            { separatSykkelvegTiltakState | submitted = True }
     in
-        ( { model | separatSykkelvegFormState = newState }, loadGraph )
+        ( { model | separatSykkelvegTiltakState = newState }, loadGraph )
 
 
 page : Model -> List (Html Msg)
-page ({ separatSykkelvegFormState } as model) =
+page ({ separatSykkelvegTiltakState } as model) =
     TiltakPage.form handleSubmit updateFieldInModel fields model
         ++ [ div [ id c3GraphId ] [ text "Her skal grafen rendres" ] ]
         ++ (samfunnsOkonomiskAnalyse model)
@@ -103,7 +103,7 @@ samfunnsOkonomiskAnalyse model =
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
                 (SeparatSykkelvegTiltak.brukerNytte
-                    |> modelComputation model.separatSykkelvegFormState
+                    |> modelComputation model.separatSykkelvegTiltakState
                 )
             ]
         ]
@@ -112,7 +112,7 @@ samfunnsOkonomiskAnalyse model =
         , Grid.col [ Col.attrs [ class "text-right" ] ]
             [ text
                 (SeparatSykkelvegTiltak.kostUtenSkyggepris
-                    |> modelComputation model.separatSykkelvegFormState
+                    |> modelComputation model.separatSykkelvegTiltakState
                 )
             ]
         ]
@@ -120,9 +120,9 @@ samfunnsOkonomiskAnalyse model =
 
 
 toggleVisible : Model -> Model
-toggleVisible ({ separatSykkelvegFormState } as model) =
+toggleVisible ({ separatSykkelvegTiltakState } as model) =
     { model
-        | separatSykkelvegFormState = { separatSykkelvegFormState | visible = not separatSykkelvegFormState.visible }
+        | separatSykkelvegTiltakState = { separatSykkelvegTiltakState | visible = not separatSykkelvegTiltakState.visible }
     }
 
 
@@ -131,5 +131,5 @@ tiltakObject =
     { name = "Separat sykkelveg"
     , page = page
     , toggleVisible = toggleVisible
-    , isVisible = \{ separatSykkelvegFormState } -> separatSykkelvegFormState.visible
+    , isVisible = \{ separatSykkelvegTiltakState } -> separatSykkelvegTiltakState.visible
     }

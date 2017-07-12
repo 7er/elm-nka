@@ -6,9 +6,9 @@ import Msgs exposing (TiltakObject)
 
 
 toggleVisible : Model -> Model
-toggleVisible ({ leskurUtenSitteplassFormState } as model) =
+toggleVisible ({ leskurUtenSitteplassTiltakState } as model) =
     { model
-        | leskurUtenSitteplassFormState = { leskurUtenSitteplassFormState | visible = not leskurUtenSitteplassFormState.visible }
+        | leskurUtenSitteplassTiltakState = { leskurUtenSitteplassTiltakState | visible = not leskurUtenSitteplassTiltakState.visible }
     }
 
 
@@ -17,5 +17,5 @@ tiltakObject =
     { name = "Leskur u sitteplass"
     , page = \model -> [ text "Leskur side" ]
     , toggleVisible = toggleVisible
-    , isVisible = \{ leskurUtenSitteplassFormState } -> leskurUtenSitteplassFormState.visible
+    , isVisible = \{ leskurUtenSitteplassTiltakState } -> leskurUtenSitteplassTiltakState.visible
     }
