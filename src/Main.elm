@@ -11,8 +11,8 @@ import Bootstrap.Grid.Col as Col
 import Bootstrap.Card as Card
 import Bootstrap.Button as Button
 import Bootstrap.Modal as Modal
-import PageSykkelparkeringUte
-import PageSeparatSykkelveg
+import TiltakComponents.SykkelparkeringUte as SykkelparkeringUte
+import TiltakComponents.SeparatSykkelveg as SeparatSykkelveg
 import GroupPage
 import Models exposing (..)
 import Msgs exposing (Msg(..))
@@ -40,8 +40,8 @@ init location =
             { navState = navState
             , page = Home
             , modalState = Modal.hiddenState
-            , sykkelParkeringUteTiltakState = PageSykkelparkeringUte.initialTiltakState
-            , separatSykkelvegTiltakState = PageSeparatSykkelveg.initialTiltakState
+            , sykkelParkeringUteTiltakState = SykkelparkeringUte.initialTiltakState
+            , separatSykkelvegTiltakState = SeparatSykkelveg.initialTiltakState
             , leskurUtenSitteplassTiltakState = createTiltakState {}
             , skiltingIBussTiltakState = createTiltakState {}
             }
@@ -151,12 +151,6 @@ mainContent model =
 
             NotFound ->
                 pageNotFound
-
-            SykkelparkeringUte ->
-                PageSykkelparkeringUte.page model
-
-            SeparatSykkelveg ->
-                PageSeparatSykkelveg.page model
 
             GroupPage tiltaksGruppeType ->
                 GroupPage.page tiltaksGruppeType model

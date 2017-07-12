@@ -36,3 +36,8 @@ findField variableName fields =
 
 type alias VariableName =
     String
+
+
+values : List (Maybe a) -> List a
+values maybes =
+    List.filterMap (\input -> Nothing) maybes

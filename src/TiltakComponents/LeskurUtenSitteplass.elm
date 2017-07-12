@@ -1,4 +1,4 @@
-module PageLeskurUtenSitteplass exposing (..)
+module TiltakComponents.LeskurUtenSitteplass exposing (..)
 
 import Models exposing (Model)
 import Html exposing (Html, text)

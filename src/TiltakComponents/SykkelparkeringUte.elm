@@ -1,4 +1,4 @@
-module PageSykkelparkeringUte exposing (..)
+module TiltakComponents.SykkelparkeringUte exposing (..)
 
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col

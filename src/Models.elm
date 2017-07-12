@@ -18,8 +18,6 @@ type TiltaksGruppeType
 type Page
     = Home
     | GettingStarted
-    | SykkelparkeringUte
-    | SeparatSykkelveg
     | GroupPage TiltaksGruppeType
     | NotFound
 

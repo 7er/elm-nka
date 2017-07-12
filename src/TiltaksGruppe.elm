@@ -2,10 +2,10 @@ module TiltaksGruppe exposing (..)
 
 import Models exposing (..)
 import Msgs exposing (TiltakObject)
-import PageSykkelparkeringUte
-import PageSeparatSykkelveg
-import PageLeskurUtenSitteplass
-import PageSkiltingIBuss
+import TiltakComponents.SykkelparkeringUte as SykkelparkeringUte
+import TiltakComponents.SeparatSykkelveg as SeparatSykkelveg
+import TiltakComponents.LeskurUtenSitteplass as LeskurUtenSitteplass
+import TiltakComponents.SkiltingIBuss as SkiltingIBuss
 
 
 type alias TiltaksGruppe =
@@ -18,8 +18,8 @@ tiltaksGrupper : List TiltaksGruppe
 tiltaksGrupper =
     [ { tag = Holdeplasser
       , tiltakene =
-            [ PageSykkelparkeringUte.tiltakObject
-            , PageLeskurUtenSitteplass.tiltakObject
+            [ SykkelparkeringUte.tiltakObject
+            , LeskurUtenSitteplass.tiltakObject
 
             {-
                , { name = "Sitteplass på hpl"
@@ -31,10 +31,10 @@ tiltaksGrupper =
       }
     , { tag = Informasjon
       , tiltakene =
-            [ PageSkiltingIBuss.tiltakObject
+            [ SkiltingIBuss.tiltakObject
 
             --            , TiltakObject "Hpl. opprop" (\model -> [ text "Hpl. opprop side" ]) (\model -> model)
-            , PageSeparatSykkelveg.tiltakObject
+            , SeparatSykkelveg.tiltakObject
             ]
       }
     ]

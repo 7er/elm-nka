@@ -1,4 +1,4 @@
-module PageSeparatSykkelveg exposing (..)
+module TiltakComponents.SeparatSykkelveg exposing (..)
 
 import Html exposing (Html)
 import Bootstrap.Grid as Grid

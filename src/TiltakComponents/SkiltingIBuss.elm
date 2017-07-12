@@ -1,4 +1,4 @@
-module PageSkiltingIBuss exposing (..)
+module TiltakComponents.SkiltingIBuss exposing (..)
 
 import Models exposing (Model)
 import Html exposing (Html, text)
