@@ -9,8 +9,8 @@ import Msgs exposing (Msg(..), TiltakWidget)
 import TiltaksGruppe exposing (..)
 
 
-renderTiltak : Model -> TiltakWidget -> Html Msg
-renderTiltak model tiltak =
+tiltakView : Model -> TiltakWidget -> Html Msg
+tiltakView model tiltak =
     let
         ourOnClick msg =
             onWithOptions "click"
@@ -39,7 +39,7 @@ renderTiltak model tiltak =
 
 gruppePageView : Model -> TiltaksGruppe -> List (Html Msg)
 gruppePageView model ({ tiltakene } as tiltaksGruppe) =
-    [ ul [] (List.map (renderTiltak model) tiltakene)
+    [ ul [] (List.map (tiltakView model) tiltakene)
     ]
 
 
