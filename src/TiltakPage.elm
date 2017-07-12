@@ -21,7 +21,7 @@ updateTiltakState :
 updateTiltakState formState variableName stringValue fields =
     case Field.findField variableName fields of
         Just { storeFunc } ->
-            storeFunc formState stringValue
+            { formState | specificState = storeFunc (unwrapState formState) stringValue }
 
         _ ->
             Debug.crash "TODO"

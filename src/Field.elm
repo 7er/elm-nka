@@ -23,7 +23,7 @@ type alias Field a =
     { name : String
     , title : String
     , placeholder : String
-    , storeFunc : TiltakState a -> FieldValue -> TiltakState a
+    , storeFunc : a -> FieldValue -> a
     }
 
 

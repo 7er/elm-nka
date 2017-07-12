@@ -19,38 +19,34 @@ fields =
         "Sykkelveiens lengde"
         "Lengde"
       <|
-        \({ specificState } as formState) stringValue ->
-            { formState
-                | specificState =
-                    { specificState
-                        | lengthKm = String.toFloat stringValue |> Result.toMaybe
-                    }
+        \specificState stringValue ->
+            { specificState
+                | lengthKm = String.toFloat stringValue |> Result.toMaybe
             }
     , Field "tripsPerYear"
         "Antall sykkelreiser per år"
         "Sykkelreiser som bruker tiltaket"
       <|
-        \({ specificState } as formState) stringValue ->
-            { formState
-                | specificState =
-                    { specificState
-                        | tripsPerYear = String.toInt stringValue |> Result.toMaybe
-                    }
+        \specificState stringValue ->
+            { specificState
+                | tripsPerYear = String.toInt stringValue |> Result.toMaybe
             }
     , Field "minutesSaved"
         "Minutter spart"
         "Blabla"
       <|
-        \({ specificState } as formState) stringValue ->
-            { formState
-                | specificState =
-                    { specificState | minutesSaved = String.toFloat stringValue |> Result.toMaybe }
+        \specificState stringValue ->
+            { specificState
+                | minutesSaved = String.toFloat stringValue |> Result.toMaybe
             }
     , Field "investmentCost"
         "Investeringskostander"
         "Investeringskostnaden"
       <|
-        \({ specificState } as formState) stringValue -> { formState | specificState = { specificState | investmentCost = String.toFloat stringValue |> Result.toMaybe } }
+        \specificState stringValue ->
+            { specificState
+                | investmentCost = String.toFloat stringValue |> Result.toMaybe
+            }
     ]
 
 
