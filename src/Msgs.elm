@@ -22,10 +22,10 @@ type Msg
     | ModalMsg Modal.State
     | FieldUpdate UpdateFunc String
     | FormSubmit SubmitFunc
-    | ToggleVisible TiltakWidget
+    | ToggleVisible TiltakObject
 
 
-type alias TiltakWidget =
+type alias TiltakObject =
     { name : String
     , page : Model -> List (Html Msg)
     , toggleVisible : Model -> Model

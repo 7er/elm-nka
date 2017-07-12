@@ -2,7 +2,7 @@ module PageLeskurUtenSitteplass exposing (..)
 
 import Models exposing (Model)
 import Html exposing (Html, text)
-import Msgs exposing (TiltakWidget)
+import Msgs exposing (TiltakObject)
 
 
 toggleVisible : Model -> Model
@@ -12,8 +12,8 @@ toggleVisible ({ leskurUtenSitteplassFormState } as model) =
     }
 
 
-tiltakWidget : TiltakWidget
-tiltakWidget =
+tiltakObject : TiltakObject
+tiltakObject =
     { name = "Leskur u sitteplass"
     , page = \model -> [ text "Leskur side" ]
     , toggleVisible = toggleVisible

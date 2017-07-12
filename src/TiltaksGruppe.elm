@@ -1,7 +1,7 @@
 module TiltaksGruppe exposing (..)
 
 import Models exposing (..)
-import Msgs exposing (TiltakWidget)
+import Msgs exposing (TiltakObject)
 import PageSykkelparkeringUte
 import PageSeparatSykkelveg
 import PageLeskurUtenSitteplass
@@ -10,7 +10,7 @@ import PageSkiltingIBuss
 
 type alias TiltaksGruppe =
     { tag : TiltaksGruppeType
-    , tiltakene : List TiltakWidget
+    , tiltakene : List TiltakObject
     }
 
 
@@ -18,8 +18,8 @@ tiltaksGrupper : List TiltaksGruppe
 tiltaksGrupper =
     [ { tag = Holdeplasser
       , tiltakene =
-            [ PageSykkelparkeringUte.tiltakWidget
-            , PageLeskurUtenSitteplass.tiltakWidget
+            [ PageSykkelparkeringUte.tiltakObject
+            , PageLeskurUtenSitteplass.tiltakObject
 
             {-
                , { name = "Sitteplass på hpl"
@@ -31,17 +31,17 @@ tiltaksGrupper =
       }
     , { tag = Informasjon
       , tiltakene =
-            [ PageSkiltingIBuss.tiltakWidget
+            [ PageSkiltingIBuss.tiltakObject
 
-            --            , TiltakWidget "Hpl. opprop" (\model -> [ text "Hpl. opprop side" ]) (\model -> model)
-            , PageSeparatSykkelveg.tiltakWidget
+            --            , TiltakObject "Hpl. opprop" (\model -> [ text "Hpl. opprop side" ]) (\model -> model)
+            , PageSeparatSykkelveg.tiltakObject
             ]
       }
     ]
 
 
 
--- toggleTiltak : TiltakWidget -> TiltaksGruppe -> TiltaksGruppe
+-- toggleTiltak : TiltakObject -> TiltaksGruppe -> TiltaksGruppe
 -- toggleTiltak tiltaket gruppe =
 --     let
 --         toggleVisible tiltak =

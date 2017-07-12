@@ -2,7 +2,7 @@ module PageSkiltingIBuss exposing (..)
 
 import Models exposing (Model)
 import Html exposing (Html, text)
-import Msgs exposing (TiltakWidget)
+import Msgs exposing (TiltakObject)
 
 
 toggleVisible : Model -> Model
@@ -12,8 +12,8 @@ toggleVisible ({ skiltingIBussFormState } as model) =
     }
 
 
-tiltakWidget : TiltakWidget
-tiltakWidget =
+tiltakObject : TiltakObject
+tiltakObject =
     { name = "Skilting i buss"
     , page = \model -> [ text "Skilting i buss side" ]
     , toggleVisible = toggleVisible

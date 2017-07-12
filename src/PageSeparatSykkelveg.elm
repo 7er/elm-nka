@@ -6,7 +6,7 @@ import Bootstrap.Grid.Col as Col
 import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
 import Models exposing (..)
-import Msgs exposing (Msg(..), TiltakWidget)
+import Msgs exposing (Msg(..), TiltakObject)
 import NumberFormat
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
 import Field exposing (Field, FormState, VariableName, FieldValue)
@@ -126,8 +126,8 @@ toggleVisible ({ separatSykkelvegFormState } as model) =
     }
 
 
-tiltakWidget : TiltakWidget
-tiltakWidget =
+tiltakObject : TiltakObject
+tiltakObject =
     { name = "Separat sykkelveg"
     , page = page
     , toggleVisible = toggleVisible

@@ -5,11 +5,11 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onClick, defaultOptions, onWithOptions)
 import Models exposing (..)
-import Msgs exposing (Msg(..), TiltakWidget)
+import Msgs exposing (Msg(..), TiltakObject)
 import TiltaksGruppe exposing (..)
 
 
-tiltakView : Model -> TiltakWidget -> Html Msg
+tiltakView : Model -> TiltakObject -> Html Msg
 tiltakView model tiltak =
     let
         ourOnClick msg =

@@ -78,8 +78,8 @@ update msg model =
         FormSubmit submitFunc ->
             submitFunc model
 
-        ToggleVisible tiltakWidget ->
-            ( tiltakWidget.toggleVisible model, Cmd.none )
+        ToggleVisible tiltakObject ->
+            ( tiltakObject.toggleVisible model, Cmd.none )
 
 
 urlUpdate : Navigation.Location -> Model -> ( Model, Cmd Msg )

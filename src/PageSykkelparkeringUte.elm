@@ -9,7 +9,7 @@ import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
 import NumberFormat
 import Field exposing (..)
 import TiltakPage
-import Msgs exposing (Msg, TiltakWidget)
+import Msgs exposing (Msg, TiltakObject)
 
 
 type alias Title =
@@ -126,8 +126,8 @@ toggleVisible ({ sykkelParkeringUteFormState } as model) =
     }
 
 
-tiltakWidget : TiltakWidget
-tiltakWidget =
+tiltakObject : TiltakObject
+tiltakObject =
     { name = "Sikker sykkelparkering ute"
     , page = page
     , toggleVisible = toggleVisible
