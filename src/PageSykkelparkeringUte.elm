@@ -22,28 +22,30 @@ fields =
         "Antall sykkelreiser per år"
         "Sykkelreiser som bruker tiltaket"
       <|
-        \formState stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
+        \({ specificState } as formState) stringValue ->
+            { formState | specificState = { specificState | tripsPerYear = String.toInt stringValue |> Result.toMaybe } }
     , Field "installationCost"
         "Installasjonskostnad"
         ""
       <|
-        \formState stringValue -> { formState | installationCost = String.toFloat stringValue |> Result.toMaybe }
+        \({ specificState } as formState) stringValue ->
+            { formState | specificState = { specificState | installationCost = String.toFloat stringValue |> Result.toMaybe } }
     , Field "yearlyMaintenance"
         "Årlige drifts- og vedlikeholdskostnader"
         "Kostnaden ved å installere tiltaket en gang, kroner"
       <|
-        \formState stringValue -> { formState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
+        \({ specificState } as formState) stringValue ->
+            { formState | specificState = { specificState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe } }
     ]
 
 
 initialTiltakState : TiltakState SykkelparkeringUteTiltakModel
 initialTiltakState =
-    { tripsPerYear = Nothing
-    , yearlyMaintenance = Nothing
-    , installationCost = Just 300004
-    , submitted = False
-    , visible = False
-    }
+    createTiltakState
+        { tripsPerYear = Nothing
+        , yearlyMaintenance = Nothing
+        , installationCost = Just 300004
+        }
 
 
 c3GraphId : String
@@ -56,18 +58,10 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : TiltakState SykkelparkeringUteTiltakModel -> SykkelparkeringUteTiltakModel
-fromForm { tripsPerYear, yearlyMaintenance, installationCost } =
-    { tripsPerYear = tripsPerYear
-    , yearlyMaintenance = yearlyMaintenance
-    , installationCost = installationCost
-    }
-
-
 modelComputation : TiltakState SykkelparkeringUteTiltakModel -> (SykkelparkeringUteTiltakModel -> Maybe Float) -> String
 modelComputation form computationFunc =
     form
-        |> fromForm
+        |> unwrapState
         |> computationFunc
         |> NumberFormat.maybePretty
 

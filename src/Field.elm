@@ -6,7 +6,17 @@ type alias FieldValue =
 
 
 type alias TiltakState a =
-    { a | submitted : Bool, visible : Bool }
+    { submitted : Bool, visible : Bool, specificState : a }
+
+
+createTiltakState : a -> TiltakState a
+createTiltakState state =
+    { submitted = False, visible = False, specificState = state }
+
+
+unwrapState : TiltakState a -> a
+unwrapState { specificState } =
+    specificState
 
 
 type alias Field a =

@@ -9,7 +9,7 @@ import Models exposing (..)
 import Msgs exposing (Msg(..), TiltakObject)
 import NumberFormat
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
-import Field exposing (Field, TiltakState, VariableName, FieldValue)
+import Field exposing (..)
 import TiltakPage
 
 
@@ -19,34 +19,49 @@ fields =
         "Sykkelveiens lengde"
         "Lengde"
       <|
-        \formState stringValue -> { formState | lengthKm = String.toFloat stringValue |> Result.toMaybe }
+        \({ specificState } as formState) stringValue ->
+            { formState
+                | specificState =
+                    { specificState
+                        | lengthKm = String.toFloat stringValue |> Result.toMaybe
+                    }
+            }
     , Field "tripsPerYear"
         "Antall sykkelreiser per år"
         "Sykkelreiser som bruker tiltaket"
       <|
-        \formState stringValue -> { formState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
+        \({ specificState } as formState) stringValue ->
+            { formState
+                | specificState =
+                    { specificState
+                        | tripsPerYear = String.toInt stringValue |> Result.toMaybe
+                    }
+            }
     , Field "minutesSaved"
         "Minutter spart"
         "Blabla"
       <|
-        \formState stringValue -> { formState | minutesSaved = String.toFloat stringValue |> Result.toMaybe }
+        \({ specificState } as formState) stringValue ->
+            { formState
+                | specificState =
+                    { specificState | minutesSaved = String.toFloat stringValue |> Result.toMaybe }
+            }
     , Field "investmentCost"
         "Investeringskostander"
         "Investeringskostnaden"
       <|
-        \formState stringValue -> { formState | investmentCost = String.toFloat stringValue |> Result.toMaybe }
+        \({ specificState } as formState) stringValue -> { formState | specificState = { specificState | investmentCost = String.toFloat stringValue |> Result.toMaybe } }
     ]
 
 
 initialTiltakState : TiltakState SeparatSykkelvegTiltakModel
 initialTiltakState =
-    { lengthKm = Nothing
-    , tripsPerYear = Nothing
-    , minutesSaved = Nothing
-    , investmentCost = Nothing
-    , submitted = False
-    , visible = False
-    }
+    createTiltakState
+        { lengthKm = Nothing
+        , tripsPerYear = Nothing
+        , minutesSaved = Nothing
+        , investmentCost = Nothing
+        }
 
 
 c3GraphId : String
@@ -59,15 +74,10 @@ loadGraph =
     generateC3 c3GraphId
 
 
-fromForm : TiltakState SeparatSykkelvegTiltakModel -> SeparatSykkelvegTiltakModel
-fromForm { lengthKm, tripsPerYear, minutesSaved, investmentCost } =
-    { lengthKm = lengthKm, tripsPerYear = tripsPerYear, minutesSaved = minutesSaved, investmentCost = investmentCost }
-
-
 modelComputation : TiltakState SeparatSykkelvegTiltakModel -> (SeparatSykkelvegTiltakModel -> Maybe Float) -> String
 modelComputation form computationFunc =
     form
-        |> fromForm
+        |> unwrapState
         |> computationFunc
         |> NumberFormat.maybePretty
 

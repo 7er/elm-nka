@@ -17,6 +17,7 @@ import GroupPage
 import Models exposing (..)
 import Msgs exposing (Msg(..))
 import TiltaksGruppe
+import Field exposing (..)
 
 
 main : Program Never Model Msg
@@ -41,8 +42,8 @@ init location =
             , modalState = Modal.hiddenState
             , sykkelParkeringUteTiltakState = PageSykkelparkeringUte.initialTiltakState
             , separatSykkelvegTiltakState = PageSeparatSykkelveg.initialTiltakState
-            , leskurUtenSitteplassTiltakState = { visible = False, submitted = False }
-            , skiltingIBussTiltakState = { visible = False, submitted = False }
+            , leskurUtenSitteplassTiltakState = createTiltakState {}
+            , skiltingIBussTiltakState = createTiltakState {}
             }
 
         ( model, urlCmd ) =
