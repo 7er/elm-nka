@@ -1,17 +1,12 @@
 module PageSeparatSykkelveg exposing (..)
 
 import Html exposing (Html)
-import ModelAndMsg exposing (..)
-import Bootstrap.Form as Form
-import Bootstrap.Form.Input as Input
-import Bootstrap.Form.Select as Select
-import Bootstrap.Button as Button
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
-import Html.Events exposing (onSubmit)
-import ModelAndMsg exposing (..)
+import Models exposing (..)
+import Msgs exposing (Msg(..), TiltakWidget)
 import NumberFormat
 import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
 import Field exposing (Field, FormState, VariableName, FieldValue)
@@ -50,6 +45,7 @@ initialFormState =
     , minutesSaved = Nothing
     , investmentCost = Nothing
     , submitted = False
+    , visible = False
     }
 
 
@@ -93,33 +89,15 @@ handleSubmit ({ separatSykkelvegFormState } as model) =
 
 
 page : Model -> List (Html Msg)
-page model =
-    [ Form.form [ onSubmit (FormSubmit handleSubmit) ]
-        (List.append
-            (fields
-                |> List.map
-                    (\{ name, title, placeholder } ->
-                        Form.group []
-                            [ Form.label [ for name ] [ text title ]
-                            , Input.number
-                                [ Input.id name
-                                , Input.placeholder placeholder
-                                , Input.onInput (FieldUpdate (\stringValue model -> updateFieldInModel name stringValue model))
-                                ]
-                            ]
-                    )
-            )
-            [ Form.group []
-                [ Form.label [ for "variableToGraph" ] [ text "Velg verdi som skal vises på X-aksen i grafen" ]
-                , fields
-                    |> List.map (\{ name, title } -> Select.item [ value name ] [ text title ])
-                    |> Select.select [ Select.id "variableToGraph" ]
-                ]
-            , Button.button [ Button.primary ] [ text "Submit" ]
-            ]
-        )
-    , div [ id c3GraphId ] [ text "Her skal grafen rendres" ]
-    , h2 [] [ text "Samfunnsøkonomisk analyse" ]
+page ({ separatSykkelvegFormState } as model) =
+    TiltakPage.form handleSubmit updateFieldInModel fields model
+        ++ [ div [ id c3GraphId ] [ text "Her skal grafen rendres" ] ]
+        ++ (samfunnsOkonomiskAnalyse model)
+
+
+samfunnsOkonomiskAnalyse : Model -> List (Html Msg)
+samfunnsOkonomiskAnalyse model =
+    [ h2 [] [ text "Samfunnsøkonomisk analyse" ]
     , Grid.row []
         [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
         , Grid.col [ Col.attrs [ class "text-right" ] ]
@@ -139,3 +117,19 @@ page model =
             ]
         ]
     ]
+
+
+toggleVisible : Model -> Model
+toggleVisible ({ separatSykkelvegFormState } as model) =
+    { model
+        | separatSykkelvegFormState = { separatSykkelvegFormState | visible = not separatSykkelvegFormState.visible }
+    }
+
+
+tiltakWidget : TiltakWidget
+tiltakWidget =
+    { name = "Separat sykkelveg"
+    , page = page
+    , toggleVisible = toggleVisible
+    , isVisible = \{ separatSykkelvegFormState } -> separatSykkelvegFormState.visible
+    }

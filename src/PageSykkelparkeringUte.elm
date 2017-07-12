@@ -4,11 +4,12 @@ import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
-import ModelAndMsg exposing (..)
+import Models exposing (..)
 import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
 import NumberFormat
-import Field exposing (Field, FormState, VariableName, FieldValue)
+import Field exposing (..)
 import TiltakPage
+import Msgs exposing (Msg, TiltakWidget)
 
 
 type alias Title =
@@ -41,6 +42,7 @@ initialFormState =
     , yearlyMaintenance = Nothing
     , installationCost = Just 300004
     , submitted = False
+    , visible = False
     }
 
 
@@ -115,3 +117,19 @@ samfunnsOkonomiskAnalyse model =
             ]
         ]
     ]
+
+
+toggleVisible : Model -> Model
+toggleVisible ({ sykkelParkeringUteFormState } as model) =
+    { model
+        | sykkelParkeringUteFormState = { sykkelParkeringUteFormState | visible = not sykkelParkeringUteFormState.visible }
+    }
+
+
+tiltakWidget : TiltakWidget
+tiltakWidget =
+    { name = "Sikker sykkelparkering ute"
+    , page = page
+    , toggleVisible = toggleVisible
+    , isVisible = \{ sykkelParkeringUteFormState } -> sykkelParkeringUteFormState.visible
+    }
