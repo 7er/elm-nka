@@ -90,21 +90,9 @@ handleSubmit ({ separatSykkelvegFormState } as model) =
 
 page : Model -> List (Html Msg)
 page ({ separatSykkelvegFormState } as model) =
-    let
-        pageContent =
-            TiltakPage.form handleSubmit updateFieldInModel fields model
-                ++ [ div [ id c3GraphId ] [ text "Her skal grafen rendres" ] ]
-                ++ (samfunnsOkonomiskAnalyse model)
-
-        blank =
-            []
-    in
-        case separatSykkelvegFormState.visible of
-            True ->
-                pageContent
-
-            False ->
-                blank
+    TiltakPage.form handleSubmit updateFieldInModel fields model
+        ++ [ div [ id c3GraphId ] [ text "Her skal grafen rendres" ] ]
+        ++ (samfunnsOkonomiskAnalyse model)
 
 
 samfunnsOkonomiskAnalyse : Model -> List (Html Msg)

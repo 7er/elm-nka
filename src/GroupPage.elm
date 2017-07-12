@@ -16,15 +16,25 @@ renderTiltak model tiltak =
             onWithOptions "click"
                 { defaultOptions | preventDefault = True }
                 (Json.succeed msg)
-    in
-        li []
-            (h3 []
+
+        baseContent =
+            h3 []
                 [ a
                     [ href "javascript:void();", ourOnClick (ToggleVisible tiltak) ]
                     [ text tiltak.name ]
                 ]
-                :: tiltak.page model
-            )
+
+        maybePage =
+            case tiltak.isVisible model of
+                True ->
+                    tiltak.page model
+
+                False ->
+                    []
+    in
+        [ baseContent ]
+            ++ maybePage
+            |> li []
 
 
 gruppePageView : Model -> TiltaksGruppe -> List (Html Msg)
