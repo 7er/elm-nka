@@ -2,7 +2,7 @@ module TiltakTests exposing (..)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
-import SykkelparkeringUteTiltak exposing (SykkelParkeringUteTiltakModel)
+import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
 
 
 closeTo : Float -> Int -> Float -> Expectation
@@ -30,7 +30,7 @@ checkMaybe expectation maybeValue =
             Expect.fail "Got nothing"
 
 
-checkNytteNullPunktForNullModel : SykkelParkeringUteTiltakModel -> Expectation
+checkNytteNullPunktForNullModel : SykkelparkeringUteTiltakModel -> Expectation
 checkNytteNullPunktForNullModel model =
     SykkelparkeringUteTiltak.nettoNytte model |> checkMaybe (closeTo 0 3)
 
@@ -128,7 +128,7 @@ suite =
         ]
 
 
-sykkelParkeringUteTest : String -> (SykkelParkeringUteTiltakModel -> Expectation) -> Test
+sykkelParkeringUteTest : String -> (SykkelparkeringUteTiltakModel -> Expectation) -> Test
 sykkelParkeringUteTest description testCase =
     let
         model =
