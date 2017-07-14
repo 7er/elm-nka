@@ -1,5 +1,6 @@
-module TiltaksGruppe exposing (..)
+module Tiltak exposing (..)
 
+import Dict exposing (Dict(..))
 import Models exposing (..)
 import Msgs exposing (TiltakObject)
 import TiltakComponents.SykkelparkeringUte as SykkelparkeringUte
@@ -12,6 +13,29 @@ type alias TiltaksGruppe =
     { tag : TiltaksGruppeType
     , tiltakene : List TiltakObject
     }
+
+
+type alias NameToComponentStates =
+    Dict String TiltakComponentState
+
+
+initialTiltakComponentState : NameToComponentStates
+initialTiltakComponentState =
+    let
+        updateDict : TiltakObject -> NameToComponentStates -> NameToComponentStates
+        updateDict tiltak dict =
+            dict |> Dict.insert tiltak.name tiltak.initialState
+    in
+        tiltakene |> List.foldl updateDict Dict.empty
+
+
+tiltakene : List TiltakObject
+tiltakene =
+    let
+        updateList group acc =
+            acc ++ group.tiltakene
+    in
+        tiltaksGrupper |> List.foldl updateList []
 
 
 tiltaksGrupper : List TiltaksGruppe

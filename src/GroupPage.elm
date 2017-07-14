@@ -6,7 +6,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onClick, defaultOptions, onWithOptions)
 import Models exposing (..)
 import Msgs exposing (Msg(..), TiltakObject)
-import TiltaksGruppe exposing (..)
+import Tiltak exposing (..)
 
 
 tiltakView : Model -> TiltakObject -> Html Msg

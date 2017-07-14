@@ -125,4 +125,5 @@ tiltakObject =
     , page = page
     , toggleVisible = toggleVisible
     , isVisible = \{ sykkelParkeringUteTiltakState } -> sykkelParkeringUteTiltakState.visible
+    , initialState = SykkelparkeringUteState initialTiltakState
     }
