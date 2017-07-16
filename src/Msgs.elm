@@ -30,5 +30,4 @@ type alias TiltakObject =
     , page : Model -> List (Html Msg)
     , toggleVisible : Model -> Model
     , isVisible : Model -> Bool
-    , initialState : TiltakComponentState
     }

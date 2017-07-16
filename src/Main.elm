@@ -1,17 +1,23 @@
 module Main exposing (main)
 
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 import Navigation exposing (Location)
-import Bootstrap.Navbar as Navbar
-import Bootstrap.Modal as Modal
 import UrlParser exposing ((</>))
+import Bootstrap.Navbar as Navbar
+import Bootstrap.Grid as Grid
+import Bootstrap.Grid.Col as Col
+import Bootstrap.Card as Card
+import Bootstrap.Button as Button
+import Bootstrap.Modal as Modal
+import TiltakComponents.SykkelparkeringUte as SykkelparkeringUte
+import TiltakComponents.SeparatSykkelveg as SeparatSykkelveg
+import GroupPage
 import Models exposing (..)
 import Msgs exposing (Msg(..))
-import Tiltak
+import TiltaksGruppe
 import Field exposing (..)
-import Views exposing (view)
-import TiltakComponents.SykkelparkeringUte
-import TiltakComponents.SeparatSykkelveg
-import Tiltak
 
 
 main : Program Never Model Msg
@@ -34,12 +40,10 @@ init location =
             { navState = navState
             , page = Home
             , modalState = Modal.hiddenState
-            , sykkelParkeringUteTiltakState = TiltakComponents.SykkelparkeringUte.initialTiltakState
-            , separatSykkelvegTiltakState = TiltakComponents.SeparatSykkelveg.initialTiltakState
-
-            --, leskurUtenSitteplassTiltakState = createTiltakState {}
+            , sykkelParkeringUteTiltakState = SykkelparkeringUte.initialTiltakState
+            , separatSykkelvegTiltakState = SeparatSykkelveg.initialTiltakState
+            , leskurUtenSitteplassTiltakState = createTiltakState {}
             , skiltingIBussTiltakState = createTiltakState {}
-            , tiltakComponentState = Tiltak.initialTiltakComponentState
             }
 
         ( model, urlCmd ) =
@@ -96,7 +100,7 @@ decode location =
             result
 
         Nothing ->
-            Tiltak.gruppeFromHash location.hash |> Maybe.map GroupPage
+            TiltaksGruppe.gruppeFromHash location.hash |> Maybe.map GroupPage
 
 
 routeParser : UrlParser.Parser (Page -> a) a
@@ -105,3 +109,120 @@ routeParser =
         [ UrlParser.map Home UrlParser.top
         , UrlParser.map GettingStarted (UrlParser.s "getting-started")
         ]
+
+
+view : Model -> Html Msg
+view model =
+    div []
+        [ menu model.navState
+        , mainContent model
+        , modal model.modalState
+        ]
+
+
+menu : Navbar.State -> Html Msg
+menu navState =
+    let
+        groupToItemLink group =
+            Navbar.itemLink [ href (TiltaksGruppe.tiltaksGruppePath group) ] [ text (TiltaksGruppe.tiltaksGruppeTittel group) ]
+
+        itemLinks =
+            [ Navbar.itemLink [ href "#getting-started" ] [ text "Komme i gang" ]
+            ]
+                ++ List.map groupToItemLink TiltaksGruppe.tiltaksGrupper
+    in
+        Navbar.config NavMsg
+            |> Navbar.withAnimation
+            |> Navbar.container
+            |> Navbar.brand [ href "#" ] [ text "TØI NKA-verktøy for kollektivtiltak" ]
+            |> Navbar.items itemLinks
+            |> Navbar.view navState
+
+
+mainContent : Model -> Html Msg
+mainContent model =
+    Grid.container [] <|
+        case model.page of
+            Home ->
+                pageHome model
+
+            GettingStarted ->
+                pageGettingStarted model
+
+            NotFound ->
+                pageNotFound
+
+            GroupPage tiltaksGruppeType ->
+                GroupPage.page tiltaksGruppeType model
+
+
+pageHome : Model -> List (Html Msg)
+pageHome model =
+    [ h1 [] [ text "Hjem" ]
+    , Grid.row []
+        [ Grid.col []
+            [ Card.config [ Card.outlinePrimary ]
+                |> Card.headerH4 [] [ text "Komme i gang" ]
+                |> Card.block []
+                    [ Card.text [] [ text "Hvordan komme i gang" ]
+                    , Card.custom <|
+                        Button.linkButton
+                            [ Button.primary, Button.attrs [ href "#getting-started" ] ]
+                            [ text "Start" ]
+                    ]
+                |> Card.view
+            ]
+        , Grid.col []
+            [ Card.config [ Card.outlineDanger ]
+                |> Card.headerH4 [] [ text "Underlagsmateriale" ]
+                |> Card.block []
+                    [ Card.text [] [ text "Bla bla om materiale som verktøyet baserer seg på" ]
+                    , Card.custom <|
+                        Button.linkButton
+                            [ Button.primary, Button.attrs [ href "http://www.toi.no" ] ]
+                            [ text "Underlag" ]
+                    ]
+                |> Card.view
+            ]
+        ]
+    ]
+
+
+pageGettingStarted : Model -> List (Html Msg)
+pageGettingStarted model =
+    [ h2 [] [ text "Komme i gang" ]
+    , Button.button
+        [ Button.success
+        , Button.large
+        , Button.block
+        , Button.attrs [ onClick <| ModalMsg Modal.visibleState ]
+        ]
+        [ text "Trykk meg" ]
+    ]
+
+
+pageNotFound : List (Html Msg)
+pageNotFound =
+    [ h1 [] [ text "Ugyldig side" ]
+    , text "Beklager, kan ikke finne siden"
+    ]
+
+
+modal : Modal.State -> Html Msg
+modal modalState =
+    Modal.config ModalMsg
+        |> Modal.small
+        |> Modal.h4 [] [ text "Getting started ?" ]
+        |> Modal.body []
+            [ Grid.containerFluid []
+                [ Grid.row []
+                    [ Grid.col
+                        [ Col.xs6 ]
+                        [ text "Col 1" ]
+                    , Grid.col
+                        [ Col.xs6 ]
+                        [ text "Col 2" ]
+                    ]
+                ]
+            ]
+        |> Modal.view modalState

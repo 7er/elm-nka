@@ -1,43 +1,21 @@
 module TiltakComponents.LeskurUtenSitteplass exposing (..)
 
-import Models exposing (Model, TiltakComponentState(..))
+import Models exposing (Model)
 import Html exposing (Html, text)
 import Msgs exposing (TiltakObject)
-import Field exposing (createTiltakState, TiltakState)
 
 
 toggleVisible : Model -> Model
-toggleVisible model =
+toggleVisible ({ leskurUtenSitteplassTiltakState } as model) =
     { model
-        | tiltakComponentState =
-            Models.toggleVisibleFor tiltakObject.name model.tiltakComponentState
+        | leskurUtenSitteplassTiltakState = { leskurUtenSitteplassTiltakState | visible = not leskurUtenSitteplassTiltakState.visible }
     }
 
 
 tiltakObject : TiltakObject
 tiltakObject =
-    let
-        this =
-            { name = "Leskur u sitteplass"
-            , page = \model -> [ text "Leskur side" ]
-            , toggleVisible = toggleVisible
-            , isVisible = \model -> True
-            , initialState = LeskurUtenSitteplassState (createTiltakState {})
-            }
-    in
-        { this | isVisible = (\model -> myTiltakState this model |> Maybe.map (\state -> state.visible) |> Maybe.withDefault False) }
-
-
-myTiltakState : TiltakObject -> Model -> Maybe (TiltakState {})
-myTiltakState this model =
-    case Models.tiltakStateFor this.name model.tiltakComponentState of
-        Just tiltakComponentState ->
-            case tiltakComponentState of
-                LeskurUtenSitteplassState state ->
-                    Just state
-
-                _ ->
-                    Debug.crash "State error"
-
-        Nothing ->
-            Debug.crash "State error"
+    { name = "Leskur u sitteplass"
+    , page = \model -> [ text "Leskur side" ]
+    , toggleVisible = toggleVisible
+    , isVisible = \{ leskurUtenSitteplassTiltakState } -> leskurUtenSitteplassTiltakState.visible
+    }
