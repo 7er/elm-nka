@@ -1,6 +1,5 @@
 port module Models exposing (..)
 
-import Dict exposing (Dict)
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
 import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
@@ -29,28 +28,6 @@ type alias Model =
     , modalState : Modal.State
     , sykkelParkeringUteTiltakState : TiltakState SykkelparkeringUteTiltakModel
     , separatSykkelvegTiltakState : TiltakState SeparatSykkelvegTiltakModel
-
-    --    , leskurUtenSitteplassTiltakState : TiltakState {}
+    , leskurUtenSitteplassTiltakState : TiltakState {}
     , skiltingIBussTiltakState : TiltakState {}
-    , tiltakComponentState : Dict String TiltakComponentState
     }
-
-
-type TiltakComponentState
-    = SykkelparkeringUteState (TiltakState SykkelparkeringUteTiltakModel)
-    | SeparatSykkelvegState (TiltakState SeparatSykkelvegTiltakModel)
-    | LeskurUtenSitteplassState (TiltakState {})
-    | SkiltingIBussState (TiltakState {})
-
-
-tiltakStateFor : String -> Dict String TiltakComponentState -> Maybe TiltakComponentState
-tiltakStateFor name tiltakComponentState =
-    tiltakComponentState |> Dict.get name
-
-
-toggleVisibleFor :
-    String
-    -> Dict String TiltakComponentState
-    -> Dict String TiltakComponentState
-toggleVisibleFor name model =
-    Debug.crash "TODO"

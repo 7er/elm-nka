@@ -1,9 +1,8 @@
 module TiltakComponents.SkiltingIBuss exposing (..)
 
-import Models exposing (Model, TiltakComponentState(SkiltingIBussState))
+import Models exposing (Model)
 import Html exposing (Html, text)
 import Msgs exposing (TiltakObject)
-import Field exposing (createTiltakState)
 
 
 toggleVisible : Model -> Model
@@ -19,5 +18,4 @@ tiltakObject =
     , page = \model -> [ text "Skilting i buss side" ]
     , toggleVisible = toggleVisible
     , isVisible = \{ skiltingIBussTiltakState } -> skiltingIBussTiltakState.visible
-    , initialState = SkiltingIBussState (createTiltakState {})
     }

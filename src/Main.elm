@@ -36,10 +36,8 @@ init location =
             , modalState = Modal.hiddenState
             , sykkelParkeringUteTiltakState = TiltakComponents.SykkelparkeringUte.initialTiltakState
             , separatSykkelvegTiltakState = TiltakComponents.SeparatSykkelveg.initialTiltakState
-
-            --, leskurUtenSitteplassTiltakState = createTiltakState {}
+            , leskurUtenSitteplassTiltakState = createTiltakState {}
             , skiltingIBussTiltakState = createTiltakState {}
-            , tiltakComponentState = Tiltak.initialTiltakComponentState
             }
 
         ( model, urlCmd ) =

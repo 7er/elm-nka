@@ -138,5 +138,4 @@ tiltakObject =
     , page = page
     , toggleVisible = toggleVisible
     , isVisible = \{ separatSykkelvegTiltakState } -> separatSykkelvegTiltakState.visible
-    , initialState = SeparatSykkelvegState initialTiltakState
     }
