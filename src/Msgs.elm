@@ -28,7 +28,7 @@ type Msg
 type alias TiltakObject =
     { name : String
     , page : Model -> List (Html Msg)
-    , toggleVisible : NameToComponentStates -> NameToComponentStates
+    , toggleVisible : Model -> Model
     , isVisible : Model -> Bool
     , initialState : TiltakComponentState
     }

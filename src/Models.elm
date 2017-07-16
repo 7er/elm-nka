@@ -43,18 +43,14 @@ type TiltakComponentState
     | SkiltingIBussState (TiltakState {})
 
 
-type alias NameToComponentStates =
-    Dict String TiltakComponentState
-
-
-tiltakStateFor : String -> NameToComponentStates -> Maybe TiltakComponentState
+tiltakStateFor : String -> Dict String TiltakComponentState -> Maybe TiltakComponentState
 tiltakStateFor name tiltakComponentState =
     tiltakComponentState |> Dict.get name
 
 
 toggleVisibleFor :
     String
-    -> NameToComponentStates
-    -> NameToComponentStates
+    -> Dict String TiltakComponentState
+    -> Dict String TiltakComponentState
 toggleVisibleFor name model =
     Debug.crash "TODO"

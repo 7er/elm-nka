@@ -1,14 +1,17 @@
 module TiltakComponents.LeskurUtenSitteplass exposing (..)
 
-import Models exposing (Model, TiltakComponentState(..), NameToComponentStates)
+import Models exposing (Model, TiltakComponentState(..))
 import Html exposing (Html, text)
 import Msgs exposing (TiltakObject)
 import Field exposing (createTiltakState, TiltakState)
 
 
-toggleVisible : NameToComponentStates -> NameToComponentStates
-toggleVisible tiltakComponentState =
-    Models.toggleVisibleFor tiltakObject.name tiltakComponentState
+toggleVisible : Model -> Model
+toggleVisible model =
+    { model
+        | tiltakComponentState =
+            Models.toggleVisibleFor tiltakObject.name model.tiltakComponentState
+    }
 
 
 tiltakObject : TiltakObject

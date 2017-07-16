@@ -1,4 +1,4 @@
-module Main exposing (main, initialModel)
+module Main exposing (main)
 
 import Navigation exposing (Location)
 import Bootstrap.Navbar as Navbar
@@ -24,28 +24,26 @@ main =
         }
 
 
-initialModel : Navbar.State -> Model
-initialModel navState =
-    { navState = navState
-    , page = Home
-    , modalState = Modal.hiddenState
-    , sykkelParkeringUteTiltakState = TiltakComponents.SykkelparkeringUte.initialTiltakState
-    , separatSykkelvegTiltakState = TiltakComponents.SeparatSykkelveg.initialTiltakState
-
-    --, leskurUtenSitteplassTiltakState = createTiltakState {}
-    , skiltingIBussTiltakState = createTiltakState {}
-    , tiltakComponentState = Tiltak.initialTiltakComponentState
-    }
-
-
 init : Location -> ( Model, Cmd Msg )
 init location =
     let
         ( navState, navCmd ) =
             Navbar.initialState NavMsg
 
+        initialModel =
+            { navState = navState
+            , page = Home
+            , modalState = Modal.hiddenState
+            , sykkelParkeringUteTiltakState = TiltakComponents.SykkelparkeringUte.initialTiltakState
+            , separatSykkelvegTiltakState = TiltakComponents.SeparatSykkelveg.initialTiltakState
+
+            --, leskurUtenSitteplassTiltakState = createTiltakState {}
+            , skiltingIBussTiltakState = createTiltakState {}
+            , tiltakComponentState = Tiltak.initialTiltakComponentState
+            }
+
         ( model, urlCmd ) =
-            urlUpdate location <| initialModel navState
+            urlUpdate location initialModel
     in
         ( model, Cmd.batch [ urlCmd, navCmd ] )
 

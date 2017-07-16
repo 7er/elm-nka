@@ -15,6 +15,10 @@ type alias TiltaksGruppe =
     }
 
 
+type alias NameToComponentStates =
+    Dict String TiltakComponentState
+
+
 initialTiltakComponentState : NameToComponentStates
 initialTiltakComponentState =
     let
