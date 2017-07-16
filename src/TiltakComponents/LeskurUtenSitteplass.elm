@@ -1,13 +1,13 @@
 module TiltakComponents.LeskurUtenSitteplass exposing (..)
 
-import Models exposing (Model)
+import Models exposing (Model, TiltakStates)
 import Html exposing (Html, text)
 import Msgs exposing (TiltakObject)
 
 
-toggleVisible : Model -> Model
-toggleVisible ({ leskurUtenSitteplassTiltakState } as model) =
-    { model
+toggleVisible : TiltakStates -> TiltakStates
+toggleVisible ({ leskurUtenSitteplassTiltakState } as tiltakStates) =
+    { tiltakStates
         | leskurUtenSitteplassTiltakState = { leskurUtenSitteplassTiltakState | visible = not leskurUtenSitteplassTiltakState.visible }
     }
 

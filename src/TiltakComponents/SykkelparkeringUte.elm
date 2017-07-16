@@ -65,7 +65,7 @@ modelComputation form computationFunc =
         |> NumberFormat.maybePretty
 
 
-updateFieldInModel : String -> String -> Model -> Model
+updateFieldInModel : String -> FieldValue -> TiltakStates -> TiltakStates
 updateFieldInModel variableName stringValue model =
     { model
         | sykkelParkeringUteTiltakState = TiltakPage.updateTiltakState model.sykkelParkeringUteTiltakState variableName stringValue fields
@@ -73,22 +73,30 @@ updateFieldInModel variableName stringValue model =
 
 
 handleSubmit : Model -> ( Model, Cmd Msg )
-handleSubmit ({ sykkelParkeringUteTiltakState } as model) =
+handleSubmit ({ tiltakStates } as model) =
     let
+        { sykkelParkeringUteTiltakState } =
+            tiltakStates
+
         newTiltakState =
             { sykkelParkeringUteTiltakState | submitted = True }
     in
-        ( { model | sykkelParkeringUteTiltakState = newTiltakState }, loadGraph )
+        ( { model
+            | tiltakStates =
+                { tiltakStates | sykkelParkeringUteTiltakState = newTiltakState }
+          }
+        , loadGraph
+        )
 
 
 page : Model -> List (Html Msg)
-page model =
+page ({ tiltakStates } as model) =
     TiltakPage.form handleSubmit updateFieldInModel fields model
         ++ [ div [ id c3GraphId ] [ text "Her skal grafen rendres" ] ]
-        ++ (samfunnsOkonomiskAnalyse model)
+        ++ (samfunnsOkonomiskAnalyse tiltakStates)
 
 
-samfunnsOkonomiskAnalyse : Model -> List (Html Msg)
+samfunnsOkonomiskAnalyse : TiltakStates -> List (Html Msg)
 samfunnsOkonomiskAnalyse model =
     [ h2 [] [ text "Samfunnsøkonomisk analyse" ]
     , Grid.row []
@@ -112,9 +120,9 @@ samfunnsOkonomiskAnalyse model =
     ]
 
 
-toggleVisible : Model -> Model
-toggleVisible ({ sykkelParkeringUteTiltakState } as model) =
-    { model
+toggleVisible : TiltakStates -> TiltakStates
+toggleVisible ({ sykkelParkeringUteTiltakState } as tiltakStates) =
+    { tiltakStates
         | sykkelParkeringUteTiltakState = { sykkelParkeringUteTiltakState | visible = not sykkelParkeringUteTiltakState.visible }
     }
 

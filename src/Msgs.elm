@@ -9,7 +9,7 @@ import Html exposing (Html)
 
 
 type alias UpdateFunc =
-    FieldValue -> Model -> Model
+    FieldValue -> TiltakStates -> TiltakStates
 
 
 type alias SubmitFunc =
@@ -28,6 +28,6 @@ type Msg
 type alias TiltakObject =
     { name : String
     , page : Model -> List (Html Msg)
-    , toggleVisible : Model -> Model
-    , isVisible : Model -> Bool
+    , toggleVisible : TiltakStates -> TiltakStates
+    , isVisible : TiltakStates -> Bool
     }

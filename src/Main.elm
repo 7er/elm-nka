@@ -34,10 +34,12 @@ init location =
             { navState = navState
             , page = Home
             , modalState = Modal.hiddenState
-            , sykkelParkeringUteTiltakState = TiltakComponents.SykkelparkeringUte.initialTiltakState
-            , separatSykkelvegTiltakState = TiltakComponents.SeparatSykkelveg.initialTiltakState
-            , leskurUtenSitteplassTiltakState = createTiltakState {}
-            , skiltingIBussTiltakState = createTiltakState {}
+            , tiltakStates =
+                { sykkelParkeringUteTiltakState = TiltakComponents.SykkelparkeringUte.initialTiltakState
+                , separatSykkelvegTiltakState = TiltakComponents.SeparatSykkelveg.initialTiltakState
+                , leskurUtenSitteplassTiltakState = createTiltakState {}
+                , skiltingIBussTiltakState = createTiltakState {}
+                }
             }
 
         ( model, urlCmd ) =
@@ -68,13 +70,13 @@ update msg model =
             )
 
         FieldUpdate updateFunc stringValue ->
-            ( (updateFunc stringValue model), Cmd.none )
+            ( { model | tiltakStates = (updateFunc stringValue model.tiltakStates) }, Cmd.none )
 
         FormSubmit submitFunc ->
             submitFunc model
 
         ToggleVisible tiltakObject ->
-            ( tiltakObject.toggleVisible model, Cmd.none )
+            ( { model | tiltakStates = tiltakObject.toggleVisible model.tiltakStates }, Cmd.none )
 
 
 urlUpdate : Navigation.Location -> Model -> ( Model, Cmd Msg )

@@ -8,7 +8,7 @@ import Html exposing (Html, text, div, h2)
 import Html.Attributes exposing (for, value, id, class)
 import Html.Events exposing (onSubmit)
 import Field exposing (..)
-import Models exposing (Model)
+import Models exposing (Model, TiltakStates)
 import Msgs exposing (Msg(..), SubmitFunc)
 
 
@@ -29,7 +29,7 @@ updateTiltakState formState variableName stringValue fields =
 
 form :
     SubmitFunc
-    -> (String -> FieldValue -> Model -> Model)
+    -> (String -> FieldValue -> TiltakStates -> TiltakStates)
     -> List (Field a)
     -> Model
     -> List (Html Msg)
@@ -44,7 +44,7 @@ form handleSubmit updateFieldInModel fields model =
                             , Input.number
                                 [ Input.id name
                                 , Input.placeholder placeholder
-                                , Input.onInput (FieldUpdate (\stringValue model -> updateFieldInModel name stringValue model))
+                                , Input.onInput (FieldUpdate (\stringValue tiltakStates -> updateFieldInModel name stringValue tiltakStates))
                                 ]
                             ]
                     )

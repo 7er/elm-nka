@@ -25,7 +25,7 @@ tiltakView model tiltak =
                 ]
 
         maybePage =
-            case tiltak.isVisible model of
+            case tiltak.isVisible model.tiltakStates of
                 True ->
                     tiltak.page model
 

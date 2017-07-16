@@ -78,30 +78,40 @@ modelComputation form computationFunc =
         |> NumberFormat.maybePretty
 
 
-updateFieldInModel : String -> FieldValue -> Model -> Model
-updateFieldInModel variableName stringValue ({ separatSykkelvegTiltakState } as model) =
-    { model
+updateFieldInModel : String -> FieldValue -> TiltakStates -> TiltakStates
+updateFieldInModel variableName stringValue ({ separatSykkelvegTiltakState } as tiltakStates) =
+    { tiltakStates
         | separatSykkelvegTiltakState = TiltakPage.updateTiltakState separatSykkelvegTiltakState variableName stringValue fields
     }
 
 
 handleSubmit : Model -> ( Model, Cmd Msg )
-handleSubmit ({ separatSykkelvegTiltakState } as model) =
+handleSubmit ({ tiltakStates } as model) =
     let
+        { separatSykkelvegTiltakState } =
+            tiltakStates
+
         newState =
             { separatSykkelvegTiltakState | submitted = True }
     in
-        ( { model | separatSykkelvegTiltakState = newState }, loadGraph )
+        ( { model
+            | tiltakStates =
+                { tiltakStates
+                    | separatSykkelvegTiltakState = newState
+                }
+          }
+        , loadGraph
+        )
 
 
 page : Model -> List (Html Msg)
-page ({ separatSykkelvegTiltakState } as model) =
+page ({ tiltakStates } as model) =
     TiltakPage.form handleSubmit updateFieldInModel fields model
         ++ [ div [ id c3GraphId ] [ text "Her skal grafen rendres" ] ]
-        ++ (samfunnsOkonomiskAnalyse model)
+        ++ (samfunnsOkonomiskAnalyse tiltakStates)
 
 
-samfunnsOkonomiskAnalyse : Model -> List (Html Msg)
+samfunnsOkonomiskAnalyse : TiltakStates -> List (Html Msg)
 samfunnsOkonomiskAnalyse model =
     [ h2 [] [ text "Samfunnsøkonomisk analyse" ]
     , Grid.row []
@@ -125,9 +135,9 @@ samfunnsOkonomiskAnalyse model =
     ]
 
 
-toggleVisible : Model -> Model
-toggleVisible ({ separatSykkelvegTiltakState } as model) =
-    { model
+toggleVisible : TiltakStates -> TiltakStates
+toggleVisible ({ separatSykkelvegTiltakState } as tiltakStates) =
+    { tiltakStates
         | separatSykkelvegTiltakState = { separatSykkelvegTiltakState | visible = not separatSykkelvegTiltakState.visible }
     }
 

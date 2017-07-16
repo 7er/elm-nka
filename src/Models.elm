@@ -22,12 +22,17 @@ type Page
     | NotFound
 
 
+type alias TiltakStates =
+    { sykkelParkeringUteTiltakState : TiltakState SykkelparkeringUteTiltakModel
+    , separatSykkelvegTiltakState : TiltakState SeparatSykkelvegTiltakModel
+    , leskurUtenSitteplassTiltakState : TiltakState {}
+    , skiltingIBussTiltakState : TiltakState {}
+    }
+
+
 type alias Model =
     { page : Page
     , navState : Navbar.State
     , modalState : Modal.State
-    , sykkelParkeringUteTiltakState : TiltakState SykkelparkeringUteTiltakModel
-    , separatSykkelvegTiltakState : TiltakState SeparatSykkelvegTiltakModel
-    , leskurUtenSitteplassTiltakState : TiltakState {}
-    , skiltingIBussTiltakState : TiltakState {}
+    , tiltakStates : TiltakStates
     }

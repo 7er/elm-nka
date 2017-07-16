@@ -5,7 +5,9 @@ import Html exposing (Html, text)
 import Msgs exposing (TiltakObject)
 
 
-toggleVisible : Model -> Model
+--toggleVisible : Model -> Model
+
+
 toggleVisible ({ skiltingIBussTiltakState } as model) =
     { model
         | skiltingIBussTiltakState = { skiltingIBussTiltakState | visible = not skiltingIBussTiltakState.visible }
