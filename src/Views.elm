@@ -13,6 +13,7 @@ import Models exposing (..)
 import Msgs exposing (Msg)
 import GroupPage
 import Tiltak
+import TiltakGrupper
 import Msgs exposing (Msg(..))
 
 
@@ -34,7 +35,7 @@ menu navState =
         itemLinks =
             [ Navbar.itemLink [ href "#getting-started" ] [ text "Komme i gang" ]
             ]
-                ++ List.map groupToItemLink Tiltak.tiltaksGrupper
+                ++ List.map groupToItemLink TiltakGrupper.tiltaksGrupper
     in
         Navbar.config NavMsg
             |> Navbar.withAnimation
