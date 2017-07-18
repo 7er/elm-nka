@@ -35,7 +35,11 @@ update msg model =
 
 init : Model
 init =
-    { tiltakStates = { fooTiltak = Tiltak.Foo.initialState, barTiltak = { x = Just 1, y = Just 2 } } }
+    { tiltakStates =
+        { fooTiltak = Tiltak.Foo.initialState
+        , barTiltak = Tiltak.Bar.initialState
+        }
+    }
 
 
 main : Program Never Model Msg
@@ -63,7 +67,8 @@ form tiltak model =
                 , Input.number
                     [ Input.id name
                     , Input.placeholder placeholder
-                    , Input.onInput (UpdateField tiltak field)
+                    , Input.onInput <| UpdateField tiltak field
+                    , Input.value <| field.stringValueFromState model.tiltakStates
                     ]
                 ]
     in

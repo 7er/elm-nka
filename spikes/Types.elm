@@ -8,6 +8,7 @@ type alias Field =
     , title : String
     , placeholder : String
     , updateTiltakState : String -> TiltakStates -> TiltakStates
+    , stringValueFromState : TiltakStates -> String
     }
 
 
