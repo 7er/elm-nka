@@ -6,12 +6,10 @@ import Bootstrap.Modal as Modal
 import UrlParser exposing ((</>))
 import Models exposing (..)
 import Msgs exposing (Msg(..))
-import Tiltak
-import Field exposing (..)
+import TiltakStates exposing (TiltakStates)
 import Views exposing (view)
-import TiltakComponents.SykkelparkeringUte
-import TiltakComponents.SeparatSykkelveg
-import Tiltak
+import Group
+import TiltakAndGroupData
 
 
 main : Program Never Model Msg
@@ -34,18 +32,14 @@ init location =
             { navState = navState
             , page = Home
             , modalState = Modal.hiddenState
-            , tiltakStates =
-                { sykkelParkeringUteTiltakState = TiltakComponents.SykkelparkeringUte.initialTiltakState
-                , separatSykkelvegTiltakState = TiltakComponents.SeparatSykkelveg.initialTiltakState
-                , leskurUtenSitteplassTiltakState = createTiltakState {}
-                , skiltingIBussTiltakState = createTiltakState {}
-                }
+            , tiltakStates = TiltakAndGroupData.initialTiltakStates
             }
 
-        ( model, urlCmd ) =
+        model =
             urlUpdate location initialModel
     in
-        ( model, Cmd.batch [ urlCmd, navCmd ] )
+        -- if we had more than one cmd, use Cmd.batch : List Cmd -> Cmd
+        ( model, navCmd )
 
 
 subscriptions : Model -> Sub Msg
@@ -53,40 +47,43 @@ subscriptions model =
     Navbar.subscriptions model.navState NavMsg
 
 
+updateTiltakStateFromField : Field -> String -> TiltakStates -> TiltakStates
+updateTiltakStateFromField field stringValue tiltakStates =
+    field.updateTiltakState stringValue tiltakStates
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         UrlChange location ->
-            urlUpdate location model
+            ( urlUpdate location model, Cmd.none )
 
         NavMsg state ->
-            ( { model | navState = state }
-            , Cmd.none
-            )
+            ( { model | navState = state }, Cmd.none )
 
         ModalMsg state ->
-            ( { model | modalState = state }
+            ( { model | modalState = state }, Cmd.none )
+
+        UpdateField field stringValue ->
+            ( { model
+                | tiltakStates =
+                    updateTiltakStateFromField
+                        field
+                        stringValue
+                        model.tiltakStates
+              }
             , Cmd.none
             )
 
-        FieldUpdate updateFunc stringValue ->
-            ( { model | tiltakStates = (updateFunc stringValue model.tiltakStates) }, Cmd.none )
 
-        FormSubmit submitFunc ->
-            submitFunc model
-
-        ToggleVisible tiltakObject ->
-            ( { model | tiltakStates = tiltakObject.toggleVisible model.tiltakStates }, Cmd.none )
-
-
-urlUpdate : Navigation.Location -> Model -> ( Model, Cmd Msg )
+urlUpdate : Navigation.Location -> Model -> Model
 urlUpdate location model =
     case decode location of
         Nothing ->
-            ( { model | page = NotFound }, Cmd.none )
+            { model | page = NotFound }
 
         Just route ->
-            ( { model | page = route }, Cmd.none )
+            { model | page = route }
 
 
 decode : Location -> Maybe Page
@@ -96,7 +93,7 @@ decode location =
             result
 
         Nothing ->
-            Tiltak.gruppeFromHash location.hash |> Maybe.map GroupPage
+            Group.gruppeFromHash location.hash |> Maybe.map GroupPage
 
 
 routeParser : UrlParser.Parser (Page -> a) a

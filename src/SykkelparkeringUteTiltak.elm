@@ -1,19 +1,13 @@
 module SykkelparkeringUteTiltak exposing (..)
 
 import GeneralForutsetninger
+import TiltakStates exposing (TiltakStates, SykkelparkeringUteTiltakModel)
 
 
 type VariableToGraph
     = TripsPerYear
     | YearlyMaintenance
     | InstallationCost
-
-
-type alias SykkelparkeringUteTiltakModel =
-    { tripsPerYear : Maybe Int
-    , installationCost : Maybe Float
-    , yearlyMaintenance : Maybe Float
-    }
 
 
 tripsPerYearNettoNytteNullpunkt : SykkelparkeringUteTiltakModel -> Maybe Float

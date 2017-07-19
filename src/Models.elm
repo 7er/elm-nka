@@ -2,9 +2,7 @@ port module Models exposing (..)
 
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
-import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
-import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
-import Field exposing (TiltakState)
+import TiltakStates exposing (TiltakStates)
 
 
 port generateC3 : String -> Cmd msg
@@ -22,17 +20,26 @@ type Page
     | NotFound
 
 
-type alias TiltakStates =
-    { sykkelParkeringUteTiltakState : TiltakState SykkelparkeringUteTiltakModel
-    , separatSykkelvegTiltakState : TiltakState SeparatSykkelvegTiltakModel
-    , leskurUtenSitteplassTiltakState : TiltakState {}
-    , skiltingIBussTiltakState : TiltakState {}
-    }
-
-
 type alias Model =
     { page : Page
     , navState : Navbar.State
     , modalState : Modal.State
     , tiltakStates : TiltakStates
+    }
+
+
+type alias Field =
+    { name : String
+    , title : String
+    , placeholder : String
+    , updateTiltakState : String -> TiltakStates -> TiltakStates
+    , stringValueFromState : TiltakStates -> String
+    }
+
+
+type alias Tiltak =
+    { brukerNytte : TiltakStates -> Maybe Float
+    , kostUtenSkyggepris : TiltakStates -> Maybe Float
+    , title : String
+    , fields : List Field
     }

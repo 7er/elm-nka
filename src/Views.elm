@@ -12,9 +12,8 @@ import Bootstrap.Modal as Modal
 import Models exposing (..)
 import Msgs exposing (Msg)
 import GroupPage
-import Tiltak
-import TiltakGrupper
 import Msgs exposing (Msg(..))
+import Group
 
 
 view : Model -> Html Msg
@@ -30,12 +29,12 @@ menu : Navbar.State -> Html Msg
 menu navState =
     let
         groupToItemLink group =
-            Navbar.itemLink [ href (Tiltak.tiltaksGruppePath group) ] [ text (Tiltak.tiltaksGruppeTittel group) ]
+            Navbar.itemLink [ href (Group.tiltaksGruppePath group) ] [ text (Group.tiltaksGruppeTittel group) ]
 
         itemLinks =
             [ Navbar.itemLink [ href "#getting-started" ] [ text "Komme i gang" ]
             ]
-                ++ List.map groupToItemLink TiltakGrupper.tiltaksGrupper
+                ++ List.map groupToItemLink Group.alleTyper
     in
         Navbar.config NavMsg
             |> Navbar.withAnimation

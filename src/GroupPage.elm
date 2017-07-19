@@ -1,50 +1,24 @@
 module GroupPage exposing (..)
 
-import Json.Decode as Json
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (onInput, onClick, defaultOptions, onWithOptions)
 import Models exposing (..)
-import Msgs exposing (Msg(..), TiltakObject)
-import Tiltak exposing (..)
+import Msgs exposing (Msg)
+import TiltakAndGroupData
+import TiltakView
 
 
-tiltakView : Model -> TiltakObject -> Html Msg
-tiltakView model tiltak =
+gruppePageView : Model -> List Tiltak -> List (Html Msg)
+gruppePageView model tiltakene =
     let
-        ourOnClick msg =
-            onWithOptions "click"
-                { defaultOptions | preventDefault = True }
-                (Json.succeed msg)
+        tiltakElement tiltak =
+            li [] <| TiltakView.tiltakView model tiltak
 
-        baseContent =
-            h3 []
-                [ a
-                    [ href "javascript:void();", ourOnClick (ToggleVisible tiltak) ]
-                    [ text tiltak.name ]
-                ]
-
-        maybePage =
-            case tiltak.isVisible model.tiltakStates of
-                True ->
-                    tiltak.page model
-
-                False ->
-                    []
+        allTiltakElements =
+            tiltakene |> List.map tiltakElement
     in
-        [ baseContent ]
-            ++ maybePage
-            |> li []
-
-
-gruppePageView : Model -> TiltaksGruppe -> List (Html Msg)
-gruppePageView model ({ tiltakene } as tiltaksGruppe) =
-    [ ul [] (List.map (tiltakView model) tiltakene)
-    ]
+        [ ul [] allTiltakElements ]
 
 
 page : TiltaksGruppeType -> Model -> List (Html Msg)
 page tiltaksGruppeType model =
-    activeGruppe tiltaksGruppeType
-        |> Maybe.map (gruppePageView model)
-        |> Maybe.withDefault [ h1 [] [ text "Ugyldig gruppe" ] ]
+    TiltakAndGroupData.tiltakForGroup tiltaksGruppeType |> gruppePageView model

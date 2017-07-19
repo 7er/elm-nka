@@ -1,20 +1,13 @@
 module SeparatSykkelvegTiltak exposing (..)
 
 import GeneralForutsetninger
+import TiltakStates exposing (TiltakStates, SeparatSykkelvegTiltakModel)
 
 
 type VariableToGraph
     = TripsPerYear
     | YearlyMaintenance
     | InstallationCost
-
-
-type alias SeparatSykkelvegTiltakModel =
-    { lengthKm : Maybe Float
-    , tripsPerYear : Maybe Int
-    , minutesSaved : Maybe Float
-    , investmentCost : Maybe Float
-    }
 
 
 tripsPerYearNettoNytteNullpunkt : SeparatSykkelvegTiltakModel -> Maybe Float

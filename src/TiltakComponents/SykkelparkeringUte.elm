@@ -1,50 +1,80 @@
 module TiltakComponents.SykkelparkeringUte exposing (..)
 
-import Bootstrap.Grid as Grid
-import Bootstrap.Grid.Col as Col
-import Html exposing (Html, text, div, h2)
-import Html.Attributes exposing (for, value, id, class)
 import Models exposing (..)
-import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
-import NumberFormat
-import Field exposing (..)
-import TiltakPage
-import Msgs exposing (Msg, TiltakObject)
+import TiltakStates exposing (SykkelparkeringUteTiltakModel)
+import GeneralForutsetninger
 
 
-type alias Title =
-    String
+stateMap func tiltakStates =
+    { tiltakStates | sykkelParkeringUteTiltakState = func tiltakStates.sykkelParkeringUteTiltakState }
 
 
-fields : List (Field SykkelparkeringUteTiltakModel)
+fields : List Field
 fields =
-    [ Field "tripsPerYear"
-        "Antall sykkelreiser per år"
-        "Sykkelreiser som bruker tiltaket"
-      <|
-        \specificState stringValue ->
-            { specificState | tripsPerYear = String.toInt stringValue |> Result.toMaybe }
-    , Field "installationCost"
-        "Installasjonskostnad"
-        ""
-      <|
-        \specificState stringValue ->
-            { specificState | installationCost = String.toFloat stringValue |> Result.toMaybe }
-    , Field "yearlyMaintenance"
-        "Årlige drifts- og vedlikeholdskostnader"
-        "Kostnaden ved å installere tiltaket en gang, kroner"
-      <|
-        \specificState stringValue -> { specificState | yearlyMaintenance = String.toFloat stringValue |> Result.toMaybe }
-    ]
+    let
+        updateTiltakStateHelper =
+            TiltakStates.stateUpdateHelper stateMap
+
+        thisStringValueHelper =
+            TiltakStates.stringValueHelper .sykkelParkeringUteTiltakState
+    in
+        [ { name = "tripsPerYear"
+          , title = "Antall sykkelreiser per år"
+          , placeholder = "Sykkelreiser som bruker tiltaket"
+          , updateTiltakState =
+                updateTiltakStateHelper
+                    (\stringValue state ->
+                        { state
+                            | tripsPerYear =
+                                String.toInt stringValue |> Result.toMaybe
+                        }
+                    )
+          , stringValueFromState = thisStringValueHelper .tripsPerYear
+          }
+        , { name = "installationCost"
+          , title = "Installasjonskostnad"
+          , placeholder = ""
+          , updateTiltakState =
+                updateTiltakStateHelper
+                    (\stringValue state ->
+                        { state
+                            | installationCost =
+                                String.toFloat stringValue |> Result.toMaybe
+                        }
+                    )
+          , stringValueFromState = thisStringValueHelper .installationCost
+          }
+        , { name = "yearlyMaintenance"
+          , title = "Årlige drifts- og vedlikeholdskostnader"
+          , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
+          , updateTiltakState =
+                updateTiltakStateHelper
+                    (\stringValue state ->
+                        { state
+                            | yearlyMaintenance =
+                                String.toFloat stringValue |> Result.toMaybe
+                        }
+                    )
+          , stringValueFromState = thisStringValueHelper .yearlyMaintenance
+          }
+        ]
 
 
-initialTiltakState : TiltakState SykkelparkeringUteTiltakModel
-initialTiltakState =
-    createTiltakState
-        { tripsPerYear = Nothing
-        , yearlyMaintenance = Nothing
-        , installationCost = Just 300004
-        }
+tiltak : Tiltak
+tiltak =
+    { title = "Sikker sykkelparkering ute"
+    , fields = fields
+    , brukerNytte = \{ sykkelParkeringUteTiltakState } -> brukerNytte sykkelParkeringUteTiltakState
+    , kostUtenSkyggepris = \{ sykkelParkeringUteTiltakState } -> kostUtenSkyggepris sykkelParkeringUteTiltakState
+    }
+
+
+initialState : SykkelparkeringUteTiltakModel
+initialState =
+    { tripsPerYear = Nothing
+    , yearlyMaintenance = Nothing
+    , installationCost = Nothing
+    }
 
 
 c3GraphId : String
@@ -57,80 +87,140 @@ loadGraph =
     generateC3 c3GraphId
 
 
-modelComputation : TiltakState SykkelparkeringUteTiltakModel -> (SykkelparkeringUteTiltakModel -> Maybe Float) -> String
-modelComputation form computationFunc =
-    form
-        |> unwrapState
-        |> computationFunc
-        |> NumberFormat.maybePretty
+nytteMultiplier : Float
+nytteMultiplier =
+    GeneralForutsetninger.sykkelParkeringUteNOK
 
 
-updateFieldInModel : String -> FieldValue -> TiltakStates -> TiltakStates
-updateFieldInModel variableName stringValue model =
-    { model
-        | sykkelParkeringUteTiltakState = TiltakPage.updateTiltakState model.sykkelParkeringUteTiltakState variableName stringValue fields
-    }
-
-
-handleSubmit : Model -> ( Model, Cmd Msg )
-handleSubmit ({ tiltakStates } as model) =
+usageIncrease : Float
+usageIncrease =
     let
-        { sykkelParkeringUteTiltakState } =
-            tiltakStates
-
-        newTiltakState =
-            { sykkelParkeringUteTiltakState | submitted = True }
+        { sykkelParkeringUte } =
+            GeneralForutsetninger.usageIncrease
     in
-        ( { model
-            | tiltakStates =
-                { tiltakStates | sykkelParkeringUteTiltakState = newTiltakState }
-          }
-        , loadGraph
+        sykkelParkeringUte
+
+
+yearlyHelsegevinstOgEndretUlykkesrisiko : Maybe Int -> Maybe Float
+yearlyHelsegevinstOgEndretUlykkesrisiko tripsPerYear =
+    Maybe.map
+        (\trips ->
+            (toFloat trips)
+                * usageIncrease
+                * GeneralForutsetninger.avgTripLengthKm
+                * GeneralForutsetninger.helsegevinstOgEndretUlykkesrisikoNOKPerKm
         )
+        tripsPerYear
 
 
-page : Model -> List (Html Msg)
-page ({ tiltakStates } as model) =
-    TiltakPage.form handleSubmit updateFieldInModel fields model
-        ++ [ div [ id c3GraphId ] [ text "Her skal grafen rendres" ] ]
-        ++ (samfunnsOkonomiskAnalyse tiltakStates)
+yearlyKoreduksjonSlitasjeDrift : Maybe Int -> Maybe Float
+yearlyKoreduksjonSlitasjeDrift tripsPerYear =
+    tripsPerYear
+        |> Maybe.map
+            (\trips ->
+                (toFloat trips)
+                    * usageIncrease
+                    * GeneralForutsetninger.avgTripLengthKm
+                    * GeneralForutsetninger.koreduksjonSlitasjeDriftNOKPerKm
+            )
 
 
-samfunnsOkonomiskAnalyse : TiltakStates -> List (Html Msg)
-samfunnsOkonomiskAnalyse model =
-    [ h2 [] [ text "Samfunnsøkonomisk analyse" ]
-    , Grid.row []
-        [ Grid.col [] [ text "Brukernes nytte over 40 år" ]
-        , Grid.col [ Col.attrs [ class "text-right" ] ]
-            [ text
-                (SykkelparkeringUteTiltak.brukerNytte
-                    |> modelComputation model.sykkelParkeringUteTiltakState
-                )
-            ]
-        ]
-    , Grid.row []
-        [ Grid.col [] [ text "Sum kostnader over 40 år" ]
-        , Grid.col [ Col.attrs [ class "text-right" ] ]
-            [ text
-                (SykkelparkeringUteTiltak.kostUtenSkyggepris
-                    |> modelComputation model.sykkelParkeringUteTiltakState
-                )
-            ]
-        ]
-    ]
+tripsPerYearEffects : Maybe Int -> Maybe Float
+tripsPerYearEffects tripsPerYear =
+    Maybe.map3 (\a b c -> a + b + c)
+        (yearlyHelsegevinstOgEndretUlykkesrisiko tripsPerYear)
+        (yearlyMiljoOgKlimaeffekt tripsPerYear)
+        (yearlyKoreduksjonSlitasjeDrift tripsPerYear)
 
 
-toggleVisible : TiltakStates -> TiltakStates
-toggleVisible ({ sykkelParkeringUteTiltakState } as tiltakStates) =
-    { tiltakStates
-        | sykkelParkeringUteTiltakState = { sykkelParkeringUteTiltakState | visible = not sykkelParkeringUteTiltakState.visible }
-    }
+parkeringSyklistNytte : Maybe Int -> Maybe Float
+parkeringSyklistNytte tripsPerYear =
+    Maybe.map (\trips -> (toFloat trips) * nytteMultiplier) tripsPerYear
 
 
-tiltakObject : TiltakObject
-tiltakObject =
-    { name = "Sikker sykkelparkering ute"
-    , page = page
-    , toggleVisible = toggleVisible
-    , isVisible = \{ sykkelParkeringUteTiltakState } -> sykkelParkeringUteTiltakState.visible
-    }
+brukerNytte : SykkelparkeringUteTiltakModel -> Maybe Float
+brukerNytte forutsetninger =
+    yearlySyklistNytte forutsetninger |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
+
+
+yearlySyklistNytte : SykkelparkeringUteTiltakModel -> Maybe Float
+yearlySyklistNytte forutsetninger =
+    Maybe.map2 (+)
+        (parkeringSyklistNytte forutsetninger.tripsPerYear)
+        (Maybe.map (\nytte -> 0.5 * nytte * usageIncrease) <| parkeringSyklistNytte forutsetninger.tripsPerYear)
+
+
+yearlyMiljoOgKlimaeffekt : Maybe Int -> Maybe Float
+yearlyMiljoOgKlimaeffekt tripsPerYear =
+    tripsPerYear
+        |> Maybe.map
+            (\trips ->
+                (toFloat trips)
+                    * usageIncrease
+                    * GeneralForutsetninger.avgTripLengthKm
+                    * GeneralForutsetninger.miljoOgKlimaeffektNOKPerKm
+            )
+
+
+yearlyNytte : SykkelparkeringUteTiltakModel -> Maybe Float
+yearlyNytte forutsetninger =
+    Maybe.map2 (+) (yearlySyklistNytte forutsetninger) (tripsPerYearEffects forutsetninger.tripsPerYear)
+
+
+nytte : SykkelparkeringUteTiltakModel -> Maybe Float
+nytte model =
+    yearlyNytte model |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
+
+
+totalCostNowValue : SykkelparkeringUteTiltakModel -> Maybe Float
+totalCostNowValue forutsetninger =
+    Maybe.map2 (+)
+        (investmentKostInklRestverdiValueToday forutsetninger.installationCost)
+        (maintenanceCost forutsetninger.yearlyMaintenance)
+
+
+kostUtenSkyggepris : SykkelparkeringUteTiltakModel -> Maybe Float
+kostUtenSkyggepris =
+    totalCostNowValue
+
+
+maintenanceCost : Maybe Float -> Maybe Float
+maintenanceCost yearlyMaintenance =
+    yearlyMaintenance |> Maybe.map ((*) GeneralForutsetninger.afaktor)
+
+
+kost : SykkelparkeringUteTiltakModel -> Maybe Float
+kost forutsetninger =
+    totalCostNowValue forutsetninger |> Maybe.map ((*) (1 + GeneralForutsetninger.skyggepris))
+
+
+nettoNytte : SykkelparkeringUteTiltakModel -> Maybe Float
+nettoNytte forutsetninger =
+    Maybe.map2 (-) (nytte forutsetninger) (kost forutsetninger)
+
+
+investmentKostInklRestverdiValueToday : Maybe Float -> Maybe Float
+investmentKostInklRestverdiValueToday installationCost =
+    installationCost |> Maybe.map ((*) investmentFactor)
+
+
+levetid : number
+levetid =
+    10
+
+
+investmentFactor : Float
+investmentFactor =
+    let
+        beregningsTekniskMellomregning =
+            toFloat <| (GeneralForutsetninger.analysePeriode // levetid) + 1
+
+        ledd1 =
+            (1 - ((1 + GeneralForutsetninger.drente) ^ ((negate levetid) * beregningsTekniskMellomregning)))
+                / (1 - ((1 + GeneralForutsetninger.drente) ^ (negate levetid)))
+
+        ledd2 =
+            (GeneralForutsetninger.analysePeriode - (levetid * beregningsTekniskMellomregning))
+                / (levetid * ((1 + GeneralForutsetninger.drente) ^ GeneralForutsetninger.analysePeriode))
+    in
+        ledd1 + ledd2

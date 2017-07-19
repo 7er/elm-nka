@@ -18,19 +18,19 @@ type alias Model =
 
 
 type Msg
-    = UpdateField Tiltak Field String
+    = UpdateField Field String
 
 
-updateTiltakStateFromField : Tiltak -> Field -> String -> TiltakStates -> TiltakStates
-updateTiltakStateFromField tiltak field stringValue tiltakStates =
+updateTiltakStateFromField : Field -> String -> TiltakStates -> TiltakStates
+updateTiltakStateFromField field stringValue tiltakStates =
     field.updateTiltakState stringValue tiltakStates
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        UpdateField tiltak field stringValue ->
-            { model | tiltakStates = updateTiltakStateFromField tiltak field stringValue model.tiltakStates }
+        UpdateField field stringValue ->
+            { model | tiltakStates = updateTiltakStateFromField field stringValue model.tiltakStates }
 
 
 init : Model
@@ -67,7 +67,7 @@ form tiltak model =
                 , Input.number
                     [ Input.id name
                     , Input.placeholder placeholder
-                    , Input.onInput <| UpdateField tiltak field
+                    , Input.onInput <| UpdateField field
                     , Input.value <| field.stringValueFromState model.tiltakStates
                     ]
                 ]
