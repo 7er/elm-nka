@@ -14,14 +14,16 @@ import Msgs exposing (Msg)
 import GroupPage
 import Msgs exposing (Msg(..))
 import Group
+import Assets
 
 
 view : Model -> Html Msg
 view model =
-    div []
+    div [class "contents" ]
         [ menu model.navState
         , mainContent model
         , modal model.modalState
+        , appFooter
         ]
 
 
@@ -39,7 +41,7 @@ menu navState =
         Navbar.config NavMsg
             |> Navbar.withAnimation
             |> Navbar.container
-            |> Navbar.brand [ href "#" ] [ text "TØI NKA-verktøy for kollektivtiltak" ]
+            |> Navbar.brand [ href "#" ] [ text "TØI Kollektivtrafikk tiltak kalkulator" ]
             |> Navbar.items itemLinks
             |> Navbar.view navState
 
@@ -63,7 +65,8 @@ mainContent model =
 
 pageHome : Model -> List (Html Msg)
 pageHome model =
-    [ h1 [] [ text "Hjem" ]
+    [ h1 [ class "overskrift"] [ text "TØI Kollektivtrafikk kalkulator" ]
+    , p [] [ text "Kalkulatorer for kostnad-nytte-analyse av tiltak for kollektivtrafikk" ]
     , Grid.row []
         [ Grid.col []
             [ Card.config [ Card.outlinePrimary ]
@@ -131,3 +134,17 @@ modal modalState =
                 ]
             ]
         |> Modal.view modalState
+
+
+appFooter : Html Msg
+appFooter =
+    footer [] [
+        div [] [ text "Kontakt: "
+            , a [href "mailto:naf@toi.no"] [text "Nils Fearnley"]
+            , br [] []
+            , a [href "https://www.toi.no"] [
+                img [Assets.src Assets.toiLogo, class "toiLogo", alt "TØI logo"] [] ]
+            , a [href "https://www.oslo.kommune.no"] [
+                img [Assets.src Assets.byvaapen, class "byvaapen", alt "Oslo byvåpen"] [] ]
+        ]
+    ]

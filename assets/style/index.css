@@ -1,0 +1,57 @@
+.overskrift {
+    display: block;
+    border: 1px dotted green;
+}
+
+footer {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-top: 100px;
+    background-color: #3b3b3b;
+    color: #F3F3F3;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.footer-text {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 1.5em;
+    font-weight: 400;
+    font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+}
+
+footer a {
+    color: #0299fc;
+}
+
+.toiLogo {
+    width: 500px;
+    margin-right: 10px;
+}
+
+.byvaapen {
+    width: 100px;
+}
+
+@media (max-width: 550px) {
+    .toiLogo {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 630px) {
+    .toiLogo {
+        width: 90vw;
+        margin-bottom: 1rem;
+    }
+}
+
+body {
+    background-color: #3b3b3b;
+}
+
+.contents {
+    background-color: white;
+}
