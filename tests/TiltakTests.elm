@@ -2,7 +2,8 @@ module TiltakTests exposing (..)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
-import SykkelparkeringUteTiltak exposing (SykkelparkeringUteTiltakModel)
+import Tiltak.SykkelparkeringUte as SykkelparkeringUte
+import TiltakStates exposing (SykkelparkeringUteTiltakModel)
 
 
 closeTo : Float -> Int -> Float -> Expectation
@@ -32,7 +33,7 @@ checkMaybe expectation maybeValue =
 
 checkNytteNullPunktForNullModel : SykkelparkeringUteTiltakModel -> Expectation
 checkNytteNullPunktForNullModel model =
-    SykkelparkeringUteTiltak.nettoNytte model |> checkMaybe (closeTo 0 3)
+    SykkelparkeringUte.nettoNytte model |> checkMaybe (closeTo 0 3)
 
 
 
@@ -68,32 +69,32 @@ suite =
                 \_ ->
                     Just 80 |> checkMaybe (Expect.equal 80)
             ]
-        , describe "SykkelparkeringUteTiltak"
+        , describe "SykkelparkeringUte"
             [ sykkelParkeringUteTest "calculates the nytte" <|
                 \model ->
-                    SykkelparkeringUteTiltak.nytte model |> checkMaybe (closeTo 543262.891 3)
+                    SykkelparkeringUte.nytte model |> checkMaybe (closeTo 543262.891 3)
             , describe "kost"
                 [ sykkelParkeringUteTest "calculates the kost" <|
                     \model ->
-                        SykkelparkeringUteTiltak.kost model |> checkMaybe (closeTo 543262.89 3)
+                        SykkelparkeringUte.kost model |> checkMaybe (closeTo 543262.89 3)
                 , sykkelParkeringUteTest "calculates totalCostNowValue" <|
                     \model ->
-                        SykkelparkeringUteTiltak.totalCostNowValue model |> checkMaybe (closeTo 452719 0)
+                        SykkelparkeringUte.totalCostNowValue model |> checkMaybe (closeTo 452719 0)
                 ]
             , describe "investmentKostInklRestverdiValueToday calculations"
                 [ test "investmentFactor" <|
                     \_ ->
-                        SykkelparkeringUteTiltak.investmentFactor |> closeTo 2.4402698 7
+                        SykkelparkeringUte.investmentFactor |> closeTo 2.4402698 7
                 , sykkelParkeringUteTest "investmentKostInklRestverdiValueToday" <|
                     \model ->
-                        SykkelparkeringUteTiltak.investmentKostInklRestverdiValueToday model.installationCost |> checkMaybe (closeTo 254791 0)
+                        SykkelparkeringUte.investmentKostInklRestverdiValueToday model.installationCost |> checkMaybe (closeTo 254791 0)
                 ]
             , sykkelParkeringUteTest "calculates the maintenanceCost" <|
                 \model ->
-                    SykkelparkeringUteTiltak.maintenanceCost model.yearlyMaintenance |> checkMaybe (closeTo 197928 0)
+                    SykkelparkeringUte.maintenanceCost model.yearlyMaintenance |> checkMaybe (closeTo 197928 0)
             , sykkelParkeringUteTest "calculates the nettoNytte" <|
                 \model ->
-                    SykkelparkeringUteTiltak.nettoNytte model |> checkMaybe (closeTo 0 3)
+                    SykkelparkeringUte.nettoNytte model |> checkMaybe (closeTo 0 3)
 
             {- , generateTestWithModel <|
                    \_ ->
@@ -110,12 +111,12 @@ suite =
                                        let
                                            variableValue =
                                                case variable of
-                                                   SykkelparkeringUteTiltak.TripsPerYear ->
+                                                   SykkelparkeringUte.TripsPerYear ->
                                                        model.tripsPerYear
                                        in
-                                           SykkelparkeringUteTiltak.nettoNytteNullPunkt variable model |> closeTo
+                                           SykkelparkeringUte.nettoNytteNullPunkt variable model |> closeTo
                        in
-                           SykkelparkeringUteTiltak.schemaVariablesToGraph |> List.map testGenerator
+                           SykkelparkeringUte.schemaVariablesToGraph |> List.map testGenerator
 
 
                {-

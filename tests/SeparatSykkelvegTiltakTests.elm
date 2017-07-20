@@ -2,7 +2,8 @@ module SeparatSykkelvegTiltakTests exposing (..)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
-import SeparatSykkelvegTiltak exposing (SeparatSykkelvegTiltakModel)
+import Tiltak.SeparatSykkelveg as SeparatSykkelveg
+import TiltakStates exposing (SeparatSykkelvegTiltakModel)
 
 
 closeTo : Float -> Int -> Float -> Expectation
@@ -32,19 +33,19 @@ checkMaybe expectation maybeValue =
 
 suite : Test
 suite =
-    describe "SeparatSykkelvegTiltak"
+    describe "SeparatSykkelveg"
         [ separatSykkelvegTest "calculates the kost" <|
             \model ->
                 let
                     invKost =
                         35467795.5896
                 in
-                    SeparatSykkelvegTiltak.kostByInvestmentCost invKost
+                    SeparatSykkelveg.kostByInvestmentCost invKost
                         |> closeTo 101529863.6 2
 
         {- , separatSykkelvegTest "calculates the nettoNytte" <|
            \model ->
-               SeparatSykkelvegTiltak.nettoNytte { model | tripsPerYear = Just 775746 } |> checkMaybe (closeTo -675.2 1)
+               SeparatSykkelveg.nettoNytte { model | tripsPerYear = Just 775746 } |> checkMaybe (closeTo -675.2 1)
         -}
         ]
 
