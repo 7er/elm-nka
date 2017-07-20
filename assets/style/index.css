@@ -38,6 +38,20 @@ footer a {
 @media (max-width: 550px) {
     .toiLogo {
         width: 90vw;
+    }
+}
+
+@media (max-width: 630px) {
+    .toiLogo {
+        width: 90vw;
         margin-bottom: 1rem;
     }
+}
+
+body {
+    background-color: #3b3b3b;
+}
+
+.contents {
+    background-color: white;
 }

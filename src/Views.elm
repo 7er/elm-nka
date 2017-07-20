@@ -19,7 +19,7 @@ import Assets
 
 view : Model -> Html Msg
 view model =
-    div []
+    div [class "contents" ]
         [ menu model.navState
         , mainContent model
         , modal model.modalState
