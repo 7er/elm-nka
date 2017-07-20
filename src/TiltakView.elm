@@ -6,22 +6,29 @@ import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
+import Bootstrap.Accordion as Accordion
+import Bootstrap.Card as Card
 import Models exposing (..)
 import Msgs exposing (Msg(..))
 import NumberFormat
 import TiltakStates exposing (TiltakStates)
 
 
-tiltakView : Model -> Tiltak -> List (Html Msg)
-tiltakView model tiltak =
+tiltakCard : Model -> Tiltak -> Accordion.Card Msg
+tiltakCard model tiltak =
     let
         analyse =
             samfunnsOkonomiskAnalyse tiltak model.tiltakStates
     in
-        [ h2 [] [ text tiltak.title ]
-        , form tiltak model
-        ]
-            ++ analyse
+        Accordion.card
+            { id = (tiltak.title)
+            , options = []
+            , header = Accordion.header [] <| Accordion.toggle [] [ text tiltak.title ]
+            , blocks =
+                [ Accordion.block []
+                    [ Card.custom <| div [] ([ form tiltak model ] ++ analyse) ]
+                ]
+            }
 
 
 form : Tiltak -> Model -> Html Msg

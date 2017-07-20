@@ -2,6 +2,7 @@ port module Models exposing (..)
 
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
+import Bootstrap.Accordion as Accordion
 import TiltakStates exposing (TiltakStates)
 
 
@@ -24,6 +25,7 @@ type alias Model =
     { page : Page
     , navState : Navbar.State
     , modalState : Modal.State
+    , accordionState : Accordion.State
     , tiltakStates : TiltakStates
     }
 

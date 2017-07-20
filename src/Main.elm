@@ -3,6 +3,7 @@ module Main exposing (main)
 import Navigation exposing (Location)
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
+import Bootstrap.Accordion as Accordion
 import UrlParser exposing ((</>))
 import Models exposing (..)
 import Msgs exposing (Msg(..))
@@ -29,9 +30,10 @@ init location =
             Navbar.initialState NavMsg
 
         initialModel =
-            { navState = navState
-            , page = Home
+            { page = Home
+            , navState = navState
             , modalState = Modal.hiddenState
+            , accordionState = Accordion.initialState
             , tiltakStates = TiltakAndGroupData.initialTiltakStates
             }
 
@@ -44,7 +46,10 @@ init location =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Navbar.subscriptions model.navState NavMsg
+    Sub.batch
+        [ Navbar.subscriptions model.navState NavMsg
+        , Accordion.subscriptions model.accordionState AccordionMsg
+        ]
 
 
 updateTiltakStateFromField : Field -> String -> TiltakStates -> TiltakStates
@@ -63,6 +68,9 @@ update msg model =
 
         ModalMsg state ->
             ( { model | modalState = state }, Cmd.none )
+
+        AccordionMsg state ->
+            ( { model | accordionState = state }, Cmd.none )
 
         UpdateField field stringValue ->
             ( { model
