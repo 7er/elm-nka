@@ -2,18 +2,18 @@ module TiltakAndGroupData exposing (..)
 
 import Models exposing (..)
 import TiltakStates exposing (TiltakStates)
-import TiltakComponents.SykkelparkeringUte as SykkelparkeringUte
-import TiltakComponents.SeparatSykkelveg as SeparatSykkelveg
-import TiltakComponents.LeskurUtenSitteplass as LeskurUtenSitteplass
-import TiltakComponents.SkiltingIBuss as SkiltingIBuss
+import Tiltak.SykkelparkeringUte as SykkelparkeringUte
+import Tiltak.SeparatSykkelveg as SeparatSykkelveg
+import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
+import Tiltak.SkiltingIBuss as SkiltingIBuss
 
 
-alleTyper : List TiltaksGruppeType
+alleTyper : List Group
 alleTyper =
     [ Holdeplasser, Informasjon ]
 
 
-tiltakForGroup : TiltaksGruppeType -> List Tiltak
+tiltakForGroup : Group -> List Tiltak
 tiltakForGroup gruppeType =
     case gruppeType of
         Holdeplasser ->

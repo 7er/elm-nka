@@ -1,4 +1,4 @@
-module TiltakComponents.SkiltingIBuss exposing (..)
+module Tiltak.SkiltingIBuss exposing (..)
 
 import Models exposing (Tiltak)
 

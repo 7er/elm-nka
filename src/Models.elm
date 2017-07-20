@@ -8,7 +8,7 @@ import TiltakStates exposing (TiltakStates)
 port generateC3 : String -> Cmd msg
 
 
-type TiltaksGruppeType
+type Group
     = Holdeplasser
     | Informasjon
 
@@ -16,7 +16,7 @@ type TiltaksGruppeType
 type Page
     = Home
     | GettingStarted
-    | GroupPage TiltaksGruppeType
+    | GroupPage Group
     | NotFound
 
 

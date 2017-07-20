@@ -1,4 +1,4 @@
-module TiltakComponents.LeskurUtenSitteplass exposing (..)
+module Tiltak.LeskurUtenSitteplass exposing (..)
 
 import Models exposing (Model, Tiltak)
 

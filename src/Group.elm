@@ -1,15 +1,15 @@
 module Group exposing (..)
 
-import Models exposing (TiltaksGruppeType, Tiltak)
+import Models exposing (Group)
 import TiltakAndGroupData
 
 
-tiltaksGruppePath : TiltaksGruppeType -> String
+tiltaksGruppePath : Group -> String
 tiltaksGruppePath tag =
     tag |> toString |> String.toLower |> (++) "#"
 
 
-tiltaksGruppeTittel : TiltaksGruppeType -> String
+tiltaksGruppeTittel : Group -> String
 tiltaksGruppeTittel tag =
     tag |> toString
 
@@ -22,7 +22,7 @@ alleTyper =
     TiltakAndGroupData.alleTyper
 
 
-gruppeFromHash : String -> Maybe TiltaksGruppeType
+gruppeFromHash : String -> Maybe Group
 gruppeFromHash hash =
     let
         filter gruppe =

@@ -1,39 +1,100 @@
-module SeparatSykkelvegTiltak exposing (..)
+module Tiltak.SeparatSykkelveg exposing (..)
 
+import Models exposing (..)
+import TiltakStates exposing (SeparatSykkelvegTiltakModel, TiltakStates)
 import GeneralForutsetninger
-import TiltakStates exposing (TiltakStates, SeparatSykkelvegTiltakModel)
 
 
-type VariableToGraph
-    = TripsPerYear
-    | YearlyMaintenance
-    | InstallationCost
+stateMap : (SeparatSykkelvegTiltakModel -> SeparatSykkelvegTiltakModel) -> TiltakStates -> TiltakStates
+stateMap func tiltakStates =
+    { tiltakStates | separatSykkelvegTiltakState = func tiltakStates.separatSykkelvegTiltakState }
 
 
-tripsPerYearNettoNytteNullpunkt : SeparatSykkelvegTiltakModel -> Maybe Float
-tripsPerYearNettoNytteNullpunkt model =
+fields =
     let
-        forutsetningerCopy =
-            { model | tripsPerYear = Just 1 }
+        updateTiltakStateHelper =
+            TiltakStates.stateUpdateHelper stateMap
+
+        thisStringValueHelper =
+            TiltakStates.stringValueHelper .separatSykkelvegTiltakState
     in
-        Maybe.map2 (\a b -> a / b / GeneralForutsetninger.afaktorVekst)
-            (kost forutsetningerCopy)
-            (yearlyNytte forutsetningerCopy)
+        [ { name = "lengthKm"
+          , title = "Sykkelveiens lengde"
+          , placeholder = "Lengde"
+          , updateTiltakState =
+                updateTiltakStateHelper
+                    (\stringValue state ->
+                        { state
+                            | lengthKm = String.toFloat stringValue |> Result.toMaybe
+                        }
+                    )
+          , stringValueFromState = thisStringValueHelper .lengthKm
+          }
+        , { name = "tripsPerYear"
+          , title = "Antall sykkelreiser per år"
+          , placeholder = "Sykkelreiser som bruker tiltaket"
+          , updateTiltakState =
+                updateTiltakStateHelper
+                    (\stringValue state ->
+                        { state
+                            | tripsPerYear = String.toInt stringValue |> Result.toMaybe
+                        }
+                    )
+          , stringValueFromState = thisStringValueHelper .tripsPerYear
+          }
+        , { name = "minutesSaved"
+          , title = "Minutter spart"
+          , placeholder = "Blabla"
+          , updateTiltakState =
+                updateTiltakStateHelper
+                    (\stringValue state ->
+                        { state
+                            | minutesSaved = String.toFloat stringValue |> Result.toMaybe
+                        }
+                    )
+          , stringValueFromState = thisStringValueHelper .minutesSaved
+          }
+        , { name = "investmentCost"
+          , title = "Investeringskostander"
+          , placeholder = "Investeringskostnaden"
+          , updateTiltakState =
+                updateTiltakStateHelper
+                    (\stringValue state ->
+                        { state
+                            | investmentCost = String.toFloat stringValue |> Result.toMaybe
+                        }
+                    )
+          , stringValueFromState = thisStringValueHelper .investmentCost
+          }
+        ]
 
 
-nettoNytteNullPunkt : VariableToGraph -> SeparatSykkelvegTiltakModel -> Maybe Float
-nettoNytteNullPunkt variable model =
-    case variable of
-        TripsPerYear ->
-            tripsPerYearNettoNytteNullpunkt model
+initialState : SeparatSykkelvegTiltakModel
+initialState =
+    { lengthKm = Nothing
+    , tripsPerYear = Nothing
+    , minutesSaved = Nothing
+    , investmentCost = Nothing
+    }
 
-        _ ->
-            Debug.crash "TODO"
+
+c3GraphId : String
+c3GraphId =
+    "sykkelparkeringUteGraph"
 
 
-schemaVariablesToGraph : List VariableToGraph
-schemaVariablesToGraph =
-    [ TripsPerYear, YearlyMaintenance, InstallationCost ]
+loadGraph : Cmd msg
+loadGraph =
+    generateC3 c3GraphId
+
+
+tiltak : Tiltak
+tiltak =
+    { title = "Separat sykkelveg"
+    , brukerNytte = \{ separatSykkelvegTiltakState } -> brukerNytte separatSykkelvegTiltakState
+    , kostUtenSkyggepris = \{ separatSykkelvegTiltakState } -> kostUtenSkyggepris separatSykkelvegTiltakState
+    , fields = fields
+    }
 
 
 nytteMultiplier : Float

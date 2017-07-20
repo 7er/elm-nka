@@ -19,6 +19,6 @@ gruppePageView model tiltakene =
         [ ul [] allTiltakElements ]
 
 
-page : TiltaksGruppeType -> Model -> List (Html Msg)
+page : Group -> Model -> List (Html Msg)
 page tiltaksGruppeType model =
     TiltakAndGroupData.tiltakForGroup tiltaksGruppeType |> gruppePageView model
