@@ -18,6 +18,56 @@ type Tiltak
     = Tiltak TiltakRecord
 
 
+type Tagged tag value
+    = Tagged value
+
+
+type PercentTag
+    = UnusedPercent
+
+
+type MinutesTag
+    = UnusedMinutes
+
+
+type alias Percent =
+    Tagged PercentTag Float
+
+
+type alias Minutes =
+    Tagged MinutesTag Float
+
+
+percent : Float -> Percent
+percent =
+    Tagged
+
+
+minutes : Float -> Minutes
+minutes =
+    Tagged
+
+
+percentOfMinute : Percent -> Minutes
+percentOfMinute percent =
+    percent |> map (\value -> 60 * value) |> retag
+
+
+untag : Tagged a b -> b
+untag (Tagged value) =
+    value
+
+
+retag : Tagged a b -> Tagged c b
+retag tagged =
+    tagged |> untag |> Tagged
+
+
+map : (b -> c) -> Tagged a b -> Tagged a c
+map func tagged =
+    tagged |> untag |> func |> Tagged
+
+
 type alias TiltakRecord =
     { fullName : Tiltak -> String
     , firstName : Tiltak -> String
