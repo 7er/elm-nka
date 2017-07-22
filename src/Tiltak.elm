@@ -36,24 +36,35 @@ type alias AnalyseData =
     }
 
 
-
-{-
-   type Tiltak
-       = Tiltak TiltakRecord
+type TiltakNg
+    = TiltakNg TiltakRecord
 
 
-   type alias TiltakRecord =
-       { passsasjerNytte : Tiltak -> TiltakStates -> Maybe Float
-       , kostUtenSkyggepris : Tiltak -> TiltakStates -> Maybe Float
-       , title : String
-       , fields : List Field
-       }
+type alias StateCalculationMethod =
+    TiltakNg -> TiltakStates -> Maybe Float
 
 
-   sendTo ((Tiltak object) as this) field =
-       field object this
+type alias TiltakRecord =
+    { title : TiltakNg -> String
+    , fields : TiltakNg -> List Field
+    , passasjerNytte : StateCalculationMethod
+    , trafikantNytte : StateCalculationMethod
+    , operatoerNytte : StateCalculationMethod
+    , nytte : StateCalculationMethod
+    , skyggePris : StateCalculationMethod
+    , kostUtenSkyggepris : StateCalculationMethod
+    , nettoNytte : StateCalculationMethod
+    , yearlyPassasjerNytte : StateCalculationMethod
+    }
 
--}
+
+type alias TiltakAccessor a =
+    TiltakRecord -> TiltakNg -> a
+
+
+sendTo : TiltakNg -> TiltakAccessor a -> a
+sendTo ((TiltakNg object) as this) recordAccessor =
+    recordAccessor object this
 
 
 type alias FieldValue =
@@ -65,16 +76,19 @@ updateTiltakStateFromField field stringValue tiltakStates =
     field.updateTiltakState stringValue tiltakStates
 
 
-analyse : Tiltak -> TiltakStates -> AnalyseData
+analyse : TiltakNg -> TiltakStates -> AnalyseData
 analyse tiltak tiltakStates =
-    -- { passasjerNytte = sendTo tiltak .passasjerNytte tiltakStates }
-    { passasjerNytte = tiltak.brukerNytte tiltakStates
-    , analysePeriode = 40
-    , kostUtenSkyggepris = tiltak.kostUtenSkyggepris tiltakStates
-    , isProfitable = Just True
-    , trafikantNytte = Just 1000
-    , operatoerNytte = Just 301
-    , nytte = Just 500 -- dette skal være en sum av ting og tang
-    , skyggePris = Just 300
-    , nettoNytte = Just 2000
-    }
+    let
+        f accessor =
+            sendTo tiltak accessor tiltakStates
+    in
+        { passasjerNytte = f .passasjerNytte
+        , analysePeriode = 40
+        , kostUtenSkyggepris = f .kostUtenSkyggepris
+        , isProfitable = Just True
+        , trafikantNytte = f .trafikantNytte
+        , operatoerNytte = f .operatoerNytte
+        , nytte = f .nytte
+        , skyggePris = f .skyggePris
+        , nettoNytte = f .nettoNytte
+        }

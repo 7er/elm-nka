@@ -2,33 +2,9 @@ module SeparatSykkelvegTiltakTests exposing (..)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
+import TestSupport exposing (..)
 import Tiltak.SeparatSykkelveg as SeparatSykkelveg
-import TiltakStates exposing (SeparatSykkelvegTiltakModel)
-
-
-closeTo : Float -> Int -> Float -> Expectation
-closeTo expected precision actual =
-    let
-        epsilon =
-            toFloat (10 ^ (negate precision)) / 2
-
-        difference =
-            abs (expected - actual)
-    in
-        if difference < epsilon then
-            Expect.pass
-        else
-            (toString actual) ++ " is not near enough to " ++ (toString expected) ++ " using " ++ (toString precision) ++ " digits of precision" |> Expect.fail
-
-
-checkMaybe : (a -> Expectation) -> Maybe a -> Expectation
-checkMaybe expectation maybeValue =
-    case maybeValue of
-        Just value ->
-            expectation value
-
-        Nothing ->
-            Expect.fail "Got nothing"
+import TiltakStates exposing (SeparatSykkelvegState)
 
 
 suite : Test
@@ -50,7 +26,7 @@ suite =
         ]
 
 
-separatSykkelvegTest : String -> (SeparatSykkelvegTiltakModel -> Expectation) -> Test
+separatSykkelvegTest : String -> (SeparatSykkelvegState -> Expectation) -> Test
 separatSykkelvegTest description testCase =
     let
         model =

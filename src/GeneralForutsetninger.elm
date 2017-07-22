@@ -41,6 +41,10 @@ garderobeFasiliteterNOK =
     21.49
 
 
+leskurPaaBussholdeplassenMedSitteplassNOK =
+    5.81177152111594
+
+
 skyggepris =
     0.2
 

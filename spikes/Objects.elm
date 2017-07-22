@@ -1,12 +1,6 @@
 module Objects exposing (..)
 
-{-
-   type alias FieldType objectType valueType =
-       objectType -> (objectType -> valueType)
-
-
-   sendTo : objectType -> FieldType objectType valueType -> valueType
--}
+{-  -}
 -- sendTo : Person -> (PersonRecord -> Person -> a) -> a
 
 

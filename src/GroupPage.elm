@@ -7,16 +7,20 @@ import Msgs exposing (Msg(..))
 import TiltakAndGroupData
 import TiltakView
 import Bootstrap.Accordion as Accordion
+import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
 
 
 gruppePageView : Model -> List Tiltak -> Html Msg
 gruppePageView model tiltakene =
     let
+        denNyeTypenTiltak =
+            LeskurMedSitteplass.tiltak
+
         tiltakCard tiltak =
             TiltakView.tiltakCard model tiltak
 
         allCards =
-            tiltakene |> List.map tiltakCard
+            [ denNyeTypenTiltak ] |> List.map tiltakCard
     in
         Accordion.config AccordionMsg
             |> Accordion.withAnimation

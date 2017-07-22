@@ -7,6 +7,7 @@ import Tiltak.SykkelparkeringUte as SykkelparkeringUte
 import Tiltak.SeparatSykkelveg as SeparatSykkelveg
 import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
 import Tiltak.SkiltingIBuss as SkiltingIBuss
+import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
 
 
 alleTyper : List Group
@@ -44,8 +45,9 @@ alleTiltak =
 
 initialTiltakStates : TiltakStates
 initialTiltakStates =
-    { sykkelParkeringUteTiltakState = SykkelparkeringUte.initialState
-    , separatSykkelvegTiltakState = SeparatSykkelveg.initialState
-    , leskurUtenSitteplassTiltakState = {}
-    , skiltingIBussTiltakState = {}
+    { sykkelParkeringUte = SykkelparkeringUte.initialState
+    , separatSykkelveg = SeparatSykkelveg.initialState
+    , leskurUtenSitteplass = LeskurMedSitteplass.initialState
+    , skiltingIBuss = LeskurMedSitteplass.initialState
+    , leskurMedSitteplass = LeskurMedSitteplass.initialState
     }

@@ -1,14 +1,14 @@
 module TiltakStates exposing (..)
 
 
-type alias SykkelparkeringUteTiltakModel =
+type alias SykkelparkeringUteState =
     { tripsPerYear : Maybe Int
     , installationCost : Maybe Float
     , yearlyMaintenance : Maybe Float
     }
 
 
-type alias SeparatSykkelvegTiltakModel =
+type alias SeparatSykkelvegState =
     { lengthKm : Maybe Float
     , tripsPerYear : Maybe Int
     , minutesSaved : Maybe Float
@@ -16,11 +16,19 @@ type alias SeparatSykkelvegTiltakModel =
     }
 
 
+type alias SimpleCommonState =
+    { installationCost : Maybe Float
+    , yearlyMaintenance : Maybe Float
+    , passengersPerYear : Maybe Int
+    }
+
+
 type alias TiltakStates =
-    { sykkelParkeringUteTiltakState : SykkelparkeringUteTiltakModel
-    , separatSykkelvegTiltakState : SeparatSykkelvegTiltakModel
-    , leskurUtenSitteplassTiltakState : {}
-    , skiltingIBussTiltakState : {}
+    { sykkelParkeringUte : SykkelparkeringUteState
+    , separatSykkelveg : SeparatSykkelvegState
+    , leskurUtenSitteplass : SimpleCommonState
+    , leskurMedSitteplass : SimpleCommonState
+    , skiltingIBuss : SimpleCommonState
     }
 
 

@@ -54,10 +54,10 @@ view data =
             [ ( "Passasjerenes nytte over " ++ (toString data.analysePeriode) ++ " år"
               , data.passasjerNytte |> NumberFormat.maybePretty
               )
-            , ( "Trafikantenes nytte over " ++ (toString data.analysePeriode) ++ " år"
+            , ( "Øvrige trafikanters nytte over " ++ (toString data.analysePeriode) ++ " år"
               , data.trafikantNytte |> NumberFormat.maybePretty
               )
-            , ( "Operatatør nytte over " ++ (toString data.analysePeriode) ++ " år"
+            , ( "Operatør nytte over " ++ (toString data.analysePeriode) ++ " år"
               , data.operatoerNytte |> NumberFormat.maybePretty
               )
             , ( "Sum nytteelementer over " ++ (toString data.analysePeriode) ++ " år"

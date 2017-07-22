@@ -8,20 +8,27 @@ import Bootstrap.Accordion as Accordion
 import Bootstrap.Card as Card
 import Models exposing (Model)
 import Msgs exposing (Msg(..))
-import Tiltak exposing (Tiltak)
+import Tiltak exposing (TiltakNg, sendTo)
 import AnalyseView
 
 
-tiltakCard : Model -> Tiltak -> Accordion.Card Msg
+toDomId string =
+    string |> String.words |> String.join "-"
+
+
+tiltakCard : Model -> TiltakNg -> Accordion.Card Msg
 tiltakCard model tiltak =
     let
         analyse =
             AnalyseView.view <| Tiltak.analyse tiltak model.tiltakStates
+
+        title =
+            sendTo tiltak .title
     in
         Accordion.card
-            { id = (tiltak.title)
+            { id = (toDomId title)
             , options = []
-            , header = Accordion.header [] <| Accordion.toggle [] [ text tiltak.title ]
+            , header = Accordion.header [] <| Accordion.toggle [] [ text title ]
             , blocks =
                 [ Accordion.block []
                     [ Card.custom <| div [] ([ form tiltak model ] ++ analyse) ]
@@ -29,7 +36,7 @@ tiltakCard model tiltak =
             }
 
 
-form : Tiltak -> Model -> Html Msg
+form : TiltakNg -> Model -> Html Msg
 form tiltak model =
     let
         fieldView ({ name, title, placeholder } as field) =
@@ -43,4 +50,4 @@ form tiltak model =
                     ]
                 ]
     in
-        Form.form [] (tiltak.fields |> List.map fieldView)
+        Form.form [] (sendTo tiltak .fields |> List.map fieldView)

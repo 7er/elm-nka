@@ -2,12 +2,12 @@ module Tiltak.SykkelparkeringUte exposing (..)
 
 import Tiltak exposing (Tiltak, Field)
 import Models exposing (generateC3)
-import TiltakStates exposing (SykkelparkeringUteTiltakModel)
+import TiltakStates exposing (SykkelparkeringUteState)
 import GeneralForutsetninger
 
 
 stateMap func tiltakStates =
-    { tiltakStates | sykkelParkeringUteTiltakState = func tiltakStates.sykkelParkeringUteTiltakState }
+    { tiltakStates | sykkelParkeringUte = func tiltakStates.sykkelParkeringUte }
 
 
 fields : List Field
@@ -17,7 +17,7 @@ fields =
             TiltakStates.stateUpdateHelper stateMap
 
         thisStringValueHelper =
-            TiltakStates.stringValueHelper .sykkelParkeringUteTiltakState
+            TiltakStates.stringValueHelper .sykkelParkeringUte
     in
         [ { name = "tripsPerYear"
           , title = "Antall sykkelreiser per år"
@@ -65,12 +65,12 @@ tiltak : Tiltak
 tiltak =
     { title = "Sikker sykkelparkering ute"
     , fields = fields
-    , brukerNytte = \{ sykkelParkeringUteTiltakState } -> brukerNytte sykkelParkeringUteTiltakState
-    , kostUtenSkyggepris = \{ sykkelParkeringUteTiltakState } -> kostUtenSkyggepris sykkelParkeringUteTiltakState
+    , brukerNytte = \{ sykkelParkeringUte } -> brukerNytte sykkelParkeringUte
+    , kostUtenSkyggepris = \{ sykkelParkeringUte } -> kostUtenSkyggepris sykkelParkeringUte
     }
 
 
-initialState : SykkelparkeringUteTiltakModel
+initialState : SykkelparkeringUteState
 initialState =
     { tripsPerYear = Nothing
     , yearlyMaintenance = Nothing
@@ -139,12 +139,12 @@ parkeringSyklistNytte tripsPerYear =
     Maybe.map (\trips -> (toFloat trips) * nytteMultiplier) tripsPerYear
 
 
-brukerNytte : SykkelparkeringUteTiltakModel -> Maybe Float
+brukerNytte : SykkelparkeringUteState -> Maybe Float
 brukerNytte forutsetninger =
     yearlySyklistNytte forutsetninger |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
 
-yearlySyklistNytte : SykkelparkeringUteTiltakModel -> Maybe Float
+yearlySyklistNytte : SykkelparkeringUteState -> Maybe Float
 yearlySyklistNytte forutsetninger =
     Maybe.map2 (+)
         (parkeringSyklistNytte forutsetninger.tripsPerYear)
@@ -163,24 +163,24 @@ yearlyMiljoOgKlimaeffekt tripsPerYear =
             )
 
 
-yearlyNytte : SykkelparkeringUteTiltakModel -> Maybe Float
+yearlyNytte : SykkelparkeringUteState -> Maybe Float
 yearlyNytte forutsetninger =
     Maybe.map2 (+) (yearlySyklistNytte forutsetninger) (tripsPerYearEffects forutsetninger.tripsPerYear)
 
 
-nytte : SykkelparkeringUteTiltakModel -> Maybe Float
+nytte : SykkelparkeringUteState -> Maybe Float
 nytte model =
     yearlyNytte model |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
 
-totalCostNowValue : SykkelparkeringUteTiltakModel -> Maybe Float
+totalCostNowValue : SykkelparkeringUteState -> Maybe Float
 totalCostNowValue forutsetninger =
     Maybe.map2 (+)
         (investmentKostInklRestverdiValueToday forutsetninger.installationCost)
         (maintenanceCost forutsetninger.yearlyMaintenance)
 
 
-kostUtenSkyggepris : SykkelparkeringUteTiltakModel -> Maybe Float
+kostUtenSkyggepris : SykkelparkeringUteState -> Maybe Float
 kostUtenSkyggepris =
     totalCostNowValue
 
@@ -190,12 +190,12 @@ maintenanceCost yearlyMaintenance =
     yearlyMaintenance |> Maybe.map ((*) GeneralForutsetninger.afaktor)
 
 
-kost : SykkelparkeringUteTiltakModel -> Maybe Float
+kost : SykkelparkeringUteState -> Maybe Float
 kost forutsetninger =
     totalCostNowValue forutsetninger |> Maybe.map ((*) (1 + GeneralForutsetninger.skyggepris))
 
 
-nettoNytte : SykkelparkeringUteTiltakModel -> Maybe Float
+nettoNytte : SykkelparkeringUteState -> Maybe Float
 nettoNytte forutsetninger =
     Maybe.map2 (-) (nytte forutsetninger) (kost forutsetninger)
 

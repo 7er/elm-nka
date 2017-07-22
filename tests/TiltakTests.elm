@@ -2,36 +2,12 @@ module TiltakTests exposing (..)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
+import TestSupport exposing (..)
 import Tiltak.SykkelparkeringUte as SykkelparkeringUte
-import TiltakStates exposing (SykkelparkeringUteTiltakModel)
+import TiltakStates exposing (SykkelparkeringUteState)
 
 
-closeTo : Float -> Int -> Float -> Expectation
-closeTo expected precision actual =
-    let
-        epsilon =
-            toFloat (10 ^ (negate precision)) / 2
-
-        difference =
-            abs (expected - actual)
-    in
-        if difference < epsilon then
-            Expect.pass
-        else
-            (toString actual) ++ " is not near enough to " ++ (toString expected) ++ " using " ++ (toString precision) ++ " digits of precision" |> Expect.fail
-
-
-checkMaybe : (a -> Expectation) -> Maybe a -> Expectation
-checkMaybe expectation maybeValue =
-    case maybeValue of
-        Just value ->
-            expectation value
-
-        Nothing ->
-            Expect.fail "Got nothing"
-
-
-checkNytteNullPunktForNullModel : SykkelparkeringUteTiltakModel -> Expectation
+checkNytteNullPunktForNullModel : SykkelparkeringUteState -> Expectation
 checkNytteNullPunktForNullModel model =
     SykkelparkeringUte.nettoNytte model |> checkMaybe (closeTo 0 3)
 
@@ -129,7 +105,7 @@ suite =
         ]
 
 
-sykkelParkeringUteTest : String -> (SykkelparkeringUteTiltakModel -> Expectation) -> Test
+sykkelParkeringUteTest : String -> (SykkelparkeringUteState -> Expectation) -> Test
 sykkelParkeringUteTest description testCase =
     let
         model =

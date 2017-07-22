@@ -2,13 +2,13 @@ module Tiltak.SeparatSykkelveg exposing (..)
 
 import Tiltak exposing (Tiltak)
 import Models exposing (..)
-import TiltakStates exposing (SeparatSykkelvegTiltakModel, TiltakStates)
+import TiltakStates exposing (SeparatSykkelvegState, TiltakStates)
 import GeneralForutsetninger
 
 
-stateMap : (SeparatSykkelvegTiltakModel -> SeparatSykkelvegTiltakModel) -> TiltakStates -> TiltakStates
+stateMap : (SeparatSykkelvegState -> SeparatSykkelvegState) -> TiltakStates -> TiltakStates
 stateMap func tiltakStates =
-    { tiltakStates | separatSykkelvegTiltakState = func tiltakStates.separatSykkelvegTiltakState }
+    { tiltakStates | separatSykkelveg = func tiltakStates.separatSykkelveg }
 
 
 fields =
@@ -17,7 +17,7 @@ fields =
             TiltakStates.stateUpdateHelper stateMap
 
         thisStringValueHelper =
-            TiltakStates.stringValueHelper .separatSykkelvegTiltakState
+            TiltakStates.stringValueHelper .separatSykkelveg
     in
         [ { name = "lengthKm"
           , title = "Sykkelveiens lengde"
@@ -70,7 +70,7 @@ fields =
         ]
 
 
-initialState : SeparatSykkelvegTiltakModel
+initialState : SeparatSykkelvegState
 initialState =
     { lengthKm = Nothing
     , tripsPerYear = Nothing
@@ -92,8 +92,8 @@ loadGraph =
 tiltak : Tiltak
 tiltak =
     { title = "Separat sykkelveg"
-    , brukerNytte = \{ separatSykkelvegTiltakState } -> brukerNytte separatSykkelvegTiltakState
-    , kostUtenSkyggepris = \{ separatSykkelvegTiltakState } -> kostUtenSkyggepris separatSykkelvegTiltakState
+    , brukerNytte = \{ separatSykkelveg } -> brukerNytte separatSykkelveg
+    , kostUtenSkyggepris = \{ separatSykkelveg } -> kostUtenSkyggepris separatSykkelveg
     , fields = fields
     }
 
@@ -149,7 +149,7 @@ parkeringSyklistNytte tripsPerYear =
     Maybe.map (\trips -> (toFloat trips) * nytteMultiplier) tripsPerYear
 
 
-brukerNytte : SeparatSykkelvegTiltakModel -> Maybe Float
+brukerNytte : SeparatSykkelvegState -> Maybe Float
 brukerNytte forutsetninger =
     yearlySyklistNytte forutsetninger |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
@@ -164,7 +164,7 @@ syklistNytteCalculation tripsPerYear lengthKm minutesSaved =
           )
 
 
-yearlySyklistNytte : SeparatSykkelvegTiltakModel -> Maybe Float
+yearlySyklistNytte : SeparatSykkelvegState -> Maybe Float
 yearlySyklistNytte forutsetninger =
     let
         usageIncrease =
@@ -202,17 +202,17 @@ yearlyMiljoOgKlimaeffekt tripsPerYear =
             )
 
 
-yearlyNytte : SeparatSykkelvegTiltakModel -> Maybe Float
+yearlyNytte : SeparatSykkelvegState -> Maybe Float
 yearlyNytte forutsetninger =
     Maybe.map2 (+) (yearlySyklistNytte forutsetninger) (tripsPerYearEffects forutsetninger.tripsPerYear)
 
 
-nytte : SeparatSykkelvegTiltakModel -> Maybe Float
+nytte : SeparatSykkelvegState -> Maybe Float
 nytte model =
     yearlyNytte model |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
 
-kostUtenSkyggepris : SeparatSykkelvegTiltakModel -> Maybe Float
+kostUtenSkyggepris : SeparatSykkelvegState -> Maybe Float
 kostUtenSkyggepris forutsetninger =
     let
         func investmentCost =
@@ -226,7 +226,7 @@ maintenanceCost yearlyMaintenance =
     yearlyMaintenance |> Maybe.map ((*) GeneralForutsetninger.afaktor)
 
 
-kost : SeparatSykkelvegTiltakModel -> Maybe Float
+kost : SeparatSykkelvegState -> Maybe Float
 kost forutsetninger =
     Maybe.map kostByInvestmentCost forutsetninger.investmentCost
 
@@ -236,7 +236,7 @@ kostByInvestmentCost invCost =
     invCost * (1 + GeneralForutsetninger.skyggepris) * (1 + 0.07 * GeneralForutsetninger.afaktor)
 
 
-nettoNytte : SeparatSykkelvegTiltakModel -> Maybe Float
+nettoNytte : SeparatSykkelvegState -> Maybe Float
 nettoNytte forutsetninger =
     Maybe.map2 (-) (nytte forutsetninger) (kost forutsetninger)
 
