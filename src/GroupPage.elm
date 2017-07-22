@@ -2,6 +2,7 @@ module GroupPage exposing (..)
 
 import Html exposing (..)
 import Models exposing (..)
+import Tiltak exposing (Tiltak)
 import Msgs exposing (Msg(..))
 import TiltakAndGroupData
 import TiltakView

@@ -28,20 +28,3 @@ type alias Model =
     , accordionState : Accordion.State
     , tiltakStates : TiltakStates
     }
-
-
-type alias Field =
-    { name : String
-    , title : String
-    , placeholder : String
-    , updateTiltakState : String -> TiltakStates -> TiltakStates
-    , stringValueFromState : TiltakStates -> String
-    }
-
-
-type alias Tiltak =
-    { brukerNytte : TiltakStates -> Maybe Float
-    , kostUtenSkyggepris : TiltakStates -> Maybe Float
-    , title : String
-    , fields : List Field
-    }

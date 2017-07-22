@@ -1,6 +1,6 @@
-module Tiltak.LeskurUtenSitteplass exposing (..)
+module Tiltak.LeskurMedSitteplass exposing (..)
 
-import Tiltak exposing (Tiltak)
+import Models exposing (Model, Tiltak)
 
 
 tiltak : Tiltak

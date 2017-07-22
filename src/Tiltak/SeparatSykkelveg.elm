@@ -1,5 +1,6 @@
 module Tiltak.SeparatSykkelveg exposing (..)
 
+import Tiltak exposing (Tiltak)
 import Models exposing (..)
 import TiltakStates exposing (SeparatSykkelvegTiltakModel, TiltakStates)
 import GeneralForutsetninger

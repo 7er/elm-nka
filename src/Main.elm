@@ -7,10 +7,10 @@ import Bootstrap.Accordion as Accordion
 import UrlParser exposing ((</>))
 import Models exposing (..)
 import Msgs exposing (Msg(..))
-import TiltakStates exposing (TiltakStates)
-import Views exposing (view)
 import Group
+import Tiltak
 import TiltakAndGroupData
+import Views exposing (view)
 
 
 main : Program Never Model Msg
@@ -52,11 +52,6 @@ subscriptions model =
         ]
 
 
-updateTiltakStateFromField : Field -> String -> TiltakStates -> TiltakStates
-updateTiltakStateFromField field stringValue tiltakStates =
-    field.updateTiltakState stringValue tiltakStates
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -75,7 +70,7 @@ update msg model =
         UpdateField field stringValue ->
             ( { model
                 | tiltakStates =
-                    updateTiltakStateFromField
+                    Tiltak.updateTiltakStateFromField
                         field
                         stringValue
                         model.tiltakStates

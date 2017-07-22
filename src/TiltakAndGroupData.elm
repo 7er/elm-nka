@@ -2,6 +2,7 @@ module TiltakAndGroupData exposing (..)
 
 import Models exposing (..)
 import TiltakStates exposing (TiltakStates)
+import Tiltak exposing (Tiltak)
 import Tiltak.SykkelparkeringUte as SykkelparkeringUte
 import Tiltak.SeparatSykkelveg as SeparatSykkelveg
 import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass

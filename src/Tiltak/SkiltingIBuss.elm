@@ -1,6 +1,6 @@
 module Tiltak.SkiltingIBuss exposing (..)
 
-import Models exposing (Tiltak)
+import Tiltak exposing (Tiltak)
 
 
 tiltak : Tiltak

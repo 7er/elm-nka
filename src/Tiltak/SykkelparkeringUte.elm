@@ -1,6 +1,7 @@
 module Tiltak.SykkelparkeringUte exposing (..)
 
-import Models exposing (..)
+import Tiltak exposing (Tiltak, Field)
+import Models exposing (generateC3)
 import TiltakStates exposing (SykkelparkeringUteTiltakModel)
 import GeneralForutsetninger
 
@@ -33,7 +34,7 @@ fields =
           }
         , { name = "installationCost"
           , title = "Installasjonskostnad"
-          , placeholder = ""
+          , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
           , updateTiltakState =
                 updateTiltakStateHelper
                     (\stringValue state ->
@@ -46,7 +47,7 @@ fields =
           }
         , { name = "yearlyMaintenance"
           , title = "Årlige drifts- og vedlikeholdskostnader"
-          , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
+          , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
           , updateTiltakState =
                 updateTiltakStateHelper
                     (\stringValue state ->
