@@ -67,13 +67,13 @@ view data =
               , data.kostUtenSkyggepris |> NumberFormat.maybePretty
               )
             , ( "Skyggepris offentlige midler"
-              , data.skyggePris |> NumberFormat.maybePretty
+              , data.skyggepris |> NumberFormat.maybePretty
               )
             , ( "Tiltakets nettonåverdi"
               , data.nettoNytte |> NumberFormat.maybePretty
               )
             , ( "Nettonytte per budsjettkrone (Nyttekostnadsbrøk)"
-              , Maybe.map2 (/) data.nettoNytte data.kostUtenSkyggepris |> NumberFormat.maybePrettyTwoDecimals
+              , data.nettoNyttePerBudsjettKrone |> NumberFormat.maybePrettyTwoDecimals
               )
             ]
 

@@ -22,4 +22,4 @@ checkMaybe : (a -> Expectation) -> Maybe a -> Expectation
 checkMaybe expectation maybeValue =
     maybeValue
         |> Maybe.map expectation
-        |> Maybe.withDefault (Expect.fail "Got nothing")
+        |> Maybe.withDefault (Expect.fail <| "Got nothing")

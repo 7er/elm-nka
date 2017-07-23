@@ -20,6 +20,7 @@ type alias SimpleCommonState =
     { installationCost : Maybe Float
     , yearlyMaintenance : Maybe Float
     , passengersPerYear : Maybe Int
+    , bompengeAndel : Float
     }
 
 

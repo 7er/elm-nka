@@ -43,7 +43,9 @@ kostUtenSkyggepris this state =
 
 driftOgVedlihKost : StateCalculationMethod
 driftOgVedlihKost this ({ leskurMedSitteplass } as state) =
-    leskurMedSitteplass.yearlyMaintenance |> Maybe.map ((*) GeneralForutsetninger.afaktor) |> Maybe.map negate
+    leskurMedSitteplass.yearlyMaintenance
+        |> Maybe.map ((*) GeneralForutsetninger.afaktor)
+        |> Maybe.map negate
 
 
 levetid =
@@ -58,6 +60,27 @@ investeringsKostInklRestverdi this ({ leskurMedSitteplass } as state) =
         |> Maybe.map negate
 
 
+skyggepris : StateCalculationMethod
+skyggepris this ({ leskurMedSitteplass } as state) =
+    (sendTo this .kostUtenSkyggepris state)
+        |> Maybe.map
+            (\kostUtenSkyggepris ->
+                (1 - leskurMedSitteplass.bompengeAndel) * kostUtenSkyggepris * GeneralForutsetninger.skyggepris
+            )
+
+
+nettoNytte : StateCalculationMethod
+nettoNytte this state =
+    let
+        f =
+            bindTiltak this state
+    in
+        Maybe.map3 (\a b c -> a + b + c)
+            (f .nytte)
+            (f .kostUtenSkyggepris)
+            (f .skyggepris)
+
+
 tiltak : TiltakNg
 tiltak =
     TiltakNg
@@ -65,10 +88,10 @@ tiltak =
         , fields = \_ -> fields
         , passasjerNytte = passasjerNytte
         , kostUtenSkyggepris = kostUtenSkyggepris
-        , nettoNytte = \(TiltakNg object) state -> Nothing
+        , nettoNytte = nettoNytte
         , nytte = nytte
         , operatoerNytte = \_ _ -> Just 0
-        , skyggePris = \(TiltakNg object) state -> Nothing
+        , skyggepris = skyggepris
         , trafikantNytte = \_ _ -> Just 0
         , yearlyPassasjerNytte = yearlyPassasjerNytte
         , driftOgVedlihKost = driftOgVedlihKost
@@ -137,4 +160,5 @@ initialState =
     { installationCost = Nothing
     , yearlyMaintenance = Nothing
     , passengersPerYear = Nothing
+    , bompengeAndel = 0.2
     }

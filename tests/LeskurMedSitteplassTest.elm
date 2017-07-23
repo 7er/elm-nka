@@ -22,6 +22,7 @@ suite =
                     { installationCost = Just 100
                     , yearlyMaintenance = Just 200
                     , passengersPerYear = Just 30
+                    , bompengeAndel = 0.2
                     }
             }
 
@@ -57,5 +58,15 @@ suite =
                 , test "investeringsFaktor" <|
                     \_ ->
                         GeneralForutsetninger.investeringsFaktor 12 |> closeTo 2.1195279 7
+                , checkWithState
+                    "skyggepris"
+                    .skyggepris
+                    (closeTo -667.28 2)
+                ]
+            , describe "nettonytte calculations"
+                [ checkWithState
+                    "nettoNytte"
+                    .nettoNytte
+                    (closeTo -580.44 2)
                 ]
             ]

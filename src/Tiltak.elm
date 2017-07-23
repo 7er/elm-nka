@@ -31,8 +31,9 @@ type alias AnalyseData =
     , trafikantNytte : Maybe Float
     , operatoerNytte : Maybe Float
     , nytte : Maybe Float
-    , skyggePris : Maybe Float
+    , skyggepris : Maybe Float
     , nettoNytte : Maybe Float
+    , nettoNyttePerBudsjettKrone : Maybe Float
     }
 
 
@@ -51,7 +52,7 @@ type alias TiltakRecord =
     , trafikantNytte : StateCalculationMethod
     , operatoerNytte : StateCalculationMethod
     , nytte : StateCalculationMethod
-    , skyggePris : StateCalculationMethod
+    , skyggepris : StateCalculationMethod
     , kostUtenSkyggepris : StateCalculationMethod
     , nettoNytte : StateCalculationMethod
     , yearlyPassasjerNytte : StateCalculationMethod
@@ -92,10 +93,17 @@ analyse tiltak tiltakStates =
         { passasjerNytte = f .passasjerNytte
         , analysePeriode = 40
         , kostUtenSkyggepris = f .kostUtenSkyggepris
-        , isProfitable = Just True
+        , isProfitable = f .nettoNytte |> Maybe.map (\value -> value > 0)
         , trafikantNytte = f .trafikantNytte
         , operatoerNytte = f .operatoerNytte
         , nytte = f .nytte
-        , skyggePris = f .skyggePris
+        , skyggepris = f .skyggepris
         , nettoNytte = f .nettoNytte
+        , nettoNyttePerBudsjettKrone =
+            Maybe.map2
+                (\nettoNytte kostUtenSkyggepris ->
+                    nettoNytte / (negate kostUtenSkyggepris)
+                )
+                (f .nettoNytte)
+                (f .kostUtenSkyggepris)
         }

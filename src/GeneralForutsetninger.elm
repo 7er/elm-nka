@@ -19,6 +19,7 @@ analysePeriode =
 
 investeringsFaktor : Float -> Float
 investeringsFaktor levetid =
+    -- denne funksjonen virker relatert til afaktorCalculation
     let
         beregningsTekniskMellomregning =
             toFloat <| (analysePeriode // (truncate levetid)) + 1
@@ -34,6 +35,7 @@ investeringsFaktor levetid =
         ledd1 + ledd2
 
 
+afaktorCalculation : Float -> Float
 afaktorCalculation drenteValue =
     (1 / drenteValue) * (1 - (1 / ((1 + drenteValue) ^ analysePeriode)))
 
