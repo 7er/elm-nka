@@ -15,14 +15,6 @@ type alias Field =
     }
 
 
-type alias Tiltak =
-    { brukerNytte : TiltakStates -> Maybe Float
-    , kostUtenSkyggepris : TiltakStates -> Maybe Float
-    , title : String
-    , fields : List Field
-    }
-
-
 type alias AnalyseData =
     { passasjerNytte : Maybe Float
     , kostUtenSkyggepris : Maybe Float

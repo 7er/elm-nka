@@ -5,7 +5,7 @@ import Html.Attributes exposing (..)
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import NumberFormat
-import Tiltak exposing (Tiltak, AnalyseData)
+import Tiltak exposing (AnalyseData)
 import Msgs exposing (Msg(..))
 
 
