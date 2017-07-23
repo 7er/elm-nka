@@ -1,12 +1,16 @@
 module Tiltak.SeparatSykkelveg exposing (..)
 
-import Tiltak exposing (Tiltak)
+import Tiltak exposing (TiltakNg(..), Field, sendTo, StateCalculationMethod, bindTiltak)
 import Models exposing (..)
 import TiltakStates exposing (SeparatSykkelvegState, TiltakStates)
+import Tiltak.BasicTiltak as BasicTiltak
 import GeneralForutsetninger
 
 
-stateMap : (SeparatSykkelvegState -> SeparatSykkelvegState) -> TiltakStates -> TiltakStates
+stateMap :
+    (SeparatSykkelvegState -> SeparatSykkelvegState)
+    -> TiltakStates
+    -> TiltakStates
 stateMap func tiltakStates =
     { tiltakStates | separatSykkelveg = func tiltakStates.separatSykkelveg }
 
@@ -89,13 +93,19 @@ loadGraph =
     generateC3 c3GraphId
 
 
-tiltak : Tiltak
+tiltak : TiltakNg
 tiltak =
-    { title = "Separat sykkelveg"
-    , brukerNytte = \{ separatSykkelveg } -> brukerNytte separatSykkelveg
-    , kostUtenSkyggepris = \{ separatSykkelveg } -> kostUtenSkyggepris separatSykkelveg
-    , fields = fields
-    }
+    let
+        basicTiltakRecord =
+            BasicTiltak.basicTiltakRecord
+    in
+        TiltakNg
+            { basicTiltakRecord
+                | title = \_ -> "Separat sykkelveg"
+                , trafikantNytte = \this { separatSykkelveg } -> trafikantNytte separatSykkelveg
+                , kostUtenSkyggepris = \this { separatSykkelveg } -> kostUtenSkyggepris separatSykkelveg
+                , fields = \_ -> fields
+            }
 
 
 nytteMultiplier : Float
@@ -149,8 +159,8 @@ parkeringSyklistNytte tripsPerYear =
     Maybe.map (\trips -> (toFloat trips) * nytteMultiplier) tripsPerYear
 
 
-brukerNytte : SeparatSykkelvegState -> Maybe Float
-brukerNytte forutsetninger =
+trafikantNytte : SeparatSykkelvegState -> Maybe Float
+trafikantNytte forutsetninger =
     yearlySyklistNytte forutsetninger |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
 

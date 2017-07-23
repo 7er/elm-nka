@@ -1,12 +1,14 @@
 module Tiltak.LeskurUtenSitteplass exposing (..)
 
-import Tiltak exposing (Tiltak)
+import Tiltak exposing (TiltakNg(..))
+import Tiltak.BasicTiltak as BasicTiltak
 
 
-tiltak : Tiltak
+tiltak : TiltakNg
 tiltak =
-    { title = "Leskur u sitteplass"
-    , brukerNytte = \{ leskurUtenSitteplass } -> Nothing
-    , kostUtenSkyggepris = \_ -> Nothing
-    , fields = []
-    }
+    let
+        basicTiltakRecord =
+            BasicTiltak.basicTiltakRecord
+    in
+        TiltakNg
+            { basicTiltakRecord | title = \_ -> "Leskur u sitteplass" }

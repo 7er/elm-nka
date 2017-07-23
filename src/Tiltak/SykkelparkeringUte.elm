@@ -1,11 +1,16 @@
 module Tiltak.SykkelparkeringUte exposing (..)
 
-import Tiltak exposing (Tiltak, Field)
+import Tiltak exposing (TiltakNg(..), Field)
+import Tiltak.BasicTiltak as BasicTiltak
 import Models exposing (generateC3)
-import TiltakStates exposing (SykkelparkeringUteState)
+import TiltakStates exposing (SykkelparkeringUteState, TiltakStates)
 import GeneralForutsetninger
 
 
+stateMap :
+    (SykkelparkeringUteState -> SykkelparkeringUteState)
+    -> TiltakStates
+    -> TiltakStates
 stateMap func tiltakStates =
     { tiltakStates | sykkelParkeringUte = func tiltakStates.sykkelParkeringUte }
 
@@ -61,13 +66,19 @@ fields =
         ]
 
 
-tiltak : Tiltak
+tiltak : TiltakNg
 tiltak =
-    { title = "Sikker sykkelparkering ute"
-    , fields = fields
-    , brukerNytte = \{ sykkelParkeringUte } -> brukerNytte sykkelParkeringUte
-    , kostUtenSkyggepris = \{ sykkelParkeringUte } -> kostUtenSkyggepris sykkelParkeringUte
-    }
+    let
+        basicTiltakRecord =
+            BasicTiltak.basicTiltakRecord
+    in
+        TiltakNg
+            { basicTiltakRecord
+                | title = \_ -> "Sikker sykkelparkering ute"
+                , fields = \_ -> fields
+                , trafikantNytte = \this { sykkelParkeringUte } -> brukerNytte sykkelParkeringUte
+                , kostUtenSkyggepris = \this { sykkelParkeringUte } -> kostUtenSkyggepris sykkelParkeringUte
+            }
 
 
 initialState : SykkelparkeringUteState

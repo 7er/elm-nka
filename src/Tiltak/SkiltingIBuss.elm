@@ -1,12 +1,16 @@
 module Tiltak.SkiltingIBuss exposing (..)
 
-import Tiltak exposing (Tiltak)
+import Tiltak exposing (TiltakNg(..))
+import Tiltak.BasicTiltak as BasicTiltak
 
 
-tiltak : Tiltak
+tiltak : TiltakNg
 tiltak =
-    { title = "Skilting i buss"
-    , brukerNytte = \_ -> Nothing
-    , kostUtenSkyggepris = \_ -> Nothing
-    , fields = []
-    }
+    let
+        basicTiltakRecord =
+            BasicTiltak.basicTiltakRecord
+    in
+        TiltakNg
+            { basicTiltakRecord
+                | title = \_ -> "Skilting i buss"
+            }

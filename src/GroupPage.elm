@@ -2,7 +2,7 @@ module GroupPage exposing (..)
 
 import Html exposing (..)
 import Models exposing (..)
-import Tiltak exposing (Tiltak)
+import Tiltak exposing (TiltakNg)
 import Msgs exposing (Msg(..))
 import TiltakAndGroupData
 import TiltakView
@@ -10,7 +10,7 @@ import Bootstrap.Accordion as Accordion
 import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
 
 
-gruppePageView : Model -> List Tiltak -> Html Msg
+gruppePageView : Model -> List TiltakNg -> Html Msg
 gruppePageView model tiltakene =
     let
         denNyeTypenTiltak =
@@ -20,7 +20,7 @@ gruppePageView model tiltakene =
             TiltakView.tiltakCard model tiltak
 
         allCards =
-            [ denNyeTypenTiltak ] |> List.map tiltakCard
+            tiltakene |> List.map tiltakCard
     in
         Accordion.config AccordionMsg
             |> Accordion.withAnimation
