@@ -9,8 +9,41 @@ vekstrate =
     1.3 / 100
 
 
+drenteVekst =
+    (drente - vekstrate) / (1 + vekstrate)
+
+
 analysePeriode =
     40
+
+
+investeringsFaktor : Float -> Float
+investeringsFaktor levetid =
+    let
+        beregningsTekniskMellomregning =
+            toFloat <| (analysePeriode // (truncate levetid)) + 1
+
+        ledd1 =
+            (1 - ((1 + drente) ^ ((negate levetid) * beregningsTekniskMellomregning)))
+                / (1 - ((1 + drente) ^ (negate levetid)))
+
+        ledd2 =
+            (analysePeriode - (levetid * beregningsTekniskMellomregning))
+                / (levetid * ((1 + drente) ^ analysePeriode))
+    in
+        ledd1 + ledd2
+
+
+afaktorCalculation drenteValue =
+    (1 / drenteValue) * (1 - (1 / ((1 + drenteValue) ^ analysePeriode)))
+
+
+afaktorVekst =
+    afaktorCalculation drenteVekst
+
+
+afaktor =
+    afaktorCalculation drente
 
 
 nokPrMinPrSyklist =
@@ -73,15 +106,3 @@ usageIncrease =
     , sykkelParkeringUte = 0.05
     , garderobeFasiliteter = 0.05
     }
-
-
-drenteVekst =
-    (drente - vekstrate) / (1 + vekstrate)
-
-
-afaktorVekst =
-    (1 / drenteVekst) * (1 - (1 / ((1 + drenteVekst) ^ analysePeriode)))
-
-
-afaktor =
-    (1 / drente) * (1 - (1 / ((1 + drente) ^ analysePeriode)))

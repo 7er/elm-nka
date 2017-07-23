@@ -55,6 +55,8 @@ type alias TiltakRecord =
     , kostUtenSkyggepris : StateCalculationMethod
     , nettoNytte : StateCalculationMethod
     , yearlyPassasjerNytte : StateCalculationMethod
+    , driftOgVedlihKost : StateCalculationMethod
+    , investeringsKostInklRestverdi : StateCalculationMethod
     }
 
 
@@ -65,6 +67,11 @@ type alias TiltakAccessor a =
 sendTo : TiltakNg -> TiltakAccessor a -> a
 sendTo ((TiltakNg object) as this) recordAccessor =
     recordAccessor object this
+
+
+bindTiltak : TiltakNg -> a -> (TiltakAccessor (a -> b) -> b)
+bindTiltak tiltak tiltakStates =
+    \accessor -> sendTo tiltak accessor tiltakStates
 
 
 type alias FieldValue =
@@ -79,8 +86,8 @@ updateTiltakStateFromField field stringValue tiltakStates =
 analyse : TiltakNg -> TiltakStates -> AnalyseData
 analyse tiltak tiltakStates =
     let
-        f accessor =
-            sendTo tiltak accessor tiltakStates
+        f =
+            bindTiltak tiltak tiltakStates
     in
         { passasjerNytte = f .passasjerNytte
         , analysePeriode = 40

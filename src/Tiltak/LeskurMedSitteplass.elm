@@ -1,16 +1,61 @@
 module Tiltak.LeskurMedSitteplass exposing (tiltak, initialState)
 
 import GeneralForutsetninger
-import Tiltak exposing (TiltakNg(..), Field, sendTo)
-import TiltakStates
+import Tiltak exposing (TiltakNg(..), Field, sendTo, StateCalculationMethod, bindTiltak)
+import TiltakStates exposing (TiltakStates)
 
 
-passasjerNytte this ({ leskurMedSitteplass } as state) =
+passasjerNytte : StateCalculationMethod
+passasjerNytte this state =
     (sendTo this .yearlyPassasjerNytte state) |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
 
+yearlyPassasjerNytte : StateCalculationMethod
 yearlyPassasjerNytte this ({ leskurMedSitteplass } as state) =
     leskurMedSitteplass.passengersPerYear |> Maybe.map toFloat |> Maybe.map ((*) GeneralForutsetninger.leskurPaaBussholdeplassenMedSitteplassNOK)
+
+
+nytte : StateCalculationMethod
+nytte this state =
+    let
+        f accessor =
+            sendTo this accessor state
+    in
+        Maybe.map3
+            (\a b c ->
+                a + b + c
+            )
+            (f .passasjerNytte)
+            (f .trafikantNytte)
+            (f .operatoerNytte)
+
+
+kostUtenSkyggepris : StateCalculationMethod
+kostUtenSkyggepris this state =
+    let
+        f =
+            bindTiltak this state
+    in
+        Maybe.map2 (+)
+            (f .investeringsKostInklRestverdi)
+            (f .driftOgVedlihKost)
+
+
+driftOgVedlihKost : StateCalculationMethod
+driftOgVedlihKost this ({ leskurMedSitteplass } as state) =
+    leskurMedSitteplass.yearlyMaintenance |> Maybe.map ((*) GeneralForutsetninger.afaktor) |> Maybe.map negate
+
+
+levetid =
+    12
+
+
+investeringsKostInklRestverdi : StateCalculationMethod
+investeringsKostInklRestverdi this ({ leskurMedSitteplass } as state) =
+    leskurMedSitteplass.installationCost
+        |> Maybe.map
+            (\installationCost -> installationCost * GeneralForutsetninger.investeringsFaktor levetid)
+        |> Maybe.map negate
 
 
 tiltak : TiltakNg
@@ -19,13 +64,15 @@ tiltak =
         { title = \_ -> "Leskur u sitteplass"
         , fields = \_ -> fields
         , passasjerNytte = passasjerNytte
-        , kostUtenSkyggepris = \(TiltakNg object) state -> Nothing
+        , kostUtenSkyggepris = kostUtenSkyggepris
         , nettoNytte = \(TiltakNg object) state -> Nothing
-        , nytte = \(TiltakNg object) state -> Nothing
+        , nytte = nytte
         , operatoerNytte = \_ _ -> Just 0
         , skyggePris = \(TiltakNg object) state -> Nothing
         , trafikantNytte = \_ _ -> Just 0
         , yearlyPassasjerNytte = yearlyPassasjerNytte
+        , driftOgVedlihKost = driftOgVedlihKost
+        , investeringsKostInklRestverdi = investeringsKostInklRestverdi
         }
 
 
@@ -85,6 +132,7 @@ fields =
         ]
 
 
+initialState : TiltakStates.SimpleCommonState
 initialState =
     { installationCost = Nothing
     , yearlyMaintenance = Nothing
