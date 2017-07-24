@@ -14,6 +14,7 @@ import Msgs exposing (Msg)
 import GroupPage
 import Msgs exposing (Msg(..))
 import Group
+import TiltakAndGroupData
 import Assets
 
 
@@ -31,12 +32,14 @@ menu : Navbar.State -> Html Msg
 menu navState =
     let
         groupToItemLink group =
-            Navbar.itemLink [ href (Group.tiltaksGruppePath group) ] [ text (Group.tiltaksGruppeTittel group) ]
+            Navbar.itemLink
+                [ href (Group.groupPath group) ]
+                [ text (Group.groupTitle group) ]
 
         itemLinks =
             [ Navbar.itemLink [ href "#getting-started" ] [ text "Komme i gang" ]
             ]
-                ++ List.map groupToItemLink Group.alleTyper
+                ++ List.map groupToItemLink TiltakAndGroupData.alleTyper
     in
         Navbar.config NavMsg
             |> Navbar.withAnimation

@@ -81,27 +81,33 @@ update msg model =
 
 urlUpdate : Navigation.Location -> Model -> Model
 urlUpdate location model =
-    case decode location of
-        Nothing ->
-            { model | page = NotFound }
-
-        Just route ->
-            { model | page = route }
+    { model
+        | page =
+            decode location
+                |> Maybe.map identity
+                |> Maybe.withDefault NotFound
+    }
 
 
 decode : Location -> Maybe Page
 decode location =
-    case UrlParser.parseHash routeParser location of
-        (Just page) as result ->
-            result
-
-        Nothing ->
-            Group.gruppeFromHash location.hash |> Maybe.map GroupPage
+    UrlParser.parseHash routeParser location
 
 
 routeParser : UrlParser.Parser (Page -> a) a
 routeParser =
-    UrlParser.oneOf
-        [ UrlParser.map Home UrlParser.top
-        , UrlParser.map GettingStarted (UrlParser.s "getting-started")
-        ]
+    let
+        groupToParser group =
+            UrlParser.map (GroupPage group)
+                (UrlParser.s <|
+                    Group.groupPathSansHash group
+                )
+    in
+        TiltakAndGroupData.alleTyper
+            |> List.map groupToParser
+            |> List.append
+                [ UrlParser.map Home UrlParser.top
+                , UrlParser.map GettingStarted
+                    (UrlParser.s "getting-started")
+                ]
+            |> UrlParser.oneOf

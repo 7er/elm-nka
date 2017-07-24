@@ -1,18 +1,22 @@
 module GeneralForutsetninger exposing (..)
 
 
+drente : Float
 drente =
     4 / 100
 
 
+vekstrate : Float
 vekstrate =
     1.3 / 100
 
 
+drenteVekst : Float
 drenteVekst =
     (drente - vekstrate) / (1 + vekstrate)
 
 
+analysePeriode : number
 analysePeriode =
     40
 
@@ -40,10 +44,12 @@ afaktorCalculation drenteValue =
     (1 / drenteValue) * (1 - (1 / ((1 + drenteValue) ^ analysePeriode)))
 
 
+afaktorVekst : Float
 afaktorVekst =
     afaktorCalculation drenteVekst
 
 
+afaktor : Float
 afaktor =
     afaktorCalculation drente
 
@@ -76,10 +82,12 @@ garderobeFasiliteterNOK =
     21.49
 
 
+leskurPaaBussholdeplassenMedSitteplassNOK : Float
 leskurPaaBussholdeplassenMedSitteplassNOK =
     5.81177152111594
 
 
+skyggepris : Float
 skyggepris =
     0.2
 

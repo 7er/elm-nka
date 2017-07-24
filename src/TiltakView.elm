@@ -12,6 +12,7 @@ import Tiltak exposing (Tiltak, sendTo)
 import AnalyseView
 
 
+toDomId : String -> String
 toDomId string =
     string |> String.words |> String.join "-"
 

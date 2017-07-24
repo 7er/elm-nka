@@ -1,31 +1,18 @@
 module Group exposing (..)
 
 import Models exposing (Group)
-import TiltakAndGroupData
 
 
-tiltaksGruppePath : Group -> String
-tiltaksGruppePath tag =
-    tag |> toString |> String.toLower |> (++) "#"
+groupPath : Group -> String
+groupPath tag =
+    tag |> groupPathSansHash |> (++) "#"
 
 
-tiltaksGruppeTittel : Group -> String
-tiltaksGruppeTittel tag =
+groupPathSansHash : Group -> String
+groupPathSansHash tag =
+    tag |> groupTitle |> String.toLower
+
+
+groupTitle : Group -> String
+groupTitle tag =
     tag |> toString
-
-
-tiltakForGroup =
-    TiltakAndGroupData.tiltakForGroup
-
-
-alleTyper =
-    TiltakAndGroupData.alleTyper
-
-
-gruppeFromHash : String -> Maybe Group
-gruppeFromHash hash =
-    let
-        filter gruppe =
-            hash == tiltaksGruppePath gruppe
-    in
-        TiltakAndGroupData.alleTyper |> List.filter filter |> List.head
