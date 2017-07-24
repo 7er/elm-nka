@@ -98,10 +98,9 @@ routeParser : UrlParser.Parser (Page -> a) a
 routeParser =
     let
         groupToParser group =
-            UrlParser.map (GroupPage group)
-                (UrlParser.s <|
+            UrlParser.map (GroupPage group) <|
+                UrlParser.s <|
                     Group.groupPathSansHash group
-                )
     in
         TiltakAndGroupData.alleTyper
             |> List.map groupToParser
