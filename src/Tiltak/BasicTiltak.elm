@@ -1,6 +1,6 @@
 module Tiltak.BasicTiltak exposing (..)
 
-import Tiltak exposing (TiltakNg(..), TiltakRecord, Field, sendTo, StateCalculationMethod, bindTiltak)
+import Tiltak exposing (Tiltak(..), TiltakRecord, Field, sendTo, StateCalculationMethod, bindTiltak)
 import GeneralForutsetninger
 
 

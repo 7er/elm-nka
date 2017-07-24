@@ -1,7 +1,7 @@
 module Tiltak.LeskurMedSitteplass exposing (tiltak, initialState)
 
 import GeneralForutsetninger
-import Tiltak exposing (TiltakNg(..), Field, sendTo, StateCalculationMethod, bindTiltak)
+import Tiltak exposing (Tiltak(..), Field, sendTo, StateCalculationMethod, bindTiltak)
 import TiltakStates exposing (TiltakStates)
 import Tiltak.BasicTiltak as BasicTiltak
 
@@ -40,9 +40,9 @@ skyggepris this ({ leskurMedSitteplass } as state) =
             )
 
 
-tiltak : TiltakNg
+tiltak : Tiltak
 tiltak =
-    TiltakNg
+    Tiltak
         { title = \_ -> "Leskur med sitteplass"
         , fields = \_ -> fields
         , passasjerNytte = BasicTiltak.passasjerNytte

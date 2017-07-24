@@ -1,6 +1,6 @@
 module Tiltak.SykkelparkeringUte exposing (..)
 
-import Tiltak exposing (TiltakNg(..), Field)
+import Tiltak exposing (Tiltak(..), Field)
 import Tiltak.BasicTiltak as BasicTiltak
 import Models exposing (generateC3)
 import TiltakStates exposing (SykkelparkeringUteState, TiltakStates)
@@ -66,13 +66,13 @@ fields =
         ]
 
 
-tiltak : TiltakNg
+tiltak : Tiltak
 tiltak =
     let
         basicTiltakRecord =
             BasicTiltak.basicTiltakRecord
     in
-        TiltakNg
+        Tiltak
             { basicTiltakRecord
                 | title = \_ -> "Sikker sykkelparkering ute"
                 , fields = \_ -> fields

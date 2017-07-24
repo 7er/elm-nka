@@ -1,6 +1,6 @@
 module Tiltak.SeparatSykkelveg exposing (..)
 
-import Tiltak exposing (TiltakNg(..), Field, sendTo, StateCalculationMethod, bindTiltak)
+import Tiltak exposing (Tiltak(..), Field, sendTo, StateCalculationMethod, bindTiltak)
 import Models exposing (..)
 import TiltakStates exposing (SeparatSykkelvegState, TiltakStates)
 import Tiltak.BasicTiltak as BasicTiltak
@@ -15,6 +15,7 @@ stateMap func tiltakStates =
     { tiltakStates | separatSykkelveg = func tiltakStates.separatSykkelveg }
 
 
+fields : List Field
 fields =
     let
         updateTiltakStateHelper =
@@ -93,13 +94,13 @@ loadGraph =
     generateC3 c3GraphId
 
 
-tiltak : TiltakNg
+tiltak : Tiltak
 tiltak =
     let
         basicTiltakRecord =
             BasicTiltak.basicTiltakRecord
     in
-        TiltakNg
+        Tiltak
             { basicTiltakRecord
                 | title = \_ -> "Separat sykkelveg"
                 , trafikantNytte = \this { separatSykkelveg } -> trafikantNytte separatSykkelveg

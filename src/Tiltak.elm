@@ -29,17 +29,17 @@ type alias AnalyseData =
     }
 
 
-type TiltakNg
-    = TiltakNg TiltakRecord
+type Tiltak
+    = Tiltak TiltakRecord
 
 
 type alias StateCalculationMethod =
-    TiltakNg -> TiltakStates -> Maybe Float
+    Tiltak -> TiltakStates -> Maybe Float
 
 
 type alias TiltakRecord =
-    { title : TiltakNg -> String
-    , fields : TiltakNg -> List Field
+    { title : Tiltak -> String
+    , fields : Tiltak -> List Field
     , passasjerNytte : StateCalculationMethod
     , trafikantNytte : StateCalculationMethod
     , operatoerNytte : StateCalculationMethod
@@ -54,15 +54,15 @@ type alias TiltakRecord =
 
 
 type alias TiltakAccessor a =
-    TiltakRecord -> TiltakNg -> a
+    TiltakRecord -> Tiltak -> a
 
 
-sendTo : TiltakNg -> TiltakAccessor a -> a
-sendTo ((TiltakNg object) as this) recordAccessor =
+sendTo : Tiltak -> TiltakAccessor a -> a
+sendTo ((Tiltak object) as this) recordAccessor =
     recordAccessor object this
 
 
-bindTiltak : TiltakNg -> a -> (TiltakAccessor (a -> b) -> b)
+bindTiltak : Tiltak -> a -> (TiltakAccessor (a -> b) -> b)
 bindTiltak tiltak tiltakStates =
     \accessor -> sendTo tiltak accessor tiltakStates
 
@@ -76,7 +76,7 @@ updateTiltakStateFromField field stringValue tiltakStates =
     field.updateTiltakState stringValue tiltakStates
 
 
-analyse : TiltakNg -> TiltakStates -> AnalyseData
+analyse : Tiltak -> TiltakStates -> AnalyseData
 analyse tiltak tiltakStates =
     let
         f =

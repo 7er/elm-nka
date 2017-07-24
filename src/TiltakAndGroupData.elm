@@ -2,7 +2,7 @@ module TiltakAndGroupData exposing (..)
 
 import Models exposing (..)
 import TiltakStates exposing (TiltakStates)
-import Tiltak exposing (TiltakNg)
+import Tiltak exposing (Tiltak)
 import Tiltak.SykkelparkeringUte as SykkelparkeringUte
 import Tiltak.SeparatSykkelveg as SeparatSykkelveg
 import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
@@ -15,7 +15,7 @@ alleTyper =
     [ Holdeplasser, Informasjon ]
 
 
-tiltakForGroup : Group -> List TiltakNg
+tiltakForGroup : Group -> List Tiltak
 tiltakForGroup gruppeType =
     case gruppeType of
         Holdeplasser ->
@@ -39,7 +39,7 @@ tiltakForGroup gruppeType =
             ]
 
 
-alleTiltak : List TiltakNg
+alleTiltak : List Tiltak
 alleTiltak =
     alleTyper |> List.concatMap tiltakForGroup
 
