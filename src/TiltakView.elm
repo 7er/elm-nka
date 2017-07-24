@@ -3,6 +3,7 @@ module TiltakView exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Bootstrap.Form as Form
+import Bootstrap.Form.Checkbox as Checkbox
 import Bootstrap.Form.Input as Input
 import Bootstrap.Accordion as Accordion
 import Bootstrap.Card as Card
@@ -51,4 +52,16 @@ form tiltak model =
                     ]
                 ]
     in
-        Form.form [] (sendTo tiltak .fields |> List.map fieldView)
+        Form.form []
+            ((sendTo tiltak .fields |> List.map fieldView)
+                ++ [ Form.group []
+                        [ Form.label [ for "experiment" ] [ text "Eksperiment" ]
+                        , Checkbox.checkbox
+                            [ Checkbox.attrs [ id "experiment" ]
+                            , Checkbox.onCheck <| UpdateBooleanField { name = "eksperiment", title = "Flesk", placeholder = "", updateTiltakState = \_ state -> state, stringValueFromState = \_ -> "Flesk" }
+                            , Checkbox.checked False
+                            ]
+                            "What is the experiment"
+                        ]
+                   ]
+            )

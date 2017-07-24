@@ -78,6 +78,9 @@ update msg model =
             , Cmd.none
             )
 
+        UpdateBooleanField field booleanValue ->
+            Debug.log (toString msg) ( model, Cmd.none )
+
 
 urlUpdate : Navigation.Location -> Model -> Model
 urlUpdate location model =

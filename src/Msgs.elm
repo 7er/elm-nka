@@ -13,3 +13,4 @@ type Msg
     | ModalMsg Modal.State
     | AccordionMsg Accordion.State
     | UpdateField Field String
+    | UpdateBooleanField Field Bool
