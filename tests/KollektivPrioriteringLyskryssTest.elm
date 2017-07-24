@@ -69,4 +69,6 @@ suite =
                     (closeTo 59433.13 2)
                 , checkWithState "nytte" .nytte (closeTo 55927.08 2)
                 ]
+            , describe "kost calculations"
+                []
             ]

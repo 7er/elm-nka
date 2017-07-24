@@ -34,6 +34,21 @@ type alias StateCalculationMethod =
     Tiltak -> TiltakStates -> Maybe Float
 
 
+
+{-
+    Some invariants
+
+   passasjerNytte + trafikantNytte + operatoerNytte == nytte
+
+   nytte == (  yearlyPassasjerNytte
+             + yearlyTrafikantNytte
+             + yearlyOperatoerNytte) * afaktorVekst
+
+   nettoNytte = nytte - kost
+
+-}
+
+
 type alias TiltakRecord =
     { title : Tiltak -> String
     , fields : Tiltak -> List Field
