@@ -8,11 +8,12 @@ import Tiltak.SeparatSykkelveg as SeparatSykkelveg
 import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
 import Tiltak.SkiltingIBuss as SkiltingIBuss
 import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
+import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 
 
 alleTyper : List Group
 alleTyper =
-    [ Holdeplasser, Informasjon ]
+    [ Holdeplasser, Informasjon, StrekningOgFramkommelighet ]
 
 
 tiltakForGroup : Group -> List Tiltak
@@ -38,6 +39,9 @@ tiltakForGroup gruppeType =
             , SeparatSykkelveg.tiltak
             ]
 
+        StrekningOgFramkommelighet ->
+            [ KollektivPrioriteringLyskryss.tiltak ]
+
 
 alleTiltak : List Tiltak
 alleTiltak =
@@ -51,4 +55,5 @@ initialTiltakStates =
     , leskurUtenSitteplass = LeskurMedSitteplass.initialState
     , skiltingIBuss = LeskurMedSitteplass.initialState
     , leskurMedSitteplass = LeskurMedSitteplass.initialState
+    , kollektivPrioriteringLyskryss = KollektivPrioriteringLyskryss.initialState
     }

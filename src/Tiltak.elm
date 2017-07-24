@@ -3,9 +3,6 @@ module Tiltak exposing (..)
 import TiltakStates exposing (TiltakStates)
 
 
---import Models exposing (Tiltak, AnalyseData)
-
-
 type alias Field =
     { name : String
     , title : String
@@ -48,6 +45,8 @@ type alias TiltakRecord =
     , kostUtenSkyggepris : StateCalculationMethod
     , nettoNytte : StateCalculationMethod
     , yearlyPassasjerNytte : StateCalculationMethod
+    , yearlyTrafikantNytte : StateCalculationMethod
+    , yearlyOperatoerNytte : StateCalculationMethod
     , driftOgVedlihKost : StateCalculationMethod
     , investeringsKostInklRestverdi : StateCalculationMethod
     }

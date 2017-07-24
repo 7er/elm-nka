@@ -16,10 +16,21 @@ type alias SeparatSykkelvegState =
     }
 
 
+type alias KollektivPrioriteringLyskryssState =
+    { installationCost : Maybe Float
+    , yearlyMaintenance : Maybe Float
+    , passengersPerYear : Maybe Float
+    , bompengeAndel : Float
+    , antallBilerForsinketPerAvgang : Maybe Float
+    , forsinkelsePerBilSeconds : Maybe Float
+    , antallPasserendeAvgangerPerYear : Maybe Float
+    }
+
+
 type alias SimpleCommonState =
     { installationCost : Maybe Float
     , yearlyMaintenance : Maybe Float
-    , passengersPerYear : Maybe Int
+    , passengersPerYear : Maybe Float
     , bompengeAndel : Float
     }
 
@@ -30,24 +41,34 @@ type alias TiltakStates =
     , leskurUtenSitteplass : SimpleCommonState
     , leskurMedSitteplass : SimpleCommonState
     , skiltingIBuss : SimpleCommonState
+    , kollektivPrioriteringLyskryss : KollektivPrioriteringLyskryssState
     }
 
 
-type alias Setter a =
-    String -> a -> a
+type alias Setter specificState =
+    String -> specificState -> specificState
 
 
-type alias StateMap a =
-    (a -> a) -> TiltakStates -> TiltakStates
+type alias StateMap specificState =
+    (specificState -> specificState) -> TiltakStates -> TiltakStates
 
 
-stateUpdateHelper : StateMap a -> Setter a -> String -> TiltakStates -> TiltakStates
-stateUpdateHelper stateMap mapper stringValue tiltakStates =
+stateUpdateHelper :
+    StateMap specificState
+    -> Setter specificState
+    -> String
+    -> TiltakStates
+    -> TiltakStates
+stateUpdateHelper stateMap setter stringValue tiltakStates =
     tiltakStates
-        |> stateMap (\state -> mapper stringValue state)
+        |> stateMap (\specificState -> setter stringValue specificState)
 
 
-stringValueHelper : (TiltakStates -> specificState) -> (specificState -> Maybe a) -> TiltakStates -> String
+stringValueHelper :
+    (TiltakStates -> specificState)
+    -> (specificState -> Maybe a)
+    -> TiltakStates
+    -> String
 stringValueHelper getSpecificState func states =
     let
         maybeValue =

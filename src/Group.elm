@@ -1,6 +1,6 @@
 module Group exposing (..)
 
-import Models exposing (Group)
+import Models exposing (Group(..))
 
 
 groupPath : Group -> String
@@ -10,9 +10,14 @@ groupPath tag =
 
 groupPathSansHash : Group -> String
 groupPathSansHash tag =
-    tag |> groupTitle |> String.toLower
+    tag |> toString |> String.toLower
 
 
 groupTitle : Group -> String
 groupTitle tag =
-    tag |> toString
+    case tag of
+        StrekningOgFramkommelighet ->
+            "Strekning og framkommelighet"
+
+        _ ->
+            tag |> toString

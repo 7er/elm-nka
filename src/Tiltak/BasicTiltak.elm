@@ -32,8 +32,27 @@ nettoNytte this state =
 
 
 passasjerNytte : StateCalculationMethod
-passasjerNytte this state =
-    (sendTo this .yearlyPassasjerNytte state) |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
+passasjerNytte =
+    analysePeriodeNytteFor .yearlyPassasjerNytte
+
+
+trafikantNytte : StateCalculationMethod
+trafikantNytte =
+    analysePeriodeNytteFor .yearlyTrafikantNytte
+
+
+analysePeriodeNytteFor :
+    Tiltak.TiltakAccessor (tiltakStates -> Maybe Float)
+    -> Tiltak
+    -> tiltakStates
+    -> Maybe Float
+analysePeriodeNytteFor accessor this state =
+    (sendTo this accessor state) |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
+
+
+operatoerNytte : StateCalculationMethod
+operatoerNytte =
+    analysePeriodeNytteFor .yearlyOperatoerNytte
 
 
 kostUtenSkyggepris : StateCalculationMethod
@@ -51,14 +70,16 @@ basicTiltakRecord : TiltakRecord
 basicTiltakRecord =
     { title = \_ -> "Basic tiltak"
     , fields = \_ -> []
-    , passasjerNytte = \_ _ -> Nothing
+    , passasjerNytte = passasjerNytte
+    , trafikantNytte = trafikantNytte
+    , operatoerNytte = operatoerNytte
     , kostUtenSkyggepris = kostUtenSkyggepris
     , nettoNytte = nettoNytte
     , nytte = nytte
-    , operatoerNytte = \_ _ -> Just 0
     , skyggepris = \_ _ -> Nothing
-    , trafikantNytte = \_ _ -> Just 0
     , yearlyPassasjerNytte = \_ _ -> Nothing
+    , yearlyTrafikantNytte = \_ _ -> Just 0
+    , yearlyOperatoerNytte = \_ _ -> Just 0
     , driftOgVedlihKost = \_ _ -> Nothing
     , investeringsKostInklRestverdi = \_ _ -> Nothing
     }

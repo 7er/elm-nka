@@ -12,6 +12,7 @@ port generateC3 : String -> Cmd msg
 type Group
     = Holdeplasser
     | Informasjon
+    | StrekningOgFramkommelighet
 
 
 type Page

@@ -8,7 +8,7 @@ import Tiltak.BasicTiltak as BasicTiltak
 
 yearlyPassasjerNytte : StateCalculationMethod
 yearlyPassasjerNytte this ({ leskurMedSitteplass } as state) =
-    leskurMedSitteplass.passengersPerYear |> Maybe.map toFloat |> Maybe.map ((*) GeneralForutsetninger.leskurPaaBussholdeplassenMedSitteplassNOK)
+    leskurMedSitteplass.passengersPerYear |> Maybe.map ((*) GeneralForutsetninger.leskurPaaBussholdeplassenMedSitteplassNOK)
 
 
 driftOgVedlihKost : StateCalculationMethod
@@ -42,20 +42,19 @@ skyggepris this ({ leskurMedSitteplass } as state) =
 
 tiltak : Tiltak
 tiltak =
-    Tiltak
-        { title = \_ -> "Leskur med sitteplass"
-        , fields = \_ -> fields
-        , passasjerNytte = BasicTiltak.passasjerNytte
-        , kostUtenSkyggepris = BasicTiltak.kostUtenSkyggepris
-        , nettoNytte = BasicTiltak.nettoNytte
-        , nytte = BasicTiltak.nytte
-        , operatoerNytte = \_ _ -> Just 0
-        , skyggepris = skyggepris
-        , trafikantNytte = \_ _ -> Just 0
-        , yearlyPassasjerNytte = yearlyPassasjerNytte
-        , driftOgVedlihKost = driftOgVedlihKost
-        , investeringsKostInklRestverdi = investeringsKostInklRestverdi
-        }
+    let
+        basicTiltakRecord =
+            BasicTiltak.basicTiltakRecord
+    in
+        Tiltak
+            { basicTiltakRecord
+                | title = \_ -> "Leskur med sitteplass"
+                , fields = \_ -> fields
+                , skyggepris = skyggepris
+                , yearlyPassasjerNytte = yearlyPassasjerNytte
+                , driftOgVedlihKost = driftOgVedlihKost
+                , investeringsKostInklRestverdi = investeringsKostInklRestverdi
+            }
 
 
 initialState : TiltakStates.SimpleCommonState
@@ -89,7 +88,7 @@ fields =
                     (\stringValue state ->
                         { state
                             | passengersPerYear =
-                                String.toInt stringValue |> Result.toMaybe
+                                String.toFloat stringValue |> Result.toMaybe
                         }
                     )
           , stringValueFromState = thisStringValueHelper .passengersPerYear

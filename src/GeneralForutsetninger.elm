@@ -87,6 +87,23 @@ leskurPaaBussholdeplassenMedSitteplassNOK =
     5.81177152111594
 
 
+reisetidKollektivTransportNOK : Float
+reisetidKollektivTransportNOK =
+    -- pr min pr passasjer
+    1.02560673902046
+
+
+reisetidBilNOK : Float
+reisetidBilNOK =
+    1.53841010853069
+
+
+operatoerKostnadNOK : Float
+operatoerKostnadNOK =
+    -- per minutt
+    7.30197811291267
+
+
 skyggepris : Float
 skyggepris =
     0.2
