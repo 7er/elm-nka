@@ -9,13 +9,13 @@ import Bootstrap.Grid.Col as Col
 import Bootstrap.Card as Card
 import Bootstrap.Button as Button
 import Bootstrap.Modal as Modal
-import Models exposing (..)
-import Msgs exposing (Msg)
-import GroupPage
+import Bootstrap.Accordion as Accordion
+import Models exposing (Model, Page(..), Group(..))
 import Msgs exposing (Msg(..))
 import Group
 import TiltakAndGroupData
 import Assets
+import TiltakView
 
 
 view : Model -> Html Msg
@@ -28,25 +28,34 @@ view model =
         ]
 
 
-menu : Navbar.State -> Html Msg
-menu navState =
+menuItemLinks =
     let
         groupToItemLink group =
             Navbar.itemLink
                 [ href (Group.groupPath group) ]
                 [ text (Group.groupTitle group) ]
 
-        itemLinks =
-            [ Navbar.itemLink [ href "#getting-started" ] [ text "Komme i gang" ]
-            ]
-                ++ List.map groupToItemLink TiltakAndGroupData.alleTyper
+        gettingStarted =
+            Navbar.itemLink
+                [ href "#getting-started" ]
+                [ text "Komme i gang" ]
     in
-        Navbar.config NavMsg
-            |> Navbar.withAnimation
-            |> Navbar.container
-            |> Navbar.brand [ href "#" ] [ text "TØI Kollektivtrafikk tiltak kalkulator" ]
-            |> Navbar.items itemLinks
-            |> Navbar.view navState
+        gettingStarted
+            :: List.map
+                groupToItemLink
+                TiltakAndGroupData.alleTyper
+
+
+menu : Navbar.State -> Html Msg
+menu navState =
+    Navbar.config NavMsg
+        |> Navbar.withAnimation
+        |> Navbar.container
+        |> Navbar.brand
+            [ href "#" ]
+            [ text "TØI Kollektivtrafikk tiltak kalkulator" ]
+        |> Navbar.items menuItemLinks
+        |> Navbar.view navState
 
 
 mainContent : Model -> Html Msg
@@ -63,7 +72,7 @@ mainContent model =
                 pageNotFound
 
             GroupPage tiltaksGruppeType ->
-                GroupPage.page tiltaksGruppeType model
+                pageGroup tiltaksGruppeType model
 
 
 pageHome : Model -> List (Html Msg)
@@ -110,6 +119,22 @@ pageGettingStarted model =
         ]
         [ text "Trykk meg" ]
     ]
+
+
+pageGroup : Group -> Model -> List (Html Msg)
+pageGroup tiltaksGruppeType model =
+    let
+        tiltakene =
+            TiltakAndGroupData.tiltakForGroup tiltaksGruppeType
+
+        allCards =
+            List.map (TiltakView.tiltakCard model) tiltakene
+    in
+        [ Accordion.config AccordionMsg
+            |> Accordion.withAnimation
+            |> Accordion.cards allCards
+            |> Accordion.view model.accordionState
+        ]
 
 
 pageNotFound : List (Html Msg)
