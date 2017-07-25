@@ -1,58 +1,69 @@
 var path = require("path");
 var webpack = require("webpack");
 
+const PATHS = {
+  app: path.join(__dirname, 'src'),
+  build: path.join(__dirname, 'dist'),
+};
 
-module.exports = {
-  plugins: [
-    new webpack.EnvironmentPlugin({'USE_TILTAK_MAIN': false})
-  ],
-  entry: {
-    app: [
-      './src/index.js'
-    ]
-  },
+const makeConfig = (isDevelopment) => {
+  return {
+    entry: {
+      app: PATHS.app
+    },
 
-  output: {
-    path: path.resolve(__dirname + '/dist'),
-    filename: '[name].js',
-  },
-
-  module: {
-    rules: [
-      {
-        test: /\.(css|scss)$/,
-        use: [
-          'style-loader',
-          'css-loader',
-        ]
-      },
-      {
-        test:    /\.html$/,
-        exclude: /node_modules/,
-        loader:  'file-loader?name=[name].[ext]',
-      },
-      {
-        test:    /\.elm$/,
-        exclude: [/elm-stuff/, /node_modules/],
-        loader:  'elm-webpack-loader?verbose=true&warn=true&debug=true',
-      },
-      {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'file-loader',
-      },
+    output: {
+      path: PATHS.build,
+      filename: '[name].js',
+    },
+    plugins : [
     ],
 
-    noParse: /\.elm$/,
-  },
+    module: {
+      rules: [
+        {
+          test: /\.(css|scss)$/,
+          use: [
+            'style-loader',
+            'css-loader',
+          ]
+        },
+        {
+          test:    /\.html$/,
+          exclude: /node_modules/,
+          loader:  'file-loader?name=[name].[ext]',
+        },
+        {
+          test:    /\.elm$/,
+          exclude: [/elm-stuff/, /node_modules/],
+          loader:  'elm-webpack-loader',
+          options: {
+            verbose: true,
+            warn: true,
+            debug: isDevelopment
+          }
+        },
+        {
+          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'url-loader?limit=10000&mimetype=application/font-woff',
+        },
+        {
+          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'file-loader',
+        },
+      ],
 
-  devServer: {
-    inline: true,
-    stats: { colors: true },
-  },
+      noParse: /\.elm$/,
+    },
 
-
+    devServer: {
+      inline: true,
+      stats: { colors: true },
+    },
+  }
 };
+
+module.exports = (env) => {
+  console.log("env", env);
+  return makeConfig(env == 'development');
+}
