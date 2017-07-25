@@ -28,7 +28,9 @@ suite =
 
         checkWithState description accessor expectation =
             test description <|
-                \() -> Tiltak.sendTo tiltak accessor state |> checkMaybe expectation
+                \() ->
+                    Tiltak.sendTo tiltak accessor state
+                        |> checkMaybe expectation
     in
         describe "LeskurMedSitteplass"
             [ describe "nytte calculcations"

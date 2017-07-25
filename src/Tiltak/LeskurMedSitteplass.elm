@@ -6,21 +6,16 @@ import TiltakStates exposing (TiltakStates)
 import Tiltak.BasicTiltak as BasicTiltak
 
 
-yearlyPassasjerNytte : StateCalculationMethod
-yearlyPassasjerNytte this ({ leskurMedSitteplass } as state) =
-    leskurMedSitteplass.passengersPerYear |> Maybe.map ((*) GeneralForutsetninger.leskurPaaBussholdeplassenMedSitteplassNOK)
-
-
-driftOgVedlihKost : StateCalculationMethod
-driftOgVedlihKost this ({ leskurMedSitteplass } as state) =
-    leskurMedSitteplass.yearlyMaintenance
-        |> Maybe.map ((*) GeneralForutsetninger.afaktor)
-        |> Maybe.map negate
-
-
 levetid : number
 levetid =
     12
+
+
+yearlyPassasjerNytte : StateCalculationMethod
+yearlyPassasjerNytte this ({ leskurMedSitteplass } as state) =
+    leskurMedSitteplass.passengersPerYear
+        |> Maybe.map
+            ((*) GeneralForutsetninger.leskurPaaBussholdeplassenMedSitteplassNOK)
 
 
 investeringsKostInklRestverdi : StateCalculationMethod
@@ -31,13 +26,23 @@ investeringsKostInklRestverdi this ({ leskurMedSitteplass } as state) =
         |> Maybe.map negate
 
 
+driftOgVedlihKost : StateCalculationMethod
+driftOgVedlihKost this ({ leskurMedSitteplass } as state) =
+    leskurMedSitteplass.yearlyMaintenance
+        |> Maybe.map ((*) GeneralForutsetninger.afaktor)
+        |> Maybe.map negate
+
+
 skyggepris : StateCalculationMethod
 skyggepris this ({ leskurMedSitteplass } as state) =
-    (sendTo this .kostUtenSkyggepris state)
-        |> Maybe.map
-            (\kostUtenSkyggepris ->
-                (1 - leskurMedSitteplass.bompengeAndel) * kostUtenSkyggepris * GeneralForutsetninger.skyggepris
-            )
+    let
+        calculation kostUtenSkyggepris =
+            (1 - leskurMedSitteplass.bompengeAndel)
+                * kostUtenSkyggepris
+                * GeneralForutsetninger.skyggepris
+    in
+        (sendTo this .kostUtenSkyggepris state)
+            |> Maybe.map calculation
 
 
 tiltak : Tiltak

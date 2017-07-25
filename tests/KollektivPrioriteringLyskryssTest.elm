@@ -1,47 +1,41 @@
 module KollektivPrioriteringLyskryssTest exposing (suite)
 
--- import Expect exposing (Expectation)
-
 import Test exposing (Test, describe, test)
 import TestSupport exposing (..)
-import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
-
-
--- import GeneralForutsetninger
-
 import Tiltak
+import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import TiltakAndGroupData
 
 
 suite : Test
 suite =
-    let
-        initialState =
-            TiltakAndGroupData.initialTiltakStates
+    describe "KollektivPrioriteringLyskryss" <|
+        let
+            initialState =
+                TiltakAndGroupData.initialTiltakStates
 
-        state =
-            { initialState
-                | kollektivPrioriteringLyskryss =
-                    { installationCost = Nothing
-                    , yearlyMaintenance = Nothing
-                    , passengersPerYear = Just 30
-                    , bompengeAndel = 0
-                    , antallBilerForsinketPerAvgang = Just 3
-                    , antallPasserendeAvgangerPerYear = Just 1000
-                    , forsinkelsePerBilSeconds = Just 2
-                    }
-            }
+            state =
+                { initialState
+                    | kollektivPrioriteringLyskryss =
+                        { installationCost = Just 100
+                        , yearlyMaintenance = Just 200
+                        , passengersPerYear = Just 30
+                        , bompengeAndel = 0
+                        , antallBilerForsinketPerAvgang = Just 3
+                        , antallPasserendeAvgangerPerYear = Just 1000
+                        , forsinkelsePerBilSeconds = Just 2
+                        }
+                }
 
-        checkWithState description accessor expectation =
-            test description <|
-                \() ->
-                    Tiltak.sendTo
-                        KollektivPrioriteringLyskryss.tiltak
-                        accessor
-                        state
-                        |> checkMaybe expectation
-    in
-        describe "KollektivPrioriteringLyskryss"
+            checkWithState description accessor expectation =
+                test description <|
+                    \() ->
+                        Tiltak.sendTo
+                            KollektivPrioriteringLyskryss.tiltak
+                            accessor
+                            state
+                            |> checkMaybe expectation
+        in
             [ describe "nytte calculcations"
                 [ checkWithState
                     "passasjerNytte"
@@ -70,5 +64,27 @@ suite =
                 , checkWithState "nytte" .nytte (closeTo 55927.08 2)
                 ]
             , describe "kost calculations"
-                []
+                [ checkWithState
+                    "investeringsKostInklRestverdi"
+                    .investeringsKostInklRestverdi
+                    (closeTo -179.42 2)
+                , checkWithState
+                    "driftOgVedlihKost"
+                    .driftOgVedlihKost
+                    (closeTo -3958.55 2)
+                , checkWithState
+                    "kostUtenSkyggepris"
+                    .kostUtenSkyggepris
+                    (closeTo -4137.97 2)
+                , checkWithState
+                    "skyggepris"
+                    .skyggepris
+                    (closeTo -827.59 2)
+                ]
+            , describe "nettonytte calculations"
+                [ checkWithState
+                    "nettoNytte"
+                    .nettoNytte
+                    (closeTo 50961.51 2)
+                ]
             ]
