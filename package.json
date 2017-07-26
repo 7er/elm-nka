@@ -29,6 +29,7 @@
     "webpack-dev-server": "^2.5.0"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
     "elm-test": "^0.18.6"
   }
 }

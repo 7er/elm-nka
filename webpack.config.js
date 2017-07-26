@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const PATHS = {
   app: path.join(__dirname, 'src'),
@@ -14,9 +15,12 @@ const makeConfig = (isDevelopment) => {
 
     output: {
       path: PATHS.build,
-      filename: '[name].js',
+      filename: '[name].js'
     },
     plugins : [
+        new CopyWebpackPlugin([
+            { from: 'src/static' }
+        ])
     ],
 
     module: {
@@ -25,13 +29,13 @@ const makeConfig = (isDevelopment) => {
           test: /\.(css|scss)$/,
           use: [
             'style-loader',
-            'css-loader',
+            'css-loader'
           ]
         },
         {
           test:    /\.html$/,
           exclude: /node_modules/,
-          loader:  'file-loader?name=[name].[ext]',
+          loader:  'file-loader?name=[name].[ext]'
         },
         {
           test:    /\.elm$/,
@@ -49,8 +53,8 @@ const makeConfig = (isDevelopment) => {
         },
         {
           test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'file-loader',
-        },
+          loader: 'file-loader'
+        }
       ],
 
       noParse: /\.elm$/,
@@ -58,8 +62,8 @@ const makeConfig = (isDevelopment) => {
 
     devServer: {
       inline: true,
-      stats: { colors: true },
-    },
+      stats: { colors: true }
+    }
   }
 };
 

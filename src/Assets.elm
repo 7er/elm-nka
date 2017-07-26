@@ -19,11 +19,11 @@ type Image
 
 byvaapen : Image
 byvaapen =
-    Image "assets/images/oslo_byvaapen.png"
+    Image "/images/oslo_byvaapen.png"
 
 toiLogo : Image
 toiLogo =
-    Image "assets/images/toi_logo_navn.png"
+    Image "/images/toi_logo_navn.png"
 
 
 
