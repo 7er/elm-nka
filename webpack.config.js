@@ -36,12 +36,23 @@ const makeConfig = (isDevelopment) => {
         {
           test:    /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
-          loader:  'elm-webpack-loader',
-          options: {
-            verbose: true,
-            warn: true,
-            debug: isDevelopment
-          }
+          use: [
+            {
+              loader: 'elm-assets-loader',
+              options: {
+                module: 'Assets',
+                tagger: 'Image'
+              }
+            },            
+            {
+              loader:  'elm-webpack-loader',
+              options: {
+                verbose: true,
+                warn: true,
+                debug: isDevelopment
+              }
+            }
+          ]
         },
         {
           test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -51,9 +62,16 @@ const makeConfig = (isDevelopment) => {
           test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
           loader: 'file-loader',
         },
+        {
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          loader: 'file-loader',
+          options: {
+            name: '[name]-[hash].[ext]'
+          }
+        },
       ],
 
-      noParse: /\.elm$/,
+      //noParse: /\.elm$/,
     },
 
     devServer: {

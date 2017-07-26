@@ -29,6 +29,8 @@
     "webpack-dev-server": "^2.5.0"
   },
   "devDependencies": {
+    "babel-core": "^6.25.0",
+    "elm-assets-loader": "^0.3.0",
     "elm-test": "^0.18.6"
   }
 }

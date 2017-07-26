@@ -1,6 +1,7 @@
 
 // Require index.html so it gets copied to dist
 require('./index.html');
+require('./index.css');
 
 require("c3/c3.css");
 

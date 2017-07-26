@@ -1,4 +1,4 @@
-module Assets exposing (byvaapen, toiLogo, src)
+module Assets exposing (Image(..), byvaapen, toiLogo, src)
 
 {-| Assets, such as images, videos, and audio. (We only have images for now.)
 We should never expose asset URLs directly; this module should be in charge of
@@ -19,11 +19,12 @@ type Image
 
 byvaapen : Image
 byvaapen =
-    Image "assets/images/oslo_byvaapen.png"
+    Image "./images/oslo_byvaapen_liten.png"
+
 
 toiLogo : Image
 toiLogo =
-    Image "assets/images/toi_logo_navn.png"
+    Image "./images/toi_logo_navn.png"
 
 
 
@@ -33,4 +34,3 @@ toiLogo =
 src : Image -> Attribute msg
 src (Image url) =
     Attr.src url
-    

@@ -29,3 +29,26 @@ one f x =
 
 zero f x =
     x
+
+
+type alias Rec =
+    { bar : Float
+    , foo : String
+    }
+
+
+
+--getValue : Rec -> String ->
+
+
+getStringValue : Rec -> String -> (a -> String) -> Result String String
+getStringValue rec string func =
+    case string of
+        "bar" ->
+            Ok (func rec.bar)
+
+        "foo" ->
+            Ok (func rec.foo)
+
+        _ ->
+            Err (string ++ " not found")

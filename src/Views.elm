@@ -167,14 +167,15 @@ modal modalState =
 appFooter : Html Msg
 appFooter =
     footer []
-        [{-
-            div [] [ text "Kontakt: "
-                , a [href "mailto:naf@toi.no"] [text "Nils Fearnley"]
-                , br [] []
-                , a [href "https://www.toi.no"] [
-                    img [Assets.src Assets.toiLogo, class "toiLogo", alt "TØI logo"] [] ]
-                , a [href "https://www.oslo.kommune.no"] [
-                    img [Assets.src Assets.byvaapen, class "byvaapen", alt "Oslo byvåpen"] [] ]
+        [ div []
+            [ text "Kontakt: "
+            , a [ href "mailto:naf@toi.no" ] [ text "Nils Fearnley" ]
+            , br [] []
+            , a [ href "https://www.toi.no" ]
+                [ img [ Assets.src Assets.toiLogo, class "toiLogo", alt "TØI logo" ] []
+                ]
+            , a [ href "https://www.oslo.kommune.no" ]
+                [ img [ Assets.src Assets.byvaapen, class "byvaapen", alt "Oslo byvåpen" ] []
+                ]
             ]
-         -}
         ]
