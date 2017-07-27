@@ -1,16 +1,43 @@
-.overskrift {
-    display: block;
-    border: 1px dotted green;
+/* Position the footer at the bottom of the page, but not fixed. */
+html {
+    height: 100%;
+    box-sizing: border-box;
 }
 
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    padding-bottom: 6rem;
+    min-height: 100%;
+}
+
+.contents {
+    margin: 0 auto;
+/*
+    padding-top: 64px;
+     max-width: 640px;
+     width: 94%;
+*/
+}
+
+/**
+ * Footer Styles
+ */
+
 footer {
-    padding-top: 50px;
-    padding-bottom: 50px;
-    margin-top: 100px;
-    background-color: #3b3b3b;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
     color: #F3F3F3;
-    padding-left: 10px;
-    padding-right: 10px;
+    background-color: #3b3b3b;
 }
 
 .footer-text {
@@ -48,10 +75,3 @@ footer a {
     }
 }
 
-body {
-    background-color: #3b3b3b;
-}
-
-.contents {
-    background-color: white;
-}
