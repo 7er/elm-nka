@@ -166,8 +166,8 @@ modal modalState =
 
 appFooter : Html Msg
 appFooter =
-    footer []
-        [ div []
+    footer [ class "footer" ]
+        [ Grid.container []
             [ text "Kontakt: "
             , a [ href "mailto:naf@toi.no" ] [ text "Nils Fearnley" ]
             , br [] []

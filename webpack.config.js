@@ -3,7 +3,7 @@ const webpack = require("webpack");
 
 
 const PATHS = {
-  app: path.join(__dirname, 'src'),
+  app: path.join(__dirname, 'src/index.js'),
   build: path.join(__dirname, 'dist'),
 };
 
