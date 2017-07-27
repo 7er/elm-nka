@@ -104,7 +104,6 @@ suite =
                         , passengersPerYear = Just 10
                         , beleggForbiPassasjererPerBuss = Just 20
                         , aarligTidsbesparelseMinutter = Just 30
-                        , aarligAntallAvganger = Just 1000
                         }
                 }
 

@@ -34,7 +34,6 @@ type alias OpphoyetHoldeplassState =
     , passengersPerYear : Maybe Float
     , beleggForbiPassasjererPerBuss : Maybe Float
     , aarligTidsbesparelseMinutter : Maybe Float
-    , aarligAntallAvganger : Maybe Float
     }
 
 

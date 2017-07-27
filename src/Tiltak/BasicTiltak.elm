@@ -1,6 +1,7 @@
 module Tiltak.BasicTiltak exposing (..)
 
-import Tiltak exposing (Tiltak(..), TiltakRecord, Field, sendTo, StateCalculationMethod, bindTiltak)
+import Tiltak exposing (..)
+import TiltakStates exposing (TiltakStates)
 import GeneralForutsetninger
 
 
@@ -78,6 +79,7 @@ kostUtenSkyggepris this state =
             (f .driftOgVedlihKost)
 
 
+skyggeprisHelper : Tiltak -> TiltakStates -> Float -> Maybe Float
 skyggeprisHelper this state bompengeAndel =
     let
         calculation kostUtenSkyggepris =
@@ -109,6 +111,10 @@ basicTiltakRecord =
     }
 
 
+investeringsKostInklRestverdi :
+    { a | installationCost : Maybe Float }
+    -> Float
+    -> Maybe Float
 investeringsKostInklRestverdi record levetid =
     record.installationCost
         |> Maybe.map ((*) <| GeneralForutsetninger.investeringsFaktor levetid)

@@ -5,7 +5,6 @@ import TiltakStates exposing (TiltakStates)
 import Tiltak exposing (Tiltak)
 import Tiltak.SykkelparkeringUte as SykkelparkeringUte
 import Tiltak.SeparatSykkelveg as SeparatSykkelveg
-import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
 import Tiltak.SkiltingIBuss as SkiltingIBuss
 import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss

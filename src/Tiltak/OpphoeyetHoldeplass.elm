@@ -1,11 +1,12 @@
 module Tiltak.OpphoeyetHoldeplass exposing (tiltak, initialState)
 
-import Tiltak exposing (Tiltak(..), Field, sendTo)
+import Tiltak exposing (Tiltak(..), Field, StateCalculationMethod, sendTo)
 import TiltakStates exposing (OpphoyetHoldeplassState)
 import Tiltak.BasicTiltak as BasicTiltak exposing (SimpleField)
 import GeneralForutsetninger
 
 
+yearlyPassasjerNytte : StateCalculationMethod
 yearlyPassasjerNytte this ({ opphoeyetHoldeplass } as state) =
     let
         verdisettinger =
@@ -31,6 +32,7 @@ yearlyPassasjerNytte this ({ opphoeyetHoldeplass } as state) =
         Maybe.map2 (+) first second
 
 
+yearlyOperatoerNytte : StateCalculationMethod
 yearlyOperatoerNytte this ({ opphoeyetHoldeplass } as state) =
     let
         verdisettinger =
@@ -39,6 +41,7 @@ yearlyOperatoerNytte this ({ opphoeyetHoldeplass } as state) =
         Maybe.map (\minutter -> minutter * verdisettinger.operatoerKostnad) opphoeyetHoldeplass.aarligTidsbesparelseMinutter
 
 
+levetid : number
 levetid =
     25
 
@@ -73,6 +76,7 @@ tiltak =
             }
 
 
+initialState : OpphoyetHoldeplassState
 initialState =
     { installationCost = Nothing
     , yearlyMaintenance = Nothing
@@ -80,7 +84,6 @@ initialState =
     , passengersPerYear = Nothing
     , beleggForbiPassasjererPerBuss = Nothing
     , aarligTidsbesparelseMinutter = Nothing
-    , aarligAntallAvganger = Nothing
     }
 
 
@@ -140,17 +143,6 @@ fieldDefinitions =
                 }
             )
       , accessor = .aarligTidsbesparelseMinutter
-      }
-    , { name = "aarligAntallAvganger"
-      , title = "Avganger som passererer krysset"
-      , placeholder = "Antall passerende avganger per år"
-      , setter =
-            (\value state ->
-                { state
-                    | aarligAntallAvganger = value
-                }
-            )
-      , accessor = .aarligAntallAvganger
       }
     ]
 
