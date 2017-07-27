@@ -1,5 +1,6 @@
-var path = require("path");
-var webpack = require("webpack");
+const path = require("path");
+const webpack = require("webpack");
+
 
 const PATHS = {
   app: path.join(__dirname, 'src'),
@@ -9,9 +10,8 @@ const PATHS = {
 const makeConfig = (isDevelopment) => {
   return {
     entry: {
-      app: PATHS.app
+      app: PATHS.app,
     },
-
     output: {
       path: PATHS.build,
       filename: '[name].js',
