@@ -26,6 +26,7 @@ const makeConfig = (isDevelopment) => {
           use: [
             'style-loader',
             'css-loader',
+            'sass-loader',
           ]
         },
         {
@@ -49,7 +50,7 @@ const makeConfig = (isDevelopment) => {
               options: {
                 verbose: true,
                 warn: true,
-                debug: isDevelopment
+                debug: isDevelopment,
               }
             }
           ]

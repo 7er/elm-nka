@@ -1,3 +1,5 @@
+$footer-height: 170px;
+
 /* Position the footer at the bottom of the page, but not fixed. */
 html {
     min-height: 100%;
@@ -6,7 +8,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 170px;
+  margin-bottom: $footer-height;
 }
 
 footer {
@@ -14,7 +16,7 @@ footer {
     bottom: 0;
     width: 100%;
     /* same as body margin-bottom here */
-    height: 170px;
+    height: $footer-height;
     color: #F3F3F3;
     background-color: #3b3b3b;
 }
