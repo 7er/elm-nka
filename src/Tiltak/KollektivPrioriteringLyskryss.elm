@@ -1,7 +1,7 @@
 module Tiltak.KollektivPrioriteringLyskryss exposing (..)
 
 import Tiltak exposing (Tiltak(..), sendTo, StateCalculationMethod, Field)
-import Tiltak.BasicTiltak as BasicTiltak
+import Tiltak.BasicTiltak as BasicTiltak exposing (SimpleField)
 import TiltakStates exposing (KollektivPrioriteringLyskryssState)
 import GeneralForutsetninger exposing (verdisettinger)
 
@@ -109,19 +109,7 @@ initialState =
     }
 
 
-type alias SimpleField =
-    { name : String
-    , title : String
-    , placeholder : String
-    , setter :
-        Maybe Float
-        -> KollektivPrioriteringLyskryssState
-        -> KollektivPrioriteringLyskryssState
-    , accessor : KollektivPrioriteringLyskryssState -> Maybe Float
-    }
-
-
-fieldDefinitions : List SimpleField
+fieldDefinitions : List (SimpleField KollektivPrioriteringLyskryssState)
 fieldDefinitions =
     [ { name = "installationCost"
       , title = "Installasjonskostnad"

@@ -1,7 +1,8 @@
 module Tiltak.OpphoeyetHoldeplass exposing (tiltak, initialState)
 
-import Tiltak exposing (Tiltak(..), sendTo)
-import Tiltak.BasicTiltak as BasicTiltak
+import Tiltak exposing (Tiltak(..), Field, sendTo)
+import TiltakStates exposing (OpphoyetHoldeplassState)
+import Tiltak.BasicTiltak as BasicTiltak exposing (SimpleField)
 import GeneralForutsetninger
 
 
@@ -51,6 +52,7 @@ tiltak =
         Tiltak
             { basicTiltakRecord
                 | title = \_ -> "Opphøyet holdeplass"
+                , fields = \_ -> fields
                 , yearlyPassasjerNytte = yearlyPassasjerNytte
                 , yearlyOperatoerNytte = yearlyOperatoerNytte
                 , investeringsKostInklRestverdi =
@@ -63,16 +65,127 @@ tiltak =
                         BasicTiltak.driftOgVedlihKost opphoeyetHoldeplass
                 , skyggepris =
                     \this ({ opphoeyetHoldeplass } as state) ->
-                        sendTo this .skyggeprisHelper state opphoeyetHoldeplass.bompengeAndel
+                        sendTo
+                            this
+                            .skyggeprisHelper
+                            state
+                            opphoeyetHoldeplass.bompengeAndel
             }
 
 
 initialState =
-    { aarligAntallAvganger = Nothing
-    , aarligTidsbesparelseMinutter = Nothing
-    , beleggForbiPassasjererPerBuss = Nothing
-    , bompengeAndel = 0
-    , installationCost = Nothing
-    , passengersPerYear = Nothing
+    { installationCost = Nothing
     , yearlyMaintenance = Nothing
+    , bompengeAndel = 0
+    , passengersPerYear = Nothing
+    , beleggForbiPassasjererPerBuss = Nothing
+    , aarligTidsbesparelseMinutter = Nothing
+    , aarligAntallAvganger = Nothing
     }
+
+
+fieldDefinitions : List (SimpleField OpphoyetHoldeplassState)
+fieldDefinitions =
+    [ { name = "installationCost"
+      , title = "Installasjonskostnad"
+      , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
+      , setter =
+            (\value state ->
+                { state
+                    | installationCost = value
+                }
+            )
+      , accessor = .installationCost
+      }
+    , { name = "yearlyMaintenance"
+      , title = "Årlige drifts- og vedlikeholdskostnader"
+      , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
+      , setter =
+            (\value state ->
+                { state
+                    | yearlyMaintenance = value
+                }
+            )
+      , accessor = .yearlyMaintenance
+      }
+    , { name = "passengersPerYear"
+      , title = "Antall passasjerer på holdeplassen"
+      , placeholder = "På- og avstigende passasjerer per år"
+      , setter =
+            (\value state ->
+                { state
+                    | passengersPerYear = value
+                }
+            )
+      , accessor = .passengersPerYear
+      }
+    , { name = "beleggForbiPassasjererPerBuss"
+      , title = "Gjennomstsbelegg forbi holdeplassen"
+      , placeholder = "Passasjerer pr buss"
+      , setter =
+            (\value state ->
+                { state
+                    | beleggForbiPassasjererPerBuss = value
+                }
+            )
+      , accessor = .beleggForbiPassasjererPerBuss
+      }
+    , { name = "aarligTidsbesparelseMinutter"
+      , title = "Årlig tidsbesparelse i minutter"
+      , placeholder = "Se tekst i rapport for detaljer"
+      , setter =
+            (\value state ->
+                { state
+                    | aarligTidsbesparelseMinutter = value
+                }
+            )
+      , accessor = .aarligTidsbesparelseMinutter
+      }
+    , { name = "aarligAntallAvganger"
+      , title = "Avganger som passererer krysset"
+      , placeholder = "Antall passerende avganger per år"
+      , setter =
+            (\value state ->
+                { state
+                    | aarligAntallAvganger = value
+                }
+            )
+      , accessor = .aarligAntallAvganger
+      }
+    ]
+
+
+fields : List Field
+fields =
+    let
+        stateMap func tiltakStates =
+            { tiltakStates
+                | opphoeyetHoldeplass = func tiltakStates.opphoeyetHoldeplass
+            }
+
+        updateTiltakStateHelper =
+            TiltakStates.stateUpdateHelper stateMap
+
+        thisStringValueHelper =
+            TiltakStates.stringValueHelper .opphoeyetHoldeplass
+
+        toRealField simpleField =
+            { name = simpleField.name
+            , title = simpleField.title
+            , placeholder = simpleField.placeholder
+            , updateTiltakState =
+                updateTiltakStateHelper
+                    (\stringValue state ->
+                        let
+                            pipeline =
+                                String.toFloat stringValue
+                                    |> Result.toMaybe
+                                    |> simpleField.setter
+                        in
+                            pipeline state
+                    )
+            , stringValueFromState = thisStringValueHelper simpleField.accessor
+            }
+    in
+        fieldDefinitions
+            |> List.map toRealField
