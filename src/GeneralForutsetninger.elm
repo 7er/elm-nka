@@ -1,6 +1,23 @@
 module GeneralForutsetninger exposing (..)
 
 
+verdisettinger =
+    -- alle verdier i NOK
+    { opphoyetHoldeplass =
+        -- pr min pr passasjer
+        0.951535141202315
+    , reisetidKollektivTransport =
+        -- pr min pr passasjer
+        1.02560673902046
+    , reisetidBil =
+        -- pr min pr bil
+        1.53841010853069
+    , operatoerKostnad =
+        -- per minutt
+        7.30197811291267
+    }
+
+
 drente : Float
 drente =
     4 / 100
@@ -85,23 +102,6 @@ garderobeFasiliteterNOK =
 leskurPaaBussholdeplassenMedSitteplassNOK : Float
 leskurPaaBussholdeplassenMedSitteplassNOK =
     5.81177152111594
-
-
-reisetidKollektivTransportNOK : Float
-reisetidKollektivTransportNOK =
-    -- pr min pr passasjer
-    1.02560673902046
-
-
-reisetidBilNOK : Float
-reisetidBilNOK =
-    1.53841010853069
-
-
-operatoerKostnadNOK : Float
-operatoerKostnadNOK =
-    -- per minutt
-    7.30197811291267
 
 
 skyggepris : Float

@@ -20,29 +20,19 @@ yearlyPassasjerNytte this ({ leskurMedSitteplass } as state) =
 
 investeringsKostInklRestverdi : StateCalculationMethod
 investeringsKostInklRestverdi this ({ leskurMedSitteplass } as state) =
-    leskurMedSitteplass.installationCost
-        |> Maybe.map
-            (\installationCost -> installationCost * GeneralForutsetninger.investeringsFaktor levetid)
-        |> Maybe.map negate
+    BasicTiltak.investeringsKostInklRestverdi
+        leskurMedSitteplass
+        levetid
 
 
 driftOgVedlihKost : StateCalculationMethod
 driftOgVedlihKost this ({ leskurMedSitteplass } as state) =
-    leskurMedSitteplass.yearlyMaintenance
-        |> Maybe.map ((*) GeneralForutsetninger.afaktor)
-        |> Maybe.map negate
+    BasicTiltak.driftOgVedlihKost leskurMedSitteplass
 
 
 skyggepris : StateCalculationMethod
 skyggepris this ({ leskurMedSitteplass } as state) =
-    let
-        calculation kostUtenSkyggepris =
-            (1 - leskurMedSitteplass.bompengeAndel)
-                * kostUtenSkyggepris
-                * GeneralForutsetninger.skyggepris
-    in
-        (sendTo this .kostUtenSkyggepris state)
-            |> Maybe.map calculation
+    sendTo this .skyggeprisHelper state leskurMedSitteplass.bompengeAndel
 
 
 tiltak : Tiltak

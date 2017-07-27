@@ -19,11 +19,22 @@ type alias SeparatSykkelvegState =
 type alias KollektivPrioriteringLyskryssState =
     { installationCost : Maybe Float
     , yearlyMaintenance : Maybe Float
-    , passengersPerYear : Maybe Float
     , bompengeAndel : Float
+    , passengersPerYear : Maybe Float
     , antallBilerForsinketPerAvgang : Maybe Float
     , forsinkelsePerBilSeconds : Maybe Float
     , antallPasserendeAvgangerPerYear : Maybe Float
+    }
+
+
+type alias OpphoyetHoldeplassState =
+    { installationCost : Maybe Float
+    , yearlyMaintenance : Maybe Float
+    , bompengeAndel : Float
+    , passengersPerYear : Maybe Float
+    , beleggForbiPassasjererPerBuss : Maybe Float
+    , aarligTidsbesparelseMinutter : Maybe Float
+    , aarligAntallAvganger : Maybe Float
     }
 
 
@@ -42,6 +53,7 @@ type alias TiltakStates =
     , leskurMedSitteplass : SimpleCommonState
     , skiltingIBuss : SimpleCommonState
     , kollektivPrioriteringLyskryss : KollektivPrioriteringLyskryssState
+    , opphoeyetHoldeplass : OpphoyetHoldeplassState
     }
 
 

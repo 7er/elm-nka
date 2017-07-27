@@ -9,6 +9,7 @@ import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
 import Tiltak.SkiltingIBuss as SkiltingIBuss
 import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
+import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
 
 
 alleTyper : List Group
@@ -20,10 +21,11 @@ tiltakForGroup : Group -> List Tiltak
 tiltakForGroup gruppeType =
     case gruppeType of
         Holdeplasser ->
-            [ SykkelparkeringUte.tiltak
-            , LeskurUtenSitteplass.tiltak
+            [ OpphoeyetHoldeplass.tiltak
             , LeskurMedSitteplass.tiltak
 
+            --            , LeskurUtenSitteplass.tiltak
+            --            , SykkelparkeringUte.tiltak
             {-
                , { name = "Sitteplass på hpl"
                  , page = \model -> [ text "Sitteplass side" ]
@@ -56,4 +58,5 @@ initialTiltakStates =
     , skiltingIBuss = LeskurMedSitteplass.initialState
     , leskurMedSitteplass = LeskurMedSitteplass.initialState
     , kollektivPrioriteringLyskryss = KollektivPrioriteringLyskryss.initialState
+    , opphoeyetHoldeplass = OpphoeyetHoldeplass.initialState
     }

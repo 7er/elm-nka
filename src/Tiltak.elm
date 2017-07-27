@@ -57,6 +57,7 @@ type alias TiltakRecord =
     , operatoerNytte : StateCalculationMethod
     , nytte : StateCalculationMethod
     , skyggepris : StateCalculationMethod
+    , skyggeprisHelper : Tiltak -> TiltakStates -> Float -> Maybe Float
     , kostUtenSkyggepris : StateCalculationMethod
     , nettoNytte : StateCalculationMethod
     , yearlyPassasjerNytte : StateCalculationMethod

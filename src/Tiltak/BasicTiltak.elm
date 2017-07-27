@@ -66,6 +66,17 @@ kostUtenSkyggepris this state =
             (f .driftOgVedlihKost)
 
 
+skyggeprisHelper this state bompengeAndel =
+    let
+        calculation kostUtenSkyggepris =
+            (1 - bompengeAndel)
+                * kostUtenSkyggepris
+                * GeneralForutsetninger.skyggepris
+    in
+        (sendTo this .kostUtenSkyggepris state)
+            |> Maybe.map calculation
+
+
 basicTiltakRecord : TiltakRecord
 basicTiltakRecord =
     { title = \_ -> "Basic tiltak"
@@ -77,9 +88,23 @@ basicTiltakRecord =
     , nettoNytte = nettoNytte
     , nytte = nytte
     , skyggepris = \_ _ -> Nothing
+    , skyggeprisHelper = skyggeprisHelper
     , yearlyPassasjerNytte = \_ _ -> Nothing
     , yearlyTrafikantNytte = \_ _ -> Just 0
     , yearlyOperatoerNytte = \_ _ -> Just 0
     , driftOgVedlihKost = \_ _ -> Nothing
     , investeringsKostInklRestverdi = \_ _ -> Nothing
     }
+
+
+investeringsKostInklRestverdi record levetid =
+    record.installationCost
+        |> Maybe.map ((*) <| GeneralForutsetninger.investeringsFaktor levetid)
+        |> Maybe.map negate
+
+
+driftOgVedlihKost : { a | yearlyMaintenance : Maybe Float } -> Maybe Float
+driftOgVedlihKost record =
+    record.yearlyMaintenance
+        |> Maybe.map ((*) GeneralForutsetninger.afaktor)
+        |> Maybe.map negate

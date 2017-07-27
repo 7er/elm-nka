@@ -3,7 +3,7 @@ module Tiltak.KollektivPrioriteringLyskryss exposing (..)
 import Tiltak exposing (Tiltak(..), sendTo, StateCalculationMethod, Field)
 import Tiltak.BasicTiltak as BasicTiltak
 import TiltakStates exposing (KollektivPrioriteringLyskryssState)
-import GeneralForutsetninger
+import GeneralForutsetninger exposing (verdisettinger)
 
 
 levetid : number
@@ -18,27 +18,35 @@ tidsbesparelsePerAvgangSeconds =
 
 yearlyPassasjerNytte : StateCalculationMethod
 yearlyPassasjerNytte this ({ kollektivPrioriteringLyskryss } as state) =
-    kollektivPrioriteringLyskryss.passengersPerYear
-        |> Maybe.map
-            (\passengersPerYear ->
-                (tidsbesparelsePerAvgangSeconds / 60)
-                    * GeneralForutsetninger.reisetidKollektivTransportNOK
-                    * passengersPerYear
-            )
+    let
+        verdisettinger =
+            GeneralForutsetninger.verdisettinger
+    in
+        kollektivPrioriteringLyskryss.passengersPerYear
+            |> Maybe.map
+                (\passengersPerYear ->
+                    (tidsbesparelsePerAvgangSeconds / 60)
+                        * verdisettinger.reisetidKollektivTransport
+                        * passengersPerYear
+                )
 
 
 yearlyTrafikantNytte : StateCalculationMethod
 yearlyTrafikantNytte this ({ kollektivPrioriteringLyskryss } as state) =
-    Maybe.map3
-        (\antallBilerForsinketPerAvgang antallPasserendeAvgangerPerYear forsinkelsePerBilSeconds ->
-            antallBilerForsinketPerAvgang
-                * antallPasserendeAvgangerPerYear
-                * (negate forsinkelsePerBilSeconds / 60)
-                * GeneralForutsetninger.reisetidBilNOK
-        )
-        kollektivPrioriteringLyskryss.antallBilerForsinketPerAvgang
-        kollektivPrioriteringLyskryss.antallPasserendeAvgangerPerYear
-        kollektivPrioriteringLyskryss.forsinkelsePerBilSeconds
+    let
+        verdisettinger =
+            GeneralForutsetninger.verdisettinger
+    in
+        Maybe.map3
+            (\antallBilerForsinketPerAvgang antallPasserendeAvgangerPerYear forsinkelsePerBilSeconds ->
+                antallBilerForsinketPerAvgang
+                    * antallPasserendeAvgangerPerYear
+                    * (negate forsinkelsePerBilSeconds / 60)
+                    * verdisettinger.reisetidBil
+            )
+            kollektivPrioriteringLyskryss.antallBilerForsinketPerAvgang
+            kollektivPrioriteringLyskryss.antallPasserendeAvgangerPerYear
+            kollektivPrioriteringLyskryss.forsinkelsePerBilSeconds
 
 
 yearlyOperatoerNytte : StateCalculationMethod
@@ -47,7 +55,7 @@ yearlyOperatoerNytte this ({ kollektivPrioriteringLyskryss } as state) =
         calculation passerendeAvganger =
             passerendeAvganger
                 * (tidsbesparelsePerAvgangSeconds / 60)
-                * GeneralForutsetninger.operatoerKostnadNOK
+                * (verdisettinger).operatoerKostnad
     in
         kollektivPrioriteringLyskryss.antallPasserendeAvgangerPerYear
             |> Maybe.map calculation
@@ -55,29 +63,19 @@ yearlyOperatoerNytte this ({ kollektivPrioriteringLyskryss } as state) =
 
 investeringsKostInklRestverdi : StateCalculationMethod
 investeringsKostInklRestverdi this ({ kollektivPrioriteringLyskryss } as state) =
-    kollektivPrioriteringLyskryss.installationCost
-        |> Maybe.map
-            (\installationCost -> installationCost * GeneralForutsetninger.investeringsFaktor levetid)
-        |> Maybe.map negate
+    BasicTiltak.investeringsKostInklRestverdi
+        kollektivPrioriteringLyskryss
+        levetid
 
 
 driftOgVedlihKost : StateCalculationMethod
 driftOgVedlihKost this ({ kollektivPrioriteringLyskryss } as state) =
-    kollektivPrioriteringLyskryss.yearlyMaintenance
-        |> Maybe.map ((*) GeneralForutsetninger.afaktor)
-        |> Maybe.map negate
+    BasicTiltak.driftOgVedlihKost kollektivPrioriteringLyskryss
 
 
 skyggepris : StateCalculationMethod
 skyggepris this ({ kollektivPrioriteringLyskryss } as state) =
-    let
-        calculation kostUtenSkyggepris =
-            (1 - kollektivPrioriteringLyskryss.bompengeAndel)
-                * kostUtenSkyggepris
-                * GeneralForutsetninger.skyggepris
-    in
-        (sendTo this .kostUtenSkyggepris state)
-            |> Maybe.map calculation
+    (sendTo this .skyggeprisHelper state kollektivPrioriteringLyskryss.bompengeAndel)
 
 
 tiltak : Tiltak
