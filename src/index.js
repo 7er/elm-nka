@@ -17,21 +17,74 @@ var mountNode = document.querySelector('main');
 var app = Elm.Main.embed(mountNode);
 
 
-// unused for now
-window.matchMedia("print").addListener(function (mediaQueryList) {
-   console.log("forandret media", mediaQueryList);
-   app.ports.printMediaType.send(mediaQueryList.matches);
-});
+var charts = {};
 
-app.ports.generateC3.subscribe(function (domId) {
-  console.log("got here", domId);
+
+
+app.ports.generateC3.subscribe(function (object) {
+  var domId = object.domId;
+  var data = object.data;
+
+  console.log("generateC3", domId);
   var chart = c3.generate({
     bindto: "#" + domId,
+    type: 'line',
     data: {
-      columns: [
-        ['data1', 30, 200, 100, 400, 150, 250],
-        ['data2', 50, 20, 10, 40, 15, 25]
-      ]
+      x: 'x',
+      columns: [],
+    },
+    axis: {
+      y: {
+        label: {
+          text: "Nettonåverdi",
+          position: 'outer-middle'
+        },
+        tick: {
+          //format: $scope.tickFormat
+        }
+      },
+      x: {
+        tick: {
+          //format: $scope.tickFormat
+        }
+      }
+    },
+    grid: {
+      y: {
+        lines: [
+          {value: 0, text: "Grense for lønnsomhet"}
+        ]
+      }
     }
+  });
+
+  charts[domId] = chart;
+  updateChart(chart, data);
 });
+
+function updateChart(chart, realData) {
+  var dataRows = [].concat([['x', 'Nettonåverdi']], realData);
+  chart.axis.labels({x: "Navnet på variabelen vi grafer skal stå her"});
+  chart.load(
+    {
+      rows: dataRows,
+    });
+
+}
+
+app.ports.updateC3.subscribe(function (object) {
+  console.log('update', object);
+  var domId = object.domId;
+  var data = object.data;
+  var chart = charts[domId];
+  updateChart(chart, data);
+});
+
+
+
+app.ports.destroyC3.subscribe(function (domId) {
+  console.log("destroyC3", domId);
+  charts[domId].destroy();
+  delete charts[domId];
+  console.log("remaining charts", charts);
 });

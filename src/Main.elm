@@ -8,9 +8,11 @@ import UrlParser exposing ((</>))
 import Models exposing (..)
 import Msgs exposing (Msg(..))
 import Group
-import Tiltak
+import Tiltak exposing (Tiltak, Field, sendTo, GraphState(..))
+import TiltakStates exposing (TiltakStates)
 import TiltakAndGroupData
 import Views exposing (view)
+import Ports
 
 
 main : Program Never Model Msg
@@ -52,6 +54,63 @@ subscriptions model =
         ]
 
 
+computeGraphCmd : Tiltak -> TiltakStates -> ( GraphState, GraphState ) -> Cmd Msg
+computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
+    let
+        graphId =
+            sendTo tiltak .graphId
+    in
+        case ( beforeState, afterState ) of
+            ( GraphOff, GraphOn ) ->
+                Ports.generateC3
+                    { domId = graphId
+                    , data = sendTo tiltak .graphData tiltakStates
+                    }
+
+            ( GraphOff, GraphOff ) ->
+                Cmd.none
+
+            ( GraphOn, GraphOn ) ->
+                -- generate command to update the graph
+                Ports.updateC3
+                    { domId = graphId
+                    , data = sendTo tiltak .graphData tiltakStates
+                    }
+
+            ( GraphOn, GraphOff ) ->
+                Ports.destroyC3 graphId
+
+
+updateField : Model -> Tiltak -> Field -> String -> ( Model, Cmd Msg )
+updateField model tiltak field stringValue =
+    let
+        graphId =
+            (sendTo tiltak .graphId)
+
+        graphState =
+            sendTo tiltak .graphState model.tiltakStates
+
+        newModel =
+            { model
+                | tiltakStates =
+                    Tiltak.updateTiltakStateFromField
+                        field
+                        stringValue
+                        model.tiltakStates
+            }
+
+        cmd =
+            computeGraphCmd tiltak
+                newModel.tiltakStates
+                ( graphState
+                , sendTo tiltak .graphState newModel.tiltakStates
+                )
+    in
+        ( newModel
+        , cmd
+        )
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -67,16 +126,8 @@ update msg model =
         AccordionMsg state ->
             ( { model | accordionState = state }, Cmd.none )
 
-        UpdateField field stringValue ->
-            ( { model
-                | tiltakStates =
-                    Tiltak.updateTiltakStateFromField
-                        field
-                        stringValue
-                        model.tiltakStates
-              }
-            , Cmd.none
-            )
+        UpdateField tiltak field stringValue ->
+            updateField model tiltak field stringValue
 
         UpdateBooleanField field booleanValue ->
             Debug.log (toString msg) ( model, Cmd.none )

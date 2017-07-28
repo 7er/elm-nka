@@ -9,13 +9,8 @@ import Bootstrap.Accordion as Accordion
 import Bootstrap.Card as Card
 import Models exposing (Model)
 import Msgs exposing (Msg(..))
-import Tiltak exposing (Tiltak, sendTo)
+import Tiltak exposing (Tiltak, sendTo, GraphState(..))
 import AnalyseView
-
-
-toDomId : String -> String
-toDomId string =
-    string |> String.words |> String.join "-"
 
 
 tiltakCard : Model -> Tiltak -> Accordion.Card Msg
@@ -26,14 +21,36 @@ tiltakCard model tiltak =
 
         title =
             sendTo tiltak .title
+
+        graphId =
+            sendTo tiltak .graphId
+
+        graphNodeContent =
+            case (sendTo tiltak .graphState model.tiltakStates) of
+                GraphOn ->
+                    []
+
+                GraphOff ->
+                    [ text "Her kommer kanskje grafen" ]
     in
         Accordion.card
-            { id = (toDomId title)
+            { id = sendTo tiltak .domId
             , options = []
-            , header = Accordion.header [] <| Accordion.toggle [] [ text title ]
+            , header = Accordion.headerH4 [] <| Accordion.toggle [] [ text title ]
             , blocks =
-                [ Accordion.block []
+                [ Accordion.block
+                    []
                     [ Card.custom <| div [] ([ form tiltak model ] ++ analyse) ]
+                , Accordion.block
+                    [ Card.blockAttrs
+                        [ style
+                            [ ( "backgroundColor", "lightGrey" )
+                            , ( "height", "400px" )
+                            ]
+                        ]
+                    ]
+                    [ Card.custom <| div [ id graphId ] graphNodeContent
+                    ]
                 ]
             }
 
@@ -47,7 +64,7 @@ form tiltak model =
                 , Input.number
                     [ Input.id name
                     , Input.placeholder placeholder
-                    , Input.onInput <| UpdateField field
+                    , Input.onInput <| UpdateField tiltak field
                     , Input.value <| field.stringValueFromState model.tiltakStates
                     ]
                 ]

@@ -2,7 +2,6 @@ module Tiltak.SykkelparkeringUte exposing (..)
 
 import Tiltak exposing (Tiltak(..), Field)
 import Tiltak.BasicTiltak as BasicTiltak
-import Models exposing (generateC3)
 import TiltakStates exposing (SykkelparkeringUteState, TiltakStates)
 import GeneralForutsetninger
 
@@ -87,16 +86,6 @@ initialState =
     , yearlyMaintenance = Nothing
     , installationCost = Nothing
     }
-
-
-c3GraphId : String
-c3GraphId =
-    "sykkelparkeringUteGraph"
-
-
-loadGraph : Cmd msg
-loadGraph =
-    generateC3 c3GraphId
 
 
 nytteMultiplier : Float

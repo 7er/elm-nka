@@ -1,7 +1,7 @@
 module Tiltak.OpphoeyetHoldeplass exposing (tiltak, initialState)
 
-import Tiltak exposing (Tiltak(..), Field, StateCalculationMethod, sendTo)
-import TiltakStates exposing (OpphoyetHoldeplassState)
+import Tiltak exposing (Tiltak(..), GraphState(..), Field, StateCalculationMethod, sendTo)
+import TiltakStates exposing (TiltakStates, OpphoyetHoldeplassState)
 import Tiltak.BasicTiltak as BasicTiltak exposing (SimpleField)
 import GeneralForutsetninger
 
@@ -46,6 +46,22 @@ levetid =
     25
 
 
+graphState : Tiltak -> TiltakStates -> GraphState
+graphState this { opphoeyetHoldeplass } =
+    opphoeyetHoldeplass.installationCost
+        |> Maybe.map (\_ -> GraphOn)
+        |> Maybe.withDefault GraphOff
+
+
+graphData : Tiltak -> TiltakStates -> List ( Float, Float )
+graphData this ({ opphoeyetHoldeplass } as state) =
+    let
+        generateList installationCost =
+            List.map (\x -> ( x, x * installationCost )) [ 1, 2, 3, 4, 5, 6, 7 ]
+    in
+        opphoeyetHoldeplass.installationCost |> Maybe.map generateList |> Maybe.withDefault []
+
+
 tiltak : Tiltak
 tiltak =
     let
@@ -73,6 +89,8 @@ tiltak =
                             .skyggeprisHelper
                             state
                             opphoeyetHoldeplass.bompengeAndel
+                , graphState = graphState
+                , graphData = graphData
             }
 
 

@@ -6,9 +6,6 @@ import Bootstrap.Accordion as Accordion
 import TiltakStates exposing (TiltakStates)
 
 
-port generateC3 : String -> Cmd msg
-
-
 type Group
     = Holdeplasser
     | Informasjon

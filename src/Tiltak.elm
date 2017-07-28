@@ -3,6 +3,11 @@ module Tiltak exposing (..)
 import TiltakStates exposing (TiltakStates)
 
 
+type GraphState
+    = GraphOff
+    | GraphOn
+
+
 type alias Field =
     { name : String
     , title : String
@@ -44,7 +49,7 @@ type alias StateCalculationMethod =
              + yearlyTrafikantNytte
              + yearlyOperatoerNytte) * afaktorVekst
 
-   nettoNytte = nytte - kost
+   nettoNytte = nytte + kost -- kost is negative
 
 -}
 
@@ -65,6 +70,10 @@ type alias TiltakRecord =
     , yearlyOperatoerNytte : StateCalculationMethod
     , driftOgVedlihKost : StateCalculationMethod
     , investeringsKostInklRestverdi : StateCalculationMethod
+    , graphState : Tiltak -> TiltakStates -> GraphState
+    , graphId : Tiltak -> String
+    , domId : Tiltak -> String
+    , graphData : Tiltak -> TiltakStates -> List ( Float, Float )
     }
 
 

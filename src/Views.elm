@@ -28,6 +28,7 @@ view model =
         ]
 
 
+menuItemLinks : List (Navbar.Item Msg)
 menuItemLinks =
     let
         groupToItemLink group =

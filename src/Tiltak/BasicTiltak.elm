@@ -5,6 +5,11 @@ import TiltakStates exposing (TiltakStates)
 import GeneralForutsetninger
 
 
+toDomId : String -> String
+toDomId string =
+    string |> String.words |> String.join "-"
+
+
 type alias SimpleField stateType =
     { name : String
     , title : String
@@ -108,6 +113,10 @@ basicTiltakRecord =
     , yearlyOperatoerNytte = \_ _ -> Just 0
     , driftOgVedlihKost = \_ _ -> Nothing
     , investeringsKostInklRestverdi = \_ _ -> Nothing
+    , graphState = \_ _ -> GraphOff
+    , graphId = \this -> sendTo this .domId |> (++) "c3graph"
+    , domId = \this -> sendTo this .title |> toDomId
+    , graphData = \_ _ -> []
     }
 
 

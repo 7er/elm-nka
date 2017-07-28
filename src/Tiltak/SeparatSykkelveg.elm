@@ -1,7 +1,6 @@
 module Tiltak.SeparatSykkelveg exposing (..)
 
 import Tiltak exposing (Tiltak(..), Field, sendTo, StateCalculationMethod, bindTiltak)
-import Models exposing (..)
 import TiltakStates exposing (SeparatSykkelvegState, TiltakStates)
 import Tiltak.BasicTiltak as BasicTiltak
 import GeneralForutsetninger
@@ -82,16 +81,6 @@ initialState =
     , minutesSaved = Nothing
     , investmentCost = Nothing
     }
-
-
-c3GraphId : String
-c3GraphId =
-    "sykkelparkeringUteGraph"
-
-
-loadGraph : Cmd msg
-loadGraph =
-    generateC3 c3GraphId
 
 
 tiltak : Tiltak

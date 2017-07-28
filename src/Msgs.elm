@@ -4,7 +4,7 @@ import Navigation exposing (Location)
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
 import Bootstrap.Accordion as Accordion
-import Tiltak exposing (Field)
+import Tiltak exposing (Tiltak, Field)
 
 
 type Msg
@@ -12,5 +12,5 @@ type Msg
     | NavMsg Navbar.State
     | ModalMsg Modal.State
     | AccordionMsg Accordion.State
-    | UpdateField Field String
+    | UpdateField Tiltak Field String
     | UpdateBooleanField Field Bool
