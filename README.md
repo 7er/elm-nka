@@ -17,7 +17,14 @@ Author: Syver Enstad, Thomas Flemming
     $ yarn start
 ```
 
-# Test
+# Kjøring av test
+
+Installering av testrammeverk
+
+```
+    $ cd tests && elm-package install
+```
+
 
 ```
     $ yarn test
