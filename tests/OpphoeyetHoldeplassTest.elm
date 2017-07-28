@@ -1,4 +1,4 @@
-module OpphoeyetHoldeplassTest exposing (suite)
+module OpphoeyetHoldeplassTest exposing (suite, tiltakSuiteTest)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test, only, skip)
@@ -51,14 +51,14 @@ tiltakSuiteTest =
                         state
                         |> checkMaybe expectation
     in
-        tiltakSuite checkWithState expectedRecord
+        describe "OpphoeyetHoldeplass tiltakSuite"
+            [ tiltakSuite checkWithState expectedRecord ]
 
 
 suite : Test
 suite =
     describe "OpphoeyetHoldeplass"
-        [ tiltakSuiteTest
-        , describe "graphing"
+        [ describe "graphing"
             (let
                 initialState =
                     TiltakAndGroupData.initialTiltakStates

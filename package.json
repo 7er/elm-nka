@@ -11,7 +11,7 @@
     "build": "webpack --env production",
     "client-for-virtualbox-ie-testing": "webpack-dev-server --host 0.0.0.0 --public 10.0.2.2:3000 --env development",
     "client": "webpack-dev-server --port 3000 --env development",
-    "start": "yarn run client",
+    "start": "nodemon --watch webpack.config.js --exec 'yarn run client'",
     "test": "elm-test",
     "test:watch": "elm-test --watch --warn",
     "tdd": "yarn test:watch",
@@ -33,6 +33,7 @@
     "elm-assets-loader": "^0.3.0",
     "elm-test": "^0.18.6",
     "node-sass": "^4.5.3",
+    "nodemon": "^1.11.0",
     "sass-loader": "^6.0.6"
   }
 }

@@ -31,7 +31,7 @@ tiltakCard model tiltak =
                     []
 
                 GraphOff ->
-                    [ text "Her kommer kanskje grafen" ]
+                    [ h3 [] [ text "Mangler data for å grafe" ] ]
     in
         Accordion.card
             { id = sendTo tiltak .domId
