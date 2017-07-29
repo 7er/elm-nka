@@ -10,18 +10,6 @@ toDomId string =
     string |> String.words |> String.join "-"
 
 
-type alias SimpleField stateType =
-    { name : String
-    , title : String
-    , placeholder : String
-    , setter :
-        Maybe Float
-        -> stateType
-        -> stateType
-    , accessor : stateType -> Maybe Float
-    }
-
-
 nytte : StateCalculationMethod
 nytte this state =
     let
