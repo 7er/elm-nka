@@ -80,6 +80,9 @@ suite =
                         state
                             |> sendTo tiltak .graphData
                             |> Expect.equal [ ( 1, 2 ), ( 3, 4 ) ]
+                , test "findVariableToGraph" <|
+                    \() ->
+                        OpphoeyetHoldeplass.findVariableToGraph state
                 ]
             )
         ]

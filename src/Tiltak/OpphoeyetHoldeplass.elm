@@ -53,13 +53,45 @@ graphState this { opphoeyetHoldeplass } =
         |> Maybe.withDefault GraphOff
 
 
+samples : Tiltak -> TiltakStates -> Field -> List Float
+
+
 graphData : Tiltak -> TiltakStates -> List ( Float, Float )
 graphData this ({ opphoeyetHoldeplass } as state) =
     let
-        generateList installationCost =
-            List.map (\x -> ( x, x * installationCost )) [ 1, 2, 3, 4, 5, 6, 7 ]
+        field =
+            findVariableToGraph this opphoyetHoldeplass
+
+        nullPunkt =
+            nettoNytteNullpunktFor this field
+
+        stepSize =
+            field.stepSize
+
+        sampleCount =
+            10
+
+        minimum =
+            0
+
+        start =
+            max (nullPunkt - (stepSize * (sampleCount / 2))) minimum
+
+        stop =
+            start + (stepSize * sampleCount)
+
+        generateData x =
+            let
+                newState =
+                    field.update state
+            in
+                sendTo this .nettoNytte newState |> Maybe.map (\y -> ( x, y ))
     in
-        opphoeyetHoldeplass.installationCost |> Maybe.map generateList |> Maybe.withDefault []
+        List.range 0 (sampleCount - 1)
+            |> List.map toFloat
+            |> List.map (\index -> start + index * stepSize)
+            |> List.map generateData
+            |> List.filterMap identity
 
 
 tiltak : Tiltak
