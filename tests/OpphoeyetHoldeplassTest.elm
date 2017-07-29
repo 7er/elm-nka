@@ -66,12 +66,14 @@ suite =
                 state =
                     { initialState
                         | opphoeyetHoldeplass =
-                            { installationCost = Just 100
-                            , yearlyMaintenance = Just 200
-                            , bompengeAndel = 0.2
-                            , passengersPerYear = Just 10
-                            , beleggForbiPassasjererPerBuss = Just 20
-                            , aarligTidsbesparelseMinutter = Just 30
+                            { installationCost = Just 1.0e6
+                            , yearlyMaintenance = Just 860
+                            , bompengeAndel = 0.0
+                            , passengersPerYear = Just 6700
+                            , beleggForbiPassasjererPerBuss =
+                                Just 20
+                            , aarligTidsbesparelseMinutter =
+                                Just 2085
                             }
                     }
 
@@ -101,17 +103,17 @@ suite =
                     \() ->
                         OpphoeyetHoldeplass.samples tiltak state field
                             |> Expect.equal
-                                [ 2.5e5
-                                , 3.0e5
-                                , 3.5e5
-                                , 4.0e5
-                                , 4.5e5
-                                , 5.0e5
-                                , 5.5e5
-                                , 6.0e5
-                                , 6.5e5
-                                , 7.0e5
-                                , 7.5e5
+                                [ 7.5e5
+                                , 8.0e5
+                                , 8.5e5
+                                , 9.0e5
+                                , 9.5e5
+                                , 1.0e6
+                                , 1.05e6
+                                , 1.1e6
+                                , 1.15e6
+                                , 1.2e6
+                                , 1.25e6
                                 ]
                 ]
             )

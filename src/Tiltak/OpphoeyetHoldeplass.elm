@@ -69,7 +69,12 @@ findVariableToGraph this ({ opphoeyetHoldeplass } as state) =
 
 nettoNytteNullpunktFor : Tiltak -> TiltakStates -> Field -> Float
 nettoNytteNullpunktFor tiltak state field =
-    500 * 1000
+    case field.name of
+        "installationCost" ->
+            1.0e6
+
+        _ ->
+            Debug.crash (toString field)
 
 
 samples : Tiltak -> TiltakStates -> Field -> List Float
