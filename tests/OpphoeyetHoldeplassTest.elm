@@ -3,7 +3,8 @@ module OpphoeyetHoldeplassTest exposing (suite, tiltakSuiteTest)
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test, only, skip)
 import TestSupport exposing (..)
-import Tiltak exposing (TiltakAccessor, sendTo)
+import Tiltak exposing (TiltakAccessor, Tiltak, sendTo)
+import TiltakStates exposing (TiltakStates)
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass exposing (tiltak)
 import TiltakAndGroupData
 
@@ -55,6 +56,19 @@ tiltakSuiteTest =
             [ tiltakSuite checkWithState expectedRecord ]
 
 
+checkNettoNytteNullpunkt : Tiltak -> TiltakStates -> Test
+checkNettoNytteNullpunkt tiltak state =
+    let
+        makeTest field =
+            test field.name <|
+                \() ->
+                    OpphoeyetHoldeplass.nettoNytteNullpunktFor tiltak state field
+                        |> toString
+                        |> Expect.equal (field.stringValueFromState state)
+    in
+        sendTo tiltak .fields |> List.map makeTest |> describe "Checking nettoNytteNullpunktFor"
+
+
 suite : Test
 suite =
     describe "OpphoeyetHoldeplass"
@@ -66,14 +80,14 @@ suite =
                 state =
                     { initialState
                         | opphoeyetHoldeplass =
-                            { installationCost = Just 1.0e6
+                            { installationCost = Just 999994
                             , yearlyMaintenance = Just 860
                             , bompengeAndel = 0.0
-                            , passengersPerYear = Just 6700
+                            , passengersPerYear = Just 6709
                             , beleggForbiPassasjererPerBuss =
                                 Just 20
                             , aarligTidsbesparelseMinutter =
-                                Just 2085
+                                Just 2083
                             }
                     }
 
@@ -103,18 +117,19 @@ suite =
                     \() ->
                         OpphoeyetHoldeplass.samples tiltak state field
                             |> Expect.equal
-                                [ 7.5e5
-                                , 8.0e5
-                                , 8.5e5
-                                , 9.0e5
-                                , 9.5e5
-                                , 1.0e6
-                                , 1.05e6
-                                , 1.1e6
-                                , 1.15e6
-                                , 1.2e6
-                                , 1.25e6
+                                [ 749994
+                                , 799994
+                                , 849994
+                                , 899994
+                                , 949994
+                                , 999994
+                                , 1049994
+                                , 1099994
+                                , 1149994
+                                , 1199994
+                                , 1249994
                                 ]
+                , checkNettoNytteNullpunkt tiltak state
                 ]
             )
         ]

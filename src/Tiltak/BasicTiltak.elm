@@ -35,6 +35,7 @@ nettoNytte this state =
             (f .nytte)
             (f .kostUtenSkyggepris)
             (f .skyggepris)
+            |> Debug.log "nettoNytte"
 
 
 passasjerNytte : StateCalculationMethod

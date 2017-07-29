@@ -179,3 +179,15 @@ transformToFields stateMap updateTiltakStateHelper stringValueHelper fieldDefini
     in
         fieldDefinitions
             |> List.map toRealField
+
+
+closeToEqual : Float -> Int -> Float -> Bool
+closeToEqual first precision second =
+    let
+        epsilon =
+            toFloat (10 ^ (negate precision)) / 2
+
+        difference =
+            abs (first - second)
+    in
+        difference < epsilon

@@ -67,11 +67,81 @@ findVariableToGraph this ({ opphoeyetHoldeplass } as state) =
                 Debug.crash "TODO"
 
 
+nytteNullPunktHelper : ( Int, Int ) -> (Float -> Float) -> Float
+nytteNullPunktHelper ( lower, upper ) calculateNytte =
+    --
+    let
+        value : Int
+        value =
+            ((upper - lower) // 2) + lower
+
+        judgment : Float -> Float
+        judgment nettoNytte =
+            (case lower < upper of
+                True ->
+                    (case nettoNytte < 0 of
+                        True ->
+                            nytteNullPunktHelper ( lower, value ) calculateNytte
+
+                        False ->
+                            case nettoNytte > 0 of
+                                True ->
+                                    nytteNullPunktHelper ( value, upper ) calculateNytte
+
+                                False ->
+                                    value |> toFloat
+                    )
+
+                False ->
+                    value |> toFloat
+            )
+    in
+        calculateNytte value |> judgment
+
+
+nettoNytteNullpunktForInstallationCost : Tiltak -> TiltakStates -> Field -> Float
+nettoNytteNullpunktForInstallationCost tiltak ({ opphoeyetHoldeplass } as state) field =
+    -- 999994
+    let
+        lowerBound : Int
+        lowerBound =
+            0
+
+        upperBound : Int
+        upperBound =
+            2 ^ 31
+
+        calculateNytteMethod : Int -> Int
+        calculateNytteMethod value =
+            sendTo tiltak .nettoNytte (field.updateValue (toFloat value) state)
+                |> \maybe ->
+                    case maybe of
+                        Just value ->
+                            value
+
+                        Nothing ->
+                            Debug.crash "WTF"
+    in
+        nytteNullPunktHelper ( lowerBound, upperBound ) calculateNytteMethod
+
+
 nettoNytteNullpunktFor : Tiltak -> TiltakStates -> Field -> Float
 nettoNytteNullpunktFor tiltak state field =
     case field.name of
         "installationCost" ->
-            1.0e6
+            nettoNytteNullpunktForInstallationCost tiltak state field
+
+        "yearlyMaintenance" ->
+            860
+
+        "passengersPerYear" ->
+            6709
+
+        "beleggForbiPassasjererPerBuss" ->
+            20
+
+        "aarligTidsbesparelseMinutter" ->
+            2083
 
         _ ->
             Debug.crash (toString field)
