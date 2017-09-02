@@ -40,7 +40,7 @@ tiltakCard model tiltak =
             , blocks =
                 [ Accordion.block
                     []
-                    [ Card.custom <| div [] ([ form tiltak model ] ++ analyse) ]
+                    [ Card.custom <| div [] ([ tiltakForm tiltak model ] ++ analyse) ]
                 , Accordion.block
                     [ Card.blockAttrs
                         [ style
@@ -55,8 +55,8 @@ tiltakCard model tiltak =
             }
 
 
-form : Tiltak -> Model -> Html Msg
-form tiltak model =
+tiltakForm : Tiltak -> Model -> Html Msg
+tiltakForm tiltak model =
     let
         fieldView ({ name, title, placeholder } as field) =
             Form.group []
