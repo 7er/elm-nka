@@ -3,23 +3,7 @@ module NewtonsMethodTest exposing (..)
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
 import TestSupport exposing (checkMaybe, closeTo)
-
-
-breakEvenPoint : (Float -> Float) -> Maybe Float
-breakEvenPoint func =
-    let
-        y0 =
-            func 0
-
-        rise =
-            func 1 - y0
-    in
-        case rise of
-            0 ->
-                Nothing
-
-            _ ->
-                negate y0 / rise |> Just
+import Tiltak exposing (breakEvenPoint)
 
 
 suite =

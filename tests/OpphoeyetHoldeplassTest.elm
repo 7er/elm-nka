@@ -99,20 +99,24 @@ suite =
                                 |> Expect.equal field
                 , test "samples" <|
                     \() ->
-                        OpphoeyetHoldeplass.samples tiltak state field
-                            |> Expect.equal
-                                [ 2.5e5
-                                , 3.0e5
-                                , 3.5e5
-                                , 4.0e5
-                                , 4.5e5
-                                , 5.0e5
-                                , 5.5e5
-                                , 6.0e5
-                                , 6.5e5
-                                , 7.0e5
-                                , 7.5e5
-                                ]
+                        let
+                            func x =
+                                x * 2 - 1.0e6
+                        in
+                            OpphoeyetHoldeplass.samples field func
+                                |> Expect.equal
+                                    [ 2.5e5
+                                    , 3.0e5
+                                    , 3.5e5
+                                    , 4.0e5
+                                    , 4.5e5
+                                    , 5.0e5
+                                    , 5.5e5
+                                    , 6.0e5
+                                    , 6.5e5
+                                    , 7.0e5
+                                    , 7.5e5
+                                    ]
                 ]
             )
         ]

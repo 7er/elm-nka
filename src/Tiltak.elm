@@ -179,3 +179,20 @@ transformToFields stateMap updateTiltakStateHelper stringValueHelper fieldDefini
     in
         fieldDefinitions
             |> List.map toRealField
+
+
+breakEvenPoint : (Float -> Float) -> Maybe Float
+breakEvenPoint func =
+    let
+        y0 =
+            func 0
+
+        rise =
+            func 1 - y0
+    in
+        case rise of
+            0 ->
+                Nothing
+
+            _ ->
+                negate y0 / rise |> Just

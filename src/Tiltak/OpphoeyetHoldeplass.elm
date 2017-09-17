@@ -1,6 +1,6 @@
 module Tiltak.OpphoeyetHoldeplass exposing (..)
 
-import Tiltak exposing (Tiltak(..), GraphState(..), Field, SimpleField, StateCalculationMethod, sendTo)
+import Tiltak exposing (Tiltak(..), GraphState(..), Field, SimpleField, StateCalculationMethod, sendTo, breakEvenPoint)
 import TiltakStates exposing (TiltakStates, OpphoyetHoldeplassState)
 import Tiltak.BasicTiltak as BasicTiltak
 import GeneralForutsetninger
@@ -72,8 +72,8 @@ nettoNytteNullpunktFor tiltak state field =
     500 * 1000
 
 
-samples : Tiltak -> TiltakStates -> Field -> List Float
-samples this state field =
+samples : Field -> (Float -> Float) -> List Float
+samples field generateDataFunc =
     let
         samplesOnEachSide =
             5
@@ -81,8 +81,14 @@ samples this state field =
         minimum =
             0
 
+        {- nullPunkt =
+           nettoNytteNullpunktFor this state field
+        -}
+        maybeNullpunkt =
+            breakEvenPoint generateDataFunc
+
         nullPunkt =
-            nettoNytteNullpunktFor this state field
+            maybeNullpunkt |> Maybe.withDefault 0
 
         start =
             max (nullPunkt - (field.stepSize * samplesOnEachSide)) minimum
@@ -104,8 +110,20 @@ graphData this ({ opphoeyetHoldeplass } as state) =
                     field.updateValue x state
             in
                 sendTo this .nettoNytte newState |> Maybe.map (\y -> ( x, y ))
+
+        sampleFunc x =
+            let
+                newState =
+                    field.updateValue x state
+            in
+                case sendTo this .nettoNytte newState of
+                    Just value ->
+                        value
+
+                    Nothing ->
+                        42
     in
-        samples this state field
+        samples field sampleFunc
             |> List.map generateData
             |> List.filterMap identity
 
