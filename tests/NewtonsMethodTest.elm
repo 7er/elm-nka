@@ -2,6 +2,7 @@ module NewtonsMethodTest exposing (..)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
+import TestSupport exposing (checkMaybe, closeTo)
 
 
 breakEvenPoint : (Float -> Float) -> Maybe Float
@@ -43,4 +44,16 @@ suite =
             \() ->
                 breakEvenPoint (\x -> 2 * x - 2)
                     |> Expect.equal (Just 1)
+        , test "-2x-2" <|
+            \() ->
+                breakEvenPoint (\x -> -2 * x - 2)
+                    |> Expect.equal (Just -1)
+        , test "-2x+4" <|
+            \() ->
+                breakEvenPoint (\x -> -2 * x + 4)
+                    |> checkMaybe (Expect.equal 2)
+        , test "3.14x+4" <|
+            \() ->
+                breakEvenPoint (\x -> 3.14 * x + 4)
+                    |> checkMaybe (closeTo -1.274 3)
         ]
