@@ -75,12 +75,11 @@ suite =
                             }
                     }
              in
-                [ skip <|
-                    test "graphFor" <|
-                        \() ->
-                            state
-                                |> sendTo tiltak .graphData
-                                |> Expect.equal [ ( 1, 2 ), ( 3, 4 ) ]
+                [ test "graphFor" <|
+                    \() ->
+                        state
+                            |> sendTo tiltak .graphData
+                            |> Expect.equal [ ( 1, 2 ), ( 3, 4 ) ]
                 ]
             )
         ]
