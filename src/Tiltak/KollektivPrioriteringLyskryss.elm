@@ -1,7 +1,7 @@
 module Tiltak.KollektivPrioriteringLyskryss exposing (..)
 
-import Tiltak exposing (Tiltak(..), sendTo, StateCalculationMethod, Field)
-import Tiltak.BasicTiltak as BasicTiltak exposing (SimpleField)
+import Tiltak exposing (Tiltak(..), SimpleField, StateCalculationMethod, Field, sendTo)
+import Tiltak.BasicTiltak as BasicTiltak
 import TiltakStates exposing (KollektivPrioriteringLyskryssState)
 import GeneralForutsetninger exposing (verdisettinger)
 
@@ -121,6 +121,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .installationCost
+      , stepSize = 50000
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
@@ -132,6 +133,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .yearlyMaintenance
+      , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
@@ -143,6 +145,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .passengersPerYear
+      , stepSize = 50
       }
     , { name = "antallBilerForsinketPerAvgang"
       , title = "Antall forsinkete biler per avgang"
@@ -154,6 +157,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .antallBilerForsinketPerAvgang
+      , stepSize = 1
       }
     , { name = "forsinkelsePerBilSeconds"
       , title = "Sekunder forsinkelse per bil"
@@ -165,6 +169,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .forsinkelsePerBilSeconds
+      , stepSize = 1
       }
     , { name = "antallPasserendeAvgangerPerYear"
       , title = "Avganger som passererer krysset"
@@ -176,6 +181,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .antallPasserendeAvgangerPerYear
+      , stepSize = 1000
       }
     ]
 
@@ -193,24 +199,9 @@ fields =
 
         thisStringValueHelper =
             TiltakStates.stringValueHelper .kollektivPrioriteringLyskryss
-
-        toRealField simpleField =
-            { name = simpleField.name
-            , title = simpleField.title
-            , placeholder = simpleField.placeholder
-            , updateTiltakState =
-                updateTiltakStateHelper
-                    (\stringValue state ->
-                        let
-                            pipeline =
-                                String.toFloat stringValue
-                                    |> Result.toMaybe
-                                    |> simpleField.setter
-                        in
-                            pipeline state
-                    )
-            , stringValueFromState = thisStringValueHelper simpleField.accessor
-            }
     in
         fieldDefinitions
-            |> List.map toRealField
+            |> Tiltak.transformToFields
+                stateMap
+                updateTiltakStateHelper
+                thisStringValueHelper

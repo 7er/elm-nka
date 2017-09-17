@@ -1,7 +1,7 @@
 module Tiltak.LeskurMedSitteplass exposing (tiltak, initialState)
 
 import GeneralForutsetninger
-import Tiltak exposing (Tiltak(..), Field, sendTo, StateCalculationMethod, bindTiltak)
+import Tiltak exposing (Tiltak(..), Field, StateCalculationMethod, SimpleField, bindTiltak, sendTo)
 import TiltakStates exposing (TiltakStates)
 import Tiltak.BasicTiltak as BasicTiltak
 
@@ -61,6 +61,48 @@ initialState =
     }
 
 
+fieldDefinitions : List (SimpleField TiltakStates.SimpleCommonState)
+fieldDefinitions =
+    [ { name = "installationCost"
+      , title = "Installasjonskostnad"
+      , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
+      , setter =
+            (\value state ->
+                { state
+                    | installationCost = value
+                }
+            )
+      , accessor = .installationCost
+      , stepSize = 50000
+      }
+    , { name = "yearlyMaintenance"
+      , title = "Årlige drifts- og vedlikeholdskostnader"
+      , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
+      , setter =
+            (\value state ->
+                { state
+                    | yearlyMaintenance = value
+                }
+            )
+      , accessor = .yearlyMaintenance
+      , stepSize = 5000
+      }
+    , { name = "passengersPerYear"
+      , title = "Antall passasjerer per år"
+      , placeholder = "Påstigende passasjerer per år"
+      , setter =
+            (\value state ->
+                { state
+                    | passengersPerYear =
+                        value
+                }
+            )
+      , accessor = .passengersPerYear
+      , stepSize = 50
+      }
+    ]
+
+
 fields : List Field
 fields =
     let
@@ -75,43 +117,8 @@ fields =
         thisStringValueHelper =
             TiltakStates.stringValueHelper .leskurMedSitteplass
     in
-        [ { name = "passengersPerYear"
-          , title = "Antall passasjerer per år"
-          , placeholder = "Påstigende passasjerer per år"
-          , updateTiltakState =
+        fieldDefinitions
+            |> Tiltak.transformToFields
+                stateMap
                 updateTiltakStateHelper
-                    (\stringValue state ->
-                        { state
-                            | passengersPerYear =
-                                String.toFloat stringValue |> Result.toMaybe
-                        }
-                    )
-          , stringValueFromState = thisStringValueHelper .passengersPerYear
-          }
-        , { name = "installationCost"
-          , title = "Installasjonskostnad"
-          , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-          , updateTiltakState =
-                updateTiltakStateHelper
-                    (\stringValue state ->
-                        { state
-                            | installationCost =
-                                String.toFloat stringValue |> Result.toMaybe
-                        }
-                    )
-          , stringValueFromState = thisStringValueHelper .installationCost
-          }
-        , { name = "yearlyMaintenance"
-          , title = "Årlige drifts- og vedlikeholdskostnader"
-          , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-          , updateTiltakState =
-                updateTiltakStateHelper
-                    (\stringValue state ->
-                        { state
-                            | yearlyMaintenance =
-                                String.toFloat stringValue |> Result.toMaybe
-                        }
-                    )
-          , stringValueFromState = thisStringValueHelper .yearlyMaintenance
-          }
-        ]
+                thisStringValueHelper

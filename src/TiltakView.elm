@@ -75,7 +75,16 @@ tiltakForm tiltak model =
                         [ Form.label [ for "experiment" ] [ text "Eksperiment" ]
                         , Checkbox.checkbox
                             [ Checkbox.attrs [ id "experiment" ]
-                            , Checkbox.onCheck <| UpdateBooleanField { name = "eksperiment", title = "Flesk", placeholder = "", updateTiltakState = \_ state -> state, stringValueFromState = \_ -> "Flesk" }
+                            , Checkbox.onCheck <|
+                                UpdateBooleanField
+                                    { name = "eksperiment"
+                                    , title = "Flesk"
+                                    , placeholder = ""
+                                    , updateTiltakState = \_ state -> state
+                                    , stringValueFromState = \_ -> "Flesk"
+                                    , stepSize = 1
+                                    , updateValue = \_ state -> state
+                                    }
                             , Checkbox.checked False
                             ]
                             "What is the experiment"

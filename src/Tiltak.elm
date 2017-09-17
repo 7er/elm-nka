@@ -1,6 +1,6 @@
 module Tiltak exposing (..)
 
-import TiltakStates exposing (TiltakStates)
+import TiltakStates exposing (TiltakStates, StateMap)
 
 
 type GraphState
@@ -13,7 +13,22 @@ type alias Field =
     , title : String
     , placeholder : String
     , updateTiltakState : String -> TiltakStates -> TiltakStates
+    , updateValue : Float -> TiltakStates -> TiltakStates
+    , stepSize : Float
     , stringValueFromState : TiltakStates -> String
+    }
+
+
+type alias SimpleField stateType =
+    { name : String
+    , title : String
+    , placeholder : String
+    , setter :
+        Maybe Float
+        -> stateType
+        -> stateType
+    , accessor : stateType -> Maybe Float
+    , stepSize : Float
     }
 
 
@@ -123,3 +138,44 @@ analyse tiltak tiltakStates =
                 (f .nettoNytte)
                 (f .kostUtenSkyggepris)
         }
+
+
+transformToFields :
+    StateMap specificState
+    ->
+        ((String -> specificState -> specificState)
+         -> (String -> TiltakStates -> TiltakStates)
+        )
+    -> ((specificState -> Maybe Float) -> (TiltakStates -> String))
+    -> List (SimpleField specificState)
+    -> List Field
+transformToFields stateMap updateTiltakStateHelper stringValueHelper fieldDefinitions =
+    let
+        toRealField simpleField =
+            { name = simpleField.name
+            , title = simpleField.title
+            , placeholder = simpleField.placeholder
+            , stepSize = simpleField.stepSize
+            , updateTiltakState =
+                updateTiltakStateHelper
+                    (\stringValue state ->
+                        let
+                            pipeline =
+                                String.toFloat stringValue
+                                    |> Result.toMaybe
+                                    |> simpleField.setter
+                        in
+                            pipeline state
+                    )
+            , updateValue =
+                \value tiltakStates ->
+                    tiltakStates
+                        |> stateMap
+                            (\specificState ->
+                                simpleField.setter (Just value) specificState
+                            )
+            , stringValueFromState = stringValueHelper simpleField.accessor
+            }
+    in
+        fieldDefinitions
+            |> List.map toRealField

@@ -74,12 +74,45 @@ suite =
                             , aarligTidsbesparelseMinutter = Just 30
                             }
                     }
+
+                maybeField =
+                    sendTo tiltak .fields |> List.head
+
+                field =
+                    case maybeField of
+                        Just value ->
+                            value
+
+                        Nothing ->
+                            Debug.crash "TODO"
              in
-                [ test "graphFor" <|
+                [ skip <|
+                    test "graphFor" <|
+                        \() ->
+                            state
+                                |> sendTo tiltak .graphData
+                                |> Expect.equal [ ( 1, 2 ), ( 3, 4 ) ]
+                , skip <|
+                    test "findVariableToGraph" <|
+                        \() ->
+                            OpphoeyetHoldeplass.findVariableToGraph tiltak state
+                                |> Expect.equal field
+                , test "samples" <|
                     \() ->
-                        state
-                            |> sendTo tiltak .graphData
-                            |> Expect.equal [ ( 1, 2 ), ( 3, 4 ) ]
+                        OpphoeyetHoldeplass.samples tiltak state field
+                            |> Expect.equal
+                                [ 2.5e5
+                                , 3.0e5
+                                , 3.5e5
+                                , 4.0e5
+                                , 4.5e5
+                                , 5.0e5
+                                , 5.5e5
+                                , 6.0e5
+                                , 6.5e5
+                                , 7.0e5
+                                , 7.5e5
+                                ]
                 ]
             )
         ]

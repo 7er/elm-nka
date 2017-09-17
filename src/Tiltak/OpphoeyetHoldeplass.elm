@@ -1,8 +1,8 @@
-module Tiltak.OpphoeyetHoldeplass exposing (tiltak, initialState)
+module Tiltak.OpphoeyetHoldeplass exposing (..)
 
-import Tiltak exposing (Tiltak(..), GraphState(..), Field, StateCalculationMethod, sendTo)
+import Tiltak exposing (Tiltak(..), GraphState(..), Field, SimpleField, StateCalculationMethod, sendTo)
 import TiltakStates exposing (TiltakStates, OpphoyetHoldeplassState)
-import Tiltak.BasicTiltak as BasicTiltak exposing (SimpleField)
+import Tiltak.BasicTiltak as BasicTiltak
 import GeneralForutsetninger
 
 
@@ -53,13 +53,61 @@ graphState this { opphoeyetHoldeplass } =
         |> Maybe.withDefault GraphOff
 
 
+findVariableToGraph : Tiltak -> TiltakStates -> Field
+findVariableToGraph this ({ opphoeyetHoldeplass } as state) =
+    let
+        maybeField =
+            sendTo this .fields |> List.head
+    in
+        case maybeField of
+            Just value ->
+                value
+
+            Nothing ->
+                Debug.crash "TODO"
+
+
+nettoNytteNullpunktFor : Tiltak -> TiltakStates -> Field -> Float
+nettoNytteNullpunktFor tiltak state field =
+    500 * 1000
+
+
+samples : Tiltak -> TiltakStates -> Field -> List Float
+samples this state field =
+    let
+        samplesOnEachSide =
+            5
+
+        minimum =
+            0
+
+        nullPunkt =
+            nettoNytteNullpunktFor this state field
+
+        start =
+            max (nullPunkt - (field.stepSize * samplesOnEachSide)) minimum
+    in
+        List.range 0 (samplesOnEachSide * 2)
+            |> List.map toFloat
+            |> List.map (\index -> start + index * field.stepSize)
+
+
 graphData : Tiltak -> TiltakStates -> List ( Float, Float )
 graphData this ({ opphoeyetHoldeplass } as state) =
     let
-        generateList installationCost =
-            List.map (\x -> ( x, x * installationCost )) [ 1, 2, 3, 4, 5, 6, 7 ]
+        field =
+            findVariableToGraph this state
+
+        generateData x =
+            let
+                newState =
+                    field.updateValue x state
+            in
+                sendTo this .nettoNytte newState |> Maybe.map (\y -> ( x, y ))
     in
-        opphoeyetHoldeplass.installationCost |> Maybe.map generateList |> Maybe.withDefault []
+        samples this state field
+            |> List.map generateData
+            |> List.filterMap identity
 
 
 tiltak : Tiltak
@@ -117,6 +165,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .installationCost
+      , stepSize = 50000
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
@@ -128,6 +177,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .yearlyMaintenance
+      , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer på holdeplassen"
@@ -139,6 +189,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .passengersPerYear
+      , stepSize = 50
       }
     , { name = "beleggForbiPassasjererPerBuss"
       , title = "Gjennomstsbelegg forbi holdeplassen"
@@ -150,6 +201,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .beleggForbiPassasjererPerBuss
+      , stepSize = 50
       }
     , { name = "aarligTidsbesparelseMinutter"
       , title = "Årlig tidsbesparelse i minutter"
@@ -161,6 +213,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .aarligTidsbesparelseMinutter
+      , stepSize = 1000
       }
     ]
 
@@ -168,9 +221,9 @@ fieldDefinitions =
 fields : List Field
 fields =
     let
-        stateMap func tiltakStates =
+        stateMap updater tiltakStates =
             { tiltakStates
-                | opphoeyetHoldeplass = func tiltakStates.opphoeyetHoldeplass
+                | opphoeyetHoldeplass = updater tiltakStates.opphoeyetHoldeplass
             }
 
         updateTiltakStateHelper =
@@ -178,24 +231,9 @@ fields =
 
         thisStringValueHelper =
             TiltakStates.stringValueHelper .opphoeyetHoldeplass
-
-        toRealField simpleField =
-            { name = simpleField.name
-            , title = simpleField.title
-            , placeholder = simpleField.placeholder
-            , updateTiltakState =
-                updateTiltakStateHelper
-                    (\stringValue state ->
-                        let
-                            pipeline =
-                                String.toFloat stringValue
-                                    |> Result.toMaybe
-                                    |> simpleField.setter
-                        in
-                            pipeline state
-                    )
-            , stringValueFromState = thisStringValueHelper simpleField.accessor
-            }
     in
         fieldDefinitions
-            |> List.map toRealField
+            |> Tiltak.transformToFields
+                stateMap
+                updateTiltakStateHelper
+                thisStringValueHelper

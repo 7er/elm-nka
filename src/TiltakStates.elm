@@ -46,9 +46,11 @@ type alias SimpleCommonState =
 
 
 type alias TiltakStates =
-    { sykkelParkeringUte : SykkelparkeringUteState
-    , separatSykkelveg : SeparatSykkelvegState
-    , leskurUtenSitteplass : SimpleCommonState
+    { {-
+             sykkelParkeringUte : SykkelparkeringUteState
+         , separatSykkelveg : SeparatSykkelvegState
+      -}
+      leskurUtenSitteplass : SimpleCommonState
     , leskurMedSitteplass : SimpleCommonState
     , skiltingIBuss : SimpleCommonState
     , kollektivPrioriteringLyskryss : KollektivPrioriteringLyskryssState
