@@ -82,12 +82,33 @@ samples field generateDataFunc =
         nullPunkt =
             maybeNullpunkt |> Maybe.withDefault 0
 
+        stepBelow =
+            field.stepSize * toFloat (floor (nullPunkt / field.stepSize))
+
+        stepAbove =
+            field.stepSize * toFloat (ceiling (nullPunkt / field.stepSize))
+
+        lower =
+            stepAbove - (field.stepSize * samplesOnEachSide)
+
+        upper =
+            stepBelow + (field.stepSize * samplesOnEachSide)
+
         start =
-            max (nullPunkt - (field.stepSize * samplesOnEachSide)) minimum
+            max lower minimum
+
+        steps =
+            (List.range 0 (round ((upper - lower) / field.stepSize))
+                |> List.map toFloat
+                |> List.map (\index -> start + index * field.stepSize)
+            )
     in
-        List.range 0 (samplesOnEachSide * 2)
-            |> List.map toFloat
-            |> List.map (\index -> start + index * field.stepSize)
+        case nullPunkt >= minimum of
+            True ->
+                nullPunkt :: steps |> List.sort
+
+            False ->
+                steps
 
 
 graphData : Tiltak -> TiltakStates -> List ( Float, Float )
