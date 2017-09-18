@@ -184,15 +184,21 @@ transformToFields stateMap updateTiltakStateHelper stringValueHelper fieldDefini
 breakEvenPoint : (Float -> Float) -> Maybe Float
 breakEvenPoint func =
     let
-        y0 =
-            func 0
+        x0 =
+            0
 
-        rise =
-            func 1 - y0
+        x1 =
+            1
+
+        a =
+            (func x1 - func x0) / (x1 - x0)
+
+        b =
+            func 0
     in
-        case rise of
+        case a of
             0 ->
                 Nothing
 
             _ ->
-                negate y0 / rise |> Just
+                -b / a |> Just
