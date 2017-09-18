@@ -67,11 +67,6 @@ findVariableToGraph this ({ opphoeyetHoldeplass } as state) =
                 Debug.crash "TODO"
 
 
-nettoNytteNullpunktFor : Tiltak -> TiltakStates -> Field -> Float
-nettoNytteNullpunktFor tiltak state field =
-    500 * 1000
-
-
 samples : Field -> (Float -> Float) -> List Float
 samples field generateDataFunc =
     let
@@ -81,9 +76,6 @@ samples field generateDataFunc =
         minimum =
             0
 
-        {- nullPunkt =
-           nettoNytteNullpunktFor this state field
-        -}
         maybeNullpunkt =
             breakEvenPoint generateDataFunc
 
