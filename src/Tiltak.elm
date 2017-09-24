@@ -196,3 +196,63 @@ breakEvenPoint func =
 
             _ ->
                 negate y0 / rise |> Just
+
+
+stepCount : Int -> Float -> Int
+stepCount stepSize number =
+    number / (toFloat stepSize) |> round
+
+
+roundToStepSize : Int -> Float -> Int
+roundToStepSize stepSize number =
+    stepSize * stepCount stepSize number
+
+
+samplesFromBreakEvenPoint : Float -> Int -> List Float
+samplesFromBreakEvenPoint nullPunkt stepSize =
+    let
+        samplesOnEachSide =
+            4
+
+        minimum =
+            0
+
+        stepClosestToNullPunkt =
+            roundToStepSize stepSize nullPunkt
+
+        start =
+            max
+                (stepClosestToNullPunkt - (stepSize * samplesOnEachSide))
+                0
+                |> toFloat
+    in
+        List.range 0 (samplesOnEachSide * 2)
+            |> List.map toFloat
+            |> List.map (\index -> start + index * (toFloat stepSize))
+            |> (::) nullPunkt
+            |> List.sort
+
+
+samples : Float -> (Float -> Float) -> List Float
+samples stepSize generateDataFunc =
+    let
+        samplesOnEachSide =
+            5
+
+        minimum =
+            0
+    in
+        case breakEvenPoint generateDataFunc of
+            Just nullPunkt ->
+                let
+                    start =
+                        max
+                            (nullPunkt - (stepSize * samplesOnEachSide))
+                            minimum
+                in
+                    List.range 0 (samplesOnEachSide * 2)
+                        |> List.map toFloat
+                        |> List.map (\index -> start + index * stepSize)
+
+            Nothing ->
+                []
