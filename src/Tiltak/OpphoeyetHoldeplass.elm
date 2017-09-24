@@ -136,7 +136,7 @@ graphData this ({ opphoeyetHoldeplass } as state) =
                     Nothing ->
                         42
     in
-        samples field sampleFunc
+        Tiltak.samples field.stepSize sampleFunc
             |> List.map generateData
             |> List.filterMap identity
 
