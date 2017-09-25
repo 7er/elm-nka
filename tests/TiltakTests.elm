@@ -30,8 +30,7 @@ suite =
                     in
                         Tiltak.samples 5.0e4 func
                             |> Expect.equal
-                                [ 2.5e5
-                                , 3.0e5
+                                [ 3.0e5
                                 , 3.5e5
                                 , 4.0e5
                                 , 4.5e5
@@ -40,11 +39,24 @@ suite =
                                 , 6.0e5
                                 , 6.5e5
                                 , 7.0e5
-                                , 7.5e5
                                 ]
+            , test "when nullpunkt hits a a sample" <|
+                \() ->
+                    Tiltak.samplesFromBreakEvenPoint 5.0e4 5.0e5
+                        |> Expect.equal
+                            [ 3.0e5
+                            , 3.5e5
+                            , 4.0e5
+                            , 4.5e5
+                            , 5.0e5
+                            , 5.5e5
+                            , 6.0e5
+                            , 6.5e5
+                            , 7.0e5
+                            ]
             , test "calculate exact breakEvenPoint and rounded to stepsize" <|
                 \() ->
-                    Tiltak.samplesFromBreakEvenPoint 101 10
+                    Tiltak.samplesFromBreakEvenPoint 10 101
                         |> Expect.equal
                             [ 60
                             , 70

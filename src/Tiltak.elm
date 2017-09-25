@@ -1,6 +1,7 @@
 module Tiltak exposing (..)
 
 import TiltakStates exposing (TiltakStates, StateMap)
+import Set
 
 
 type GraphState
@@ -204,18 +205,18 @@ breakEvenPoint func =
                 -b / a |> Just
 
 
-stepCount : Int -> Float -> Int
+stepCount : Float -> Float -> Float
 stepCount stepSize number =
-    number / (toFloat stepSize) |> round
+    number / stepSize |> round |> toFloat
 
 
-roundToStepSize : Int -> Float -> Int
+roundToStepSize : Float -> Float -> Float
 roundToStepSize stepSize number =
     stepSize * stepCount stepSize number
 
 
-samplesFromBreakEvenPoint : Float -> Int -> List Float
-samplesFromBreakEvenPoint nullPunkt stepSize =
+samplesFromBreakEvenPoint : Float -> Float -> List Float
+samplesFromBreakEvenPoint stepSize nullPunkt =
     let
         samplesOnEachSide =
             4
@@ -230,12 +231,13 @@ samplesFromBreakEvenPoint nullPunkt stepSize =
             max
                 (stepClosestToNullPunkt - (stepSize * samplesOnEachSide))
                 0
-                |> toFloat
     in
         List.range 0 (samplesOnEachSide * 2)
             |> List.map toFloat
-            |> List.map (\index -> start + index * (toFloat stepSize))
+            |> List.map (\index -> start + index * stepSize)
             |> (::) nullPunkt
+            |> Set.fromList
+            |> Set.toList
             |> List.sort
 
 
@@ -250,15 +252,7 @@ samples stepSize generateDataFunc =
     in
         case breakEvenPoint generateDataFunc of
             Just nullPunkt ->
-                let
-                    start =
-                        max
-                            (nullPunkt - (stepSize * samplesOnEachSide))
-                            minimum
-                in
-                    List.range 0 (samplesOnEachSide * 2)
-                        |> List.map toFloat
-                        |> List.map (\index -> start + index * stepSize)
+                samplesFromBreakEvenPoint stepSize nullPunkt
 
             Nothing ->
                 []
