@@ -6,6 +6,7 @@ import TestSupport exposing (checkMaybe, closeTo)
 import Tiltak exposing (breakEvenPoint, roundToStepSize)
 
 
+suite : Test
 suite =
     Test.concat
         ([ describe "roundToStep"

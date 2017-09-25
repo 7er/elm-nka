@@ -67,50 +67,6 @@ findVariableToGraph this ({ opphoeyetHoldeplass } as state) =
                 Debug.crash "TODO"
 
 
-samples : Field -> (Float -> Float) -> List Float
-samples field generateDataFunc =
-    let
-        samplesOnEachSide =
-            5
-
-        minimum =
-            0
-
-        maybeNullpunkt =
-            breakEvenPoint generateDataFunc
-
-        nullPunkt =
-            maybeNullpunkt |> Maybe.withDefault 0
-
-        stepBelow =
-            field.stepSize * toFloat (floor (nullPunkt / field.stepSize))
-
-        stepAbove =
-            field.stepSize * toFloat (ceiling (nullPunkt / field.stepSize))
-
-        lower =
-            stepAbove - (field.stepSize * samplesOnEachSide)
-
-        upper =
-            stepBelow + (field.stepSize * samplesOnEachSide)
-
-        start =
-            max lower minimum
-
-        steps =
-            (List.range 0 (round ((upper - lower) / field.stepSize))
-                |> List.map toFloat
-                |> List.map (\index -> start + index * field.stepSize)
-            )
-    in
-        case nullPunkt >= minimum of
-            True ->
-                nullPunkt :: steps |> List.sort
-
-            False ->
-                steps
-
-
 graphData : Tiltak -> TiltakStates -> List ( Float, Float )
 graphData this ({ opphoeyetHoldeplass } as state) =
     let

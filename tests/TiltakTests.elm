@@ -78,6 +78,20 @@ suite =
                             , 130
                             , 140
                             ]
+            , test "negative break-even point is not included" <|
+                \() ->
+                    Tiltak.samplesFromBreakEvenPoint 10 -101
+                        |> Expect.equal
+                            [ 0
+                            , 10
+                            , 20
+                            , 30
+                            , 40
+                            , 50
+                            , 60
+                            , 70
+                            , 80
+                            ]
             ]
          ]
         )

@@ -231,14 +231,22 @@ samplesFromBreakEvenPoint stepSize nullPunkt =
             max
                 (stepClosestToNullPunkt - (stepSize * samplesOnEachSide))
                 0
+
+        steps =
+            List.range 0 (samplesOnEachSide * 2)
+                |> List.map toFloat
+                |> List.map (\index -> start + index * stepSize)
     in
-        List.range 0 (samplesOnEachSide * 2)
-            |> List.map toFloat
-            |> List.map (\index -> start + index * stepSize)
-            |> (::) nullPunkt
-            |> Set.fromList
-            |> Set.toList
-            |> List.sort
+        case nullPunkt >= minimum of
+            True ->
+                steps
+                    |> (::) nullPunkt
+                    |> Set.fromList
+                    |> Set.toList
+                    |> List.sort
+
+            False ->
+                steps
 
 
 samples : Float -> (Float -> Float) -> List Float
