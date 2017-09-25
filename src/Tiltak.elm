@@ -17,6 +17,7 @@ type alias Field =
     , updateValue : Float -> TiltakStates -> TiltakStates
     , stepSize : Float
     , stringValueFromState : TiltakStates -> String
+    , value : TiltakStates -> Maybe Float
     }
 
 
@@ -148,9 +149,10 @@ transformToFields :
          -> (String -> TiltakStates -> TiltakStates)
         )
     -> ((specificState -> Maybe Float) -> (TiltakStates -> String))
+    -> ((specificState -> Maybe Float) -> (TiltakStates -> Maybe Float))
     -> List (SimpleField specificState)
     -> List Field
-transformToFields stateMap updateTiltakStateHelper stringValueHelper fieldDefinitions =
+transformToFields stateMap updateTiltakStateHelper stringValueHelper valueHelper fieldDefinitions =
     let
         toRealField simpleField =
             { name = simpleField.name
@@ -176,6 +178,7 @@ transformToFields stateMap updateTiltakStateHelper stringValueHelper fieldDefini
                                 simpleField.setter (Just value) specificState
                             )
             , stringValueFromState = stringValueHelper simpleField.accessor
+            , value = valueHelper simpleField.accessor
             }
     in
         fieldDefinitions
@@ -266,15 +269,24 @@ samples stepSize generateDataFunc =
                 []
 
 
-findVariableToGraph : Tiltak -> TiltakStates -> Field
+findVariableToGraph : Tiltak -> TiltakStates -> Maybe Field
 findVariableToGraph this state =
     let
-        maybeField =
-            sendTo this .fields |> List.head
-    in
-        case maybeField of
-            Just value ->
-                value
+        filterFunc field =
+            case field.value state of
+                Just _ ->
+                    False
 
-            Nothing ->
-                Debug.crash "TODO"
+                Nothing ->
+                    True
+
+        nothingFields =
+            sendTo this .fields
+                |> List.filter filterFunc
+    in
+        case nothingFields of
+            [ head ] ->
+                Just head
+
+            _ ->
+                Nothing

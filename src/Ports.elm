@@ -6,7 +6,10 @@ type alias DomId =
 
 
 type alias GraphData =
-    { domId : DomId, data : List ( Float, Float ) }
+    { domId : DomId
+    , data : List ( Float, Float )
+    , variableTitle : String
+    }
 
 
 port generateC3 : GraphData -> Cmd msg

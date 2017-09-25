@@ -116,9 +116,13 @@ fields =
 
         thisStringValueHelper =
             TiltakStates.stringValueHelper .leskurMedSitteplass
+
+        thisValueHelper =
+            TiltakStates.valueHelper .leskurMedSitteplass
     in
         fieldDefinitions
             |> Tiltak.transformToFields
                 stateMap
                 updateTiltakStateHelper
                 thisStringValueHelper
+                thisValueHelper

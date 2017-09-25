@@ -69,16 +69,16 @@ suite =
                             { installationCost = Just 100
                             , yearlyMaintenance = Just 200
                             , bompengeAndel = 0.2
-                            , passengersPerYear = Just 10
+                            , passengersPerYear = Nothing
                             , beleggForbiPassasjererPerBuss = Just 20
                             , aarligTidsbesparelseMinutter = Just 30
                             }
                     }
 
                 maybeField =
-                    sendTo tiltak .fields |> List.head
+                    sendTo tiltak .fields |> List.filter (\field -> field.name == "passengersPerYear") |> List.head
 
-                field =
+                passengersPerYear =
                     case maybeField of
                         Just value ->
                             value
@@ -92,11 +92,44 @@ suite =
                             state
                                 |> sendTo tiltak .graphData
                                 |> Expect.equal [ ( 1, 2 ), ( 3, 4 ) ]
-                , skip <|
-                    test "findVariableToGraph" <|
+                , describe "findVariableToGraph"
+                    [ test "passengersPerYear" <|
                         \() ->
                             Tiltak.findVariableToGraph tiltak state
-                                |> Expect.equal field
+                                |> Expect.equal (Just passengersPerYear)
+                    , test "all fields are valid" <|
+                        \() ->
+                            let
+                                opphoeyetHoldeplassFelt =
+                                    state.opphoeyetHoldeplass
+
+                                modifiedState =
+                                    { state
+                                        | opphoeyetHoldeplass =
+                                            { opphoeyetHoldeplassFelt
+                                                | passengersPerYear = Just 10
+                                            }
+                                    }
+                            in
+                                Tiltak.findVariableToGraph tiltak modifiedState
+                                    |> Expect.equal Nothing
+                    , test "two fields are invalid" <|
+                        \() ->
+                            let
+                                opphoeyetHoldeplassFelt =
+                                    state.opphoeyetHoldeplass
+
+                                modifiedState =
+                                    { state
+                                        | opphoeyetHoldeplass =
+                                            { opphoeyetHoldeplassFelt
+                                                | yearlyMaintenance = Nothing
+                                            }
+                                    }
+                            in
+                                Tiltak.findVariableToGraph tiltak modifiedState
+                                    |> Expect.equal Nothing
+                    ]
                 ]
             )
         ]

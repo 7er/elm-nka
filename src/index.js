@@ -22,12 +22,9 @@ var charts = {};
 
 
 app.ports.generateC3.subscribe(function (object) {
-  var domId = object.domId;
-  var data = object.data;
-
-  console.log("generateC3", domId);
+  console.log("generateC3", object.domId);
   var chart = c3.generate({
-    bindto: "#" + domId,
+    bindto: "#" + object.domId,
     type: 'line',
     data: {
       x: 'x',
@@ -58,13 +55,13 @@ app.ports.generateC3.subscribe(function (object) {
     }
   });
 
-  charts[domId] = chart;
-  updateChart(chart, data);
+  charts[object.domId] = chart;
+  updateChart(chart, object.data, object.variableTitle);
 });
 
-function updateChart(chart, realData) {
+function updateChart(chart, realData, variableTitle) {
   var dataRows = [].concat([['x', 'Nettonåverdi']], realData);
-  chart.axis.labels({x: "Navnet på variabelen vi grafer skal stå her"});
+  chart.axis.labels({x: variableTitle});
   chart.load(
     {
       rows: dataRows,
@@ -74,10 +71,8 @@ function updateChart(chart, realData) {
 
 app.ports.updateC3.subscribe(function (object) {
   console.log('update', object);
-  var domId = object.domId;
-  var data = object.data;
-  var chart = charts[domId];
-  updateChart(chart, data);
+  var chart = charts[object.domId];
+  updateChart(chart, object.data, object.variableTitle);
 });
 
 

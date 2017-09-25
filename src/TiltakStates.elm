@@ -93,3 +93,12 @@ stringValueHelper getSpecificState func states =
 
             Nothing ->
                 ""
+
+
+valueHelper :
+    (TiltakStates -> specificState)
+    -> (specificState -> Maybe a)
+    -> TiltakStates
+    -> Maybe a
+valueHelper getSpecificState func states =
+    getSpecificState states |> func

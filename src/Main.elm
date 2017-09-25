@@ -65,6 +65,10 @@ computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
                 Ports.generateC3
                     { domId = graphId
                     , data = sendTo tiltak .graphData tiltakStates
+                    , variableTitle =
+                        Tiltak.findVariableToGraph tiltak tiltakStates
+                            |> Maybe.map .title
+                            |> Maybe.withDefault "WAT!!!!"
                     }
 
             ( GraphOff, GraphOff ) ->
@@ -75,6 +79,10 @@ computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
                 Ports.updateC3
                     { domId = graphId
                     , data = sendTo tiltak .graphData tiltakStates
+                    , variableTitle =
+                        Tiltak.findVariableToGraph tiltak tiltakStates
+                            |> Maybe.map .title
+                            |> Maybe.withDefault "WAT!!!!"
                     }
 
             ( GraphOn, GraphOff ) ->
@@ -100,7 +108,8 @@ updateField model tiltak field stringValue =
             }
 
         cmd =
-            computeGraphCmd tiltak
+            computeGraphCmd
+                tiltak
                 newModel.tiltakStates
                 ( graphState
                 , sendTo tiltak .graphState newModel.tiltakStates

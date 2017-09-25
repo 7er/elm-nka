@@ -47,8 +47,8 @@ levetid =
 
 
 graphState : Tiltak -> TiltakStates -> GraphState
-graphState this { opphoeyetHoldeplass } =
-    opphoeyetHoldeplass.installationCost
+graphState this state =
+    Tiltak.findVariableToGraph this state
         |> Maybe.map (\_ -> GraphOn)
         |> Maybe.withDefault GraphOff
 
@@ -56,31 +56,37 @@ graphState this { opphoeyetHoldeplass } =
 graphData : Tiltak -> TiltakStates -> List ( Float, Float )
 graphData this ({ opphoeyetHoldeplass } as state) =
     let
-        field =
+        maybeField =
             Tiltak.findVariableToGraph this state
-
-        generateData x =
-            let
-                newState =
-                    field.updateValue x state
-            in
-                sendTo this .nettoNytte newState |> Maybe.map (\y -> ( x, y ))
-
-        sampleFunc x =
-            let
-                newState =
-                    field.updateValue x state
-            in
-                case sendTo this .nettoNytte newState of
-                    Just value ->
-                        value
-
-                    Nothing ->
-                        42
     in
-        Tiltak.samples field.stepSize sampleFunc
-            |> List.map generateData
-            |> List.filterMap identity
+        case maybeField of
+            Nothing ->
+                []
+
+            Just field ->
+                let
+                    generateData x =
+                        let
+                            newState =
+                                field.updateValue x state
+                        in
+                            sendTo this .nettoNytte newState |> Maybe.map (\y -> ( x, y ))
+
+                    sampleFunc x =
+                        let
+                            newState =
+                                field.updateValue x state
+                        in
+                            case sendTo this .nettoNytte newState of
+                                Just value ->
+                                    value
+
+                                Nothing ->
+                                    42
+                in
+                    Tiltak.samples field.stepSize sampleFunc
+                        |> List.map generateData
+                        |> List.filterMap identity
 
 
 tiltak : Tiltak
@@ -204,9 +210,13 @@ fields =
 
         thisStringValueHelper =
             TiltakStates.stringValueHelper .opphoeyetHoldeplass
+
+        thisValueHelper =
+            TiltakStates.valueHelper .opphoeyetHoldeplass
     in
         fieldDefinitions
             |> Tiltak.transformToFields
                 stateMap
                 updateTiltakStateHelper
                 thisStringValueHelper
+                thisValueHelper

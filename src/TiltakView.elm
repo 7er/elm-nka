@@ -84,6 +84,7 @@ tiltakForm tiltak model =
                                     , stringValueFromState = \_ -> "Flesk"
                                     , stepSize = 1
                                     , updateValue = \_ state -> state
+                                    , value = \_ -> Nothing
                                     }
                             , Checkbox.checked False
                             ]
