@@ -40,7 +40,16 @@ suite =
                                 , 6.5e5
                                 , 7.0e5
                                 ]
-            , test "when nullpunkt hits a a sample" <|
+            , test "flat function gives empty list" <|
+                \() ->
+                    let
+                        func _ =
+                            5
+                    in
+                        Tiltak.samples 36 func |> Expect.equal []
+            ]
+         , describe "samplesFromBreakEvenPoint"
+            [ test "when nullpunkt hits a a sample" <|
                 \() ->
                     Tiltak.samplesFromBreakEvenPoint 5.0e4 5.0e5
                         |> Expect.equal
@@ -69,13 +78,6 @@ suite =
                             , 130
                             , 140
                             ]
-            , test "flat function gives empty list" <|
-                \() ->
-                    let
-                        func _ =
-                            5
-                    in
-                        Tiltak.samples 36 func |> Expect.equal []
             ]
          ]
         )
