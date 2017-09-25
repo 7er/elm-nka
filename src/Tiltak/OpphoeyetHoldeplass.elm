@@ -53,25 +53,11 @@ graphState this { opphoeyetHoldeplass } =
         |> Maybe.withDefault GraphOff
 
 
-findVariableToGraph : Tiltak -> TiltakStates -> Field
-findVariableToGraph this ({ opphoeyetHoldeplass } as state) =
-    let
-        maybeField =
-            sendTo this .fields |> List.head
-    in
-        case maybeField of
-            Just value ->
-                value
-
-            Nothing ->
-                Debug.crash "TODO"
-
-
 graphData : Tiltak -> TiltakStates -> List ( Float, Float )
 graphData this ({ opphoeyetHoldeplass } as state) =
     let
         field =
-            findVariableToGraph this state
+            Tiltak.findVariableToGraph this state
 
         generateData x =
             let

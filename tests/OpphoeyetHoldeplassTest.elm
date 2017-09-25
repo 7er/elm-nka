@@ -95,7 +95,7 @@ suite =
                 , skip <|
                     test "findVariableToGraph" <|
                         \() ->
-                            OpphoeyetHoldeplass.findVariableToGraph tiltak state
+                            Tiltak.findVariableToGraph tiltak state
                                 |> Expect.equal field
                 ]
             )

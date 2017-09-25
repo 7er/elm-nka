@@ -264,3 +264,17 @@ samples stepSize generateDataFunc =
 
             Nothing ->
                 []
+
+
+findVariableToGraph : Tiltak -> TiltakStates -> Field
+findVariableToGraph this state =
+    let
+        maybeField =
+            sendTo this .fields |> List.head
+    in
+        case maybeField of
+            Just value ->
+                value
+
+            Nothing ->
+                Debug.crash "TODO"
