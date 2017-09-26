@@ -1,6 +1,6 @@
 module Tiltak.OpphoeyetHoldeplass exposing (..)
 
-import Tiltak exposing (Tiltak(..), GraphState(..), Field, SimpleField, StateCalculationMethod, sendTo, breakEvenPoint)
+import Tiltak exposing (Tiltak(..), Field, SimpleField, StateCalculationMethod, sendTo)
 import TiltakStates exposing (TiltakStates, OpphoyetHoldeplassState)
 import Tiltak.BasicTiltak as BasicTiltak
 import GeneralForutsetninger

@@ -3,7 +3,7 @@ module TiltakTests exposing (..)
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
 import TestSupport exposing (..)
-import Tiltak
+import Charting
 
 
 suite : Test
@@ -28,7 +28,7 @@ suite =
                         func x =
                             x * 2 - 1.0e6
                     in
-                        Tiltak.samples 5.0e4 func
+                        Charting.samples 5.0e4 func
                             |> Expect.equal
                                 [ 3.0e5
                                 , 3.5e5
@@ -46,12 +46,12 @@ suite =
                         func _ =
                             5
                     in
-                        Tiltak.samples 36 func |> Expect.equal []
+                        Charting.samples 36 func |> Expect.equal []
             ]
          , describe "samplesFromBreakEvenPoint"
             [ test "when nullpunkt hits a a sample" <|
                 \() ->
-                    Tiltak.samplesFromBreakEvenPoint 5.0e4 5.0e5
+                    Charting.samplesFromBreakEvenPoint 5.0e4 5.0e5
                         |> Expect.equal
                             [ 3.0e5
                             , 3.5e5
@@ -65,7 +65,7 @@ suite =
                             ]
             , test "calculate exact breakEvenPoint and rounded to stepsize" <|
                 \() ->
-                    Tiltak.samplesFromBreakEvenPoint 10 101
+                    Charting.samplesFromBreakEvenPoint 10 101
                         |> Expect.equal
                             [ 60
                             , 70
@@ -80,7 +80,7 @@ suite =
                             ]
             , test "negative break-even point is not included" <|
                 \() ->
-                    Tiltak.samplesFromBreakEvenPoint 10 -101
+                    Charting.samplesFromBreakEvenPoint 10 -101
                         |> Expect.equal
                             [ 0
                             , 10

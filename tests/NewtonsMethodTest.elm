@@ -3,7 +3,7 @@ module NewtonsMethodTest exposing (..)
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
 import TestSupport exposing (checkMaybe, closeTo)
-import Tiltak exposing (breakEvenPoint, roundToStepSize)
+import Charting exposing (breakEvenPoint, roundToStepSize)
 
 
 suite : Test
