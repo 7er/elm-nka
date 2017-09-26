@@ -72,16 +72,9 @@ samplesFromBreakEvenPoint stepSize nullPunkt =
 
 samples : Float -> (Float -> Float) -> List Float
 samples stepSize generateDataFunc =
-    let
-        samplesOnEachSide =
-            5
+    case breakEvenPoint generateDataFunc of
+        Just nullPunkt ->
+            samplesFromBreakEvenPoint stepSize nullPunkt
 
-        minimum =
-            0
-    in
-        case breakEvenPoint generateDataFunc of
-            Just nullPunkt ->
-                samplesFromBreakEvenPoint stepSize nullPunkt
-
-            Nothing ->
-                []
+        Nothing ->
+            []
