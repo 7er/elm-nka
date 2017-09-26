@@ -1,4 +1,4 @@
-module NewtonsMethodTest exposing (..)
+module ChartingTest exposing (..)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
