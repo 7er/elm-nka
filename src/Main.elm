@@ -59,31 +59,26 @@ computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
     let
         graphId =
             sendTo tiltak .graphId
+
+        graphData =
+            { domId = graphId
+            , data = sendTo tiltak .graphData tiltakStates
+            , variableTitle =
+                Tiltak.findVariableToGraph tiltak tiltakStates
+                    |> Maybe.map .title
+                    |> Maybe.withDefault "WAT!!!!"
+            }
     in
         case ( beforeState, afterState ) of
             ( GraphOff, GraphOn ) ->
-                Ports.generateC3
-                    { domId = graphId
-                    , data = sendTo tiltak .graphData tiltakStates
-                    , variableTitle =
-                        Tiltak.findVariableToGraph tiltak tiltakStates
-                            |> Maybe.map .title
-                            |> Maybe.withDefault "WAT!!!!"
-                    }
+                Ports.generateC3 graphData
 
             ( GraphOff, GraphOff ) ->
                 Cmd.none
 
             ( GraphOn, GraphOn ) ->
                 -- generate command to update the graph
-                Ports.updateC3
-                    { domId = graphId
-                    , data = sendTo tiltak .graphData tiltakStates
-                    , variableTitle =
-                        Tiltak.findVariableToGraph tiltak tiltakStates
-                            |> Maybe.map .title
-                            |> Maybe.withDefault "WAT!!!!"
-                    }
+                Ports.updateC3 graphData
 
             ( GraphOn, GraphOff ) ->
                 Ports.destroyC3 graphId
@@ -92,31 +87,27 @@ computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
 updateField : Model -> Tiltak -> Field -> String -> ( Model, Cmd Msg )
 updateField model tiltak field stringValue =
     let
-        graphId =
-            (sendTo tiltak .graphId)
-
-        graphState =
+        oldGraphState =
             sendTo tiltak .graphState model.tiltakStates
 
-        newModel =
-            { model
-                | tiltakStates =
-                    Tiltak.updateTiltakStateFromField
-                        field
-                        stringValue
-                        model.tiltakStates
-            }
+        newGraphState =
+            sendTo tiltak .graphState newTiltakStates
 
-        cmd =
-            computeGraphCmd
-                tiltak
-                newModel.tiltakStates
-                ( graphState
-                , sendTo tiltak .graphState newModel.tiltakStates
-                )
+        newTiltakStates =
+            Tiltak.updateTiltakStateFromField
+                field
+                stringValue
+                model.tiltakStates
     in
-        ( newModel
-        , cmd
+        ( { model
+            | tiltakStates = newTiltakStates
+          }
+        , computeGraphCmd
+            tiltak
+            newTiltakStates
+            ( oldGraphState
+            , newGraphState
+            )
         )
 
 

@@ -58,10 +58,9 @@ samplesFromBreakEvenPoint stepSize nullPunkt =
                 |> List.map toFloat
                 |> List.map (\index -> start + index * stepSize)
     in
-        case nullPunkt >= minimum of
+        case nullPunkt > minimum of
             True ->
-                steps
-                    |> (::) nullPunkt
+                (nullPunkt :: steps)
                     |> Set.fromList
                     |> Set.toList
                     |> List.sort
