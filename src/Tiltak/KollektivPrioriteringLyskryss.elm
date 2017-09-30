@@ -197,9 +197,6 @@ fields =
         updateTiltakStateHelper =
             TiltakStates.stateUpdateHelper stateMap
 
-        thisStringValueHelper =
-            TiltakStates.stringValueHelper .kollektivPrioriteringLyskryss
-
         thisValueHelper =
             TiltakStates.valueHelper .kollektivPrioriteringLyskryss
     in
@@ -207,5 +204,4 @@ fields =
             |> Tiltak.transformToFields
                 stateMap
                 updateTiltakStateHelper
-                thisStringValueHelper
                 thisValueHelper

@@ -16,7 +16,6 @@ type alias Field =
     , updateTiltakState : String -> TiltakStates -> TiltakStates
     , updateValue : Float -> TiltakStates -> TiltakStates
     , stepSize : Float
-    , stringValueFromState : TiltakStates -> String
     , value : TiltakStates -> Maybe Float
     }
 
@@ -148,11 +147,10 @@ transformToFields :
         ((String -> specificState -> specificState)
          -> (String -> TiltakStates -> TiltakStates)
         )
-    -> ((specificState -> Maybe Float) -> (TiltakStates -> String))
     -> ((specificState -> Maybe Float) -> (TiltakStates -> Maybe Float))
     -> List (SimpleField specificState)
     -> List Field
-transformToFields stateMap updateTiltakStateHelper stringValueHelper valueHelper fieldDefinitions =
+transformToFields stateMap updateTiltakStateHelper valueHelper fieldDefinitions =
     let
         toRealField simpleField =
             { name = simpleField.name
@@ -177,7 +175,6 @@ transformToFields stateMap updateTiltakStateHelper stringValueHelper valueHelper
                             (\specificState ->
                                 simpleField.setter (Just value) specificState
                             )
-            , stringValueFromState = stringValueHelper simpleField.accessor
             , value = valueHelper simpleField.accessor
             }
     in

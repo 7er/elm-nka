@@ -114,9 +114,6 @@ fields =
         updateTiltakStateHelper =
             TiltakStates.stateUpdateHelper stateMap
 
-        thisStringValueHelper =
-            TiltakStates.stringValueHelper .leskurMedSitteplass
-
         thisValueHelper =
             TiltakStates.valueHelper .leskurMedSitteplass
     in
@@ -124,5 +121,4 @@ fields =
             |> Tiltak.transformToFields
                 stateMap
                 updateTiltakStateHelper
-                thisStringValueHelper
                 thisValueHelper

@@ -65,7 +65,7 @@ tiltakForm tiltak model =
                     [ Input.id name
                     , Input.placeholder placeholder
                     , Input.onInput <| UpdateField tiltak field
-                    , Input.value <| field.stringValueFromState model.tiltakStates
+                    , Input.value <| Maybe.withDefault "" <| Maybe.map toString <| field.value model.tiltakStates
                     ]
                 ]
     in
@@ -81,7 +81,6 @@ tiltakForm tiltak model =
                                     , title = "Flesk"
                                     , placeholder = ""
                                     , updateTiltakState = \_ state -> state
-                                    , stringValueFromState = \_ -> "Flesk"
                                     , stepSize = 1
                                     , updateValue = \_ state -> state
                                     , value = \_ -> Nothing

@@ -163,9 +163,6 @@ fields =
         updateTiltakStateHelper =
             TiltakStates.stateUpdateHelper stateMap
 
-        thisStringValueHelper =
-            TiltakStates.stringValueHelper .opphoeyetHoldeplass
-
         thisValueHelper =
             TiltakStates.valueHelper .opphoeyetHoldeplass
     in
@@ -173,5 +170,4 @@ fields =
             |> Tiltak.transformToFields
                 stateMap
                 updateTiltakStateHelper
-                thisStringValueHelper
                 thisValueHelper

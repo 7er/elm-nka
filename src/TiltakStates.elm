@@ -77,24 +77,6 @@ stateUpdateHelper stateMap setter stringValue tiltakStates =
         |> stateMap (\specificState -> setter stringValue specificState)
 
 
-stringValueHelper :
-    (TiltakStates -> specificState)
-    -> (specificState -> Maybe a)
-    -> TiltakStates
-    -> String
-stringValueHelper getSpecificState func states =
-    let
-        maybeValue =
-            getSpecificState states |> func
-    in
-        case maybeValue of
-            Just value ->
-                toString value
-
-            Nothing ->
-                ""
-
-
 valueHelper :
     (TiltakStates -> specificState)
     -> (specificState -> Maybe a)
