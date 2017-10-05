@@ -8,7 +8,8 @@ import UrlParser exposing ((</>))
 import Models exposing (..)
 import Msgs exposing (Msg(..))
 import Group
-import Tiltak exposing (Tiltak, Field, sendTo, GraphState(..))
+import Tiltak exposing (Tiltak, sendTo, GraphState(..))
+import Field exposing (Field)
 import TiltakCharting
 import TiltakStates exposing (TiltakStates)
 import TiltakAndGroupData
@@ -95,7 +96,7 @@ updateField model tiltak field stringValue =
             sendTo tiltak .graphState newTiltakStates
 
         newTiltakStates =
-            Tiltak.updateTiltakStateFromField
+            Field.updateTiltakStateFromField
                 field
                 stringValue
                 model.tiltakStates

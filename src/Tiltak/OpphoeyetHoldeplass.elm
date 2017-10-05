@@ -1,6 +1,7 @@
 module Tiltak.OpphoeyetHoldeplass exposing (..)
 
-import Tiltak exposing (Tiltak(..), Field, SimpleField, StateCalculationMethod, sendTo)
+import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
+import Field exposing (Field, SimpleField)
 import TiltakStates exposing (TiltakStates, OpphoyetHoldeplassState)
 import Tiltak.BasicTiltak as BasicTiltak
 import GeneralForutsetninger
@@ -167,7 +168,7 @@ fields =
             TiltakStates.valueHelper .opphoeyetHoldeplass
     in
         fieldDefinitions
-            |> Tiltak.transformToFields
+            |> Field.transformToFields
                 stateMap
                 updateTiltakStateHelper
                 thisValueHelper

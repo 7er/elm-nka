@@ -1,7 +1,8 @@
 module Tiltak.LeskurMedSitteplass exposing (tiltak, initialState)
 
 import GeneralForutsetninger
-import Tiltak exposing (Tiltak(..), Field, StateCalculationMethod, SimpleField, bindTiltak, sendTo)
+import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
+import Field exposing (Field, SimpleField)
 import TiltakStates exposing (TiltakStates)
 import Tiltak.BasicTiltak as BasicTiltak
 
@@ -118,7 +119,7 @@ fields =
             TiltakStates.valueHelper .leskurMedSitteplass
     in
         fieldDefinitions
-            |> Tiltak.transformToFields
+            |> Field.transformToFields
                 stateMap
                 updateTiltakStateHelper
                 thisValueHelper

@@ -4,7 +4,8 @@ import Navigation exposing (Location)
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Modal as Modal
 import Bootstrap.Accordion as Accordion
-import Tiltak exposing (Tiltak, Field)
+import Tiltak exposing (Tiltak)
+import Field exposing (Field)
 
 
 type Msg

@@ -1,6 +1,7 @@
 module Tiltak.KollektivPrioriteringLyskryss exposing (..)
 
-import Tiltak exposing (Tiltak(..), SimpleField, StateCalculationMethod, Field, sendTo)
+import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
+import Field exposing (SimpleField, Field)
 import Tiltak.BasicTiltak as BasicTiltak
 import TiltakStates exposing (KollektivPrioriteringLyskryssState)
 import GeneralForutsetninger exposing (verdisettinger)
@@ -201,7 +202,7 @@ fields =
             TiltakStates.valueHelper .kollektivPrioriteringLyskryss
     in
         fieldDefinitions
-            |> Tiltak.transformToFields
+            |> Field.transformToFields
                 stateMap
                 updateTiltakStateHelper
                 thisValueHelper

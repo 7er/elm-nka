@@ -1,7 +1,8 @@
 module TiltakCharting exposing (..)
 
 import Charting
-import Tiltak exposing (Tiltak, Field, GraphState(..), sendTo)
+import Tiltak exposing (Tiltak, GraphState(..), sendTo)
+import Field exposing (Field)
 import TiltakStates exposing (TiltakStates)
 
 
