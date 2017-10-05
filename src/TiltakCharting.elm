@@ -1,9 +1,14 @@
 module TiltakCharting exposing (..)
 
 import Charting
-import Tiltak exposing (Tiltak, GraphState(..), sendTo)
+import Tiltak exposing (Tiltak, sendTo)
 import Field exposing (Field)
 import TiltakStates exposing (TiltakStates)
+
+
+type GraphState
+    = GraphOff
+    | GraphOn
 
 
 findVariableToGraph : Tiltak -> TiltakStates -> Maybe Field

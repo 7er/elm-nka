@@ -9,8 +9,9 @@ import Bootstrap.Accordion as Accordion
 import Bootstrap.Card as Card
 import Models exposing (Model)
 import Msgs exposing (Msg(..))
-import Tiltak exposing (Tiltak, sendTo, GraphState(..))
+import Tiltak exposing (Tiltak, sendTo)
 import AnalyseView
+import TiltakCharting exposing (GraphState(..))
 
 
 tiltakCard : Model -> Tiltak -> Accordion.Card Msg
@@ -26,7 +27,7 @@ tiltakCard model tiltak =
             sendTo tiltak .graphId
 
         graphNodeContent =
-            case (sendTo tiltak .graphState model.tiltakStates) of
+            case (TiltakCharting.graphState tiltak model.tiltakStates) of
                 GraphOn ->
                     []
 

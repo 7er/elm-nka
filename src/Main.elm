@@ -8,9 +8,9 @@ import UrlParser exposing ((</>))
 import Models exposing (..)
 import Msgs exposing (Msg(..))
 import Group
-import Tiltak exposing (Tiltak, sendTo, GraphState(..))
+import Tiltak exposing (Tiltak, sendTo)
 import Field exposing (Field)
-import TiltakCharting
+import TiltakCharting exposing (GraphState(..))
 import TiltakStates exposing (TiltakStates)
 import TiltakAndGroupData
 import Views exposing (view)
@@ -64,7 +64,7 @@ computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
 
         graphData =
             { domId = graphId
-            , data = sendTo tiltak .graphData tiltakStates
+            , data = TiltakCharting.graphData tiltak tiltakStates
             , variableTitle =
                 TiltakCharting.findVariableToGraph tiltak tiltakStates
                     |> Maybe.map .title
@@ -90,10 +90,10 @@ updateField : Model -> Tiltak -> Field -> String -> ( Model, Cmd Msg )
 updateField model tiltak field stringValue =
     let
         oldGraphState =
-            sendTo tiltak .graphState model.tiltakStates
+            TiltakCharting.graphState tiltak model.tiltakStates
 
         newGraphState =
-            sendTo tiltak .graphState newTiltakStates
+            TiltakCharting.graphState tiltak newTiltakStates
 
         newTiltakStates =
             Field.updateTiltakStateFromField

@@ -4,11 +4,6 @@ import TiltakStates exposing (TiltakStates)
 import Field exposing (Field)
 
 
-type GraphState
-    = GraphOff
-    | GraphOn
-
-
 type alias AnalyseData =
     { passasjerNytte : Maybe Float
     , kostUtenSkyggepris : Maybe Float
@@ -62,10 +57,8 @@ type alias TiltakRecord =
     , yearlyOperatoerNytte : StateCalculationMethod
     , driftOgVedlihKost : StateCalculationMethod
     , investeringsKostInklRestverdi : StateCalculationMethod
-    , graphState : Tiltak -> TiltakStates -> GraphState
     , graphId : Tiltak -> String
     , domId : Tiltak -> String
-    , graphData : Tiltak -> TiltakStates -> List ( Float, Float )
     }
 
 

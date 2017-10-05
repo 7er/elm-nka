@@ -91,7 +91,7 @@ suite =
                     test "graphFor" <|
                         \() ->
                             state
-                                |> sendTo tiltak .graphData
+                                |> TiltakCharting.graphData tiltak
                                 |> Expect.equal [ ( 1, 2 ), ( 3, 4 ) ]
                 , describe "findVariableToGraph"
                     [ test "passengersPerYear" <|
