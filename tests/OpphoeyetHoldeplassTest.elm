@@ -4,6 +4,7 @@ import Expect exposing (Expectation)
 import Test exposing (Test, describe, test, only, skip)
 import TestSupport exposing (..)
 import Tiltak exposing (TiltakAccessor, sendTo)
+import TiltakCharting
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass exposing (tiltak)
 import TiltakAndGroupData
 
@@ -95,7 +96,7 @@ suite =
                 , describe "findVariableToGraph"
                     [ test "passengersPerYear" <|
                         \() ->
-                            Tiltak.findVariableToGraph tiltak state
+                            TiltakCharting.findVariableToGraph tiltak state
                                 |> Expect.equal (Just passengersPerYear)
                     , test "all fields are valid" <|
                         \() ->
@@ -111,7 +112,7 @@ suite =
                                             }
                                     }
                             in
-                                Tiltak.findVariableToGraph tiltak modifiedState
+                                TiltakCharting.findVariableToGraph tiltak modifiedState
                                     |> Expect.equal Nothing
                     , test "two fields are invalid" <|
                         \() ->
@@ -127,7 +128,7 @@ suite =
                                             }
                                     }
                             in
-                                Tiltak.findVariableToGraph tiltak modifiedState
+                                TiltakCharting.findVariableToGraph tiltak modifiedState
                                     |> Expect.equal Nothing
                     ]
                 ]

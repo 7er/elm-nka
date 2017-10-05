@@ -1,6 +1,7 @@
 module Tiltak.BasicTiltak exposing (..)
 
 import Tiltak exposing (..)
+import TiltakCharting
 import TiltakStates exposing (TiltakStates)
 import GeneralForutsetninger
 
@@ -103,8 +104,8 @@ basicTiltakRecord =
     , investeringsKostInklRestverdi = \_ _ -> Nothing
     , graphId = \this -> sendTo this .domId |> (++) "c3graph"
     , domId = \this -> sendTo this .title |> toDomId
-    , graphState = Tiltak.graphState
-    , graphData = Tiltak.graphData
+    , graphState = TiltakCharting.graphState
+    , graphData = TiltakCharting.graphData
     }
 
 

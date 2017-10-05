@@ -3,7 +3,7 @@
 Nytte- og kostnadsanalyse verktøy for tiltak knyttet til universell
 utforming i kollektivtrafikken.
 
-Author: Syver Enstad, Thomas Flemming
+Author: Syver Enstad, Thomas Flemming, Knut Aksel Røysland
 
 # Installering
 

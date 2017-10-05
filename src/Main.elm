@@ -9,6 +9,7 @@ import Models exposing (..)
 import Msgs exposing (Msg(..))
 import Group
 import Tiltak exposing (Tiltak, Field, sendTo, GraphState(..))
+import TiltakCharting
 import TiltakStates exposing (TiltakStates)
 import TiltakAndGroupData
 import Views exposing (view)
@@ -64,7 +65,7 @@ computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
             { domId = graphId
             , data = sendTo tiltak .graphData tiltakStates
             , variableTitle =
-                Tiltak.findVariableToGraph tiltak tiltakStates
+                TiltakCharting.findVariableToGraph tiltak tiltakStates
                     |> Maybe.map .title
                     |> Maybe.withDefault "WAT!!!!"
             }
