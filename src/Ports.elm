@@ -19,3 +19,6 @@ port destroyC3 : DomId -> Cmd msg
 
 
 port updateC3 : GraphData -> Cmd msg
+
+
+port charts : (List String -> msg) -> Sub msg

@@ -57,6 +57,7 @@ app.ports.generateC3.subscribe(function (object) {
 
   charts[object.domId] = chart;
   updateChart(chart, object.data, object.variableTitle);
+  app.ports.charts.send(Object.keys(charts));
 });
 
 function updateChart(chart, realData, variableTitle) {
@@ -72,7 +73,7 @@ function updateChart(chart, realData, variableTitle) {
 app.ports.updateC3.subscribe(function (object) {
   console.log('update', object);
   var chart = charts[object.domId];
-  updateChart(chart, object.data, object.variableTitle);
+  updateChart(chart, object.data, object.variableTitle);  
 });
 
 
@@ -82,4 +83,5 @@ app.ports.destroyC3.subscribe(function (domId) {
   charts[domId].destroy();
   delete charts[domId];
   console.log("remaining charts", charts);
+  app.ports.charts.send(Object.keys(charts));
 });

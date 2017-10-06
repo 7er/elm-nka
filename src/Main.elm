@@ -53,6 +53,7 @@ subscriptions model =
     Sub.batch
         [ Navbar.subscriptions model.navState NavMsg
         , Accordion.subscriptions model.accordionState AccordionMsg
+        , Ports.charts Charts
         ]
 
 
@@ -133,6 +134,9 @@ update msg model =
 
         UpdateBooleanField field booleanValue ->
             Debug.log (toString msg) ( model, Cmd.none )
+
+        Charts chartIds ->
+            Debug.log (toString chartIds) ( model, Cmd.none )
 
 
 urlUpdate : Navigation.Location -> Model -> Model
