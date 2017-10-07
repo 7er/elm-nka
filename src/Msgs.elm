@@ -15,4 +15,4 @@ type Msg
     | AccordionMsg Accordion.State
     | UpdateField Tiltak Field String
     | UpdateBooleanField Field Bool
-    | Charts (List String)
+    | ChartsChanged (List String)

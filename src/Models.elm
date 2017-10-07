@@ -25,4 +25,5 @@ type alias Model =
     , modalState : Modal.State
     , accordionState : Accordion.State
     , tiltakStates : TiltakStates
+    , chartIds : List String
     }

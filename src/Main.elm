@@ -33,16 +33,14 @@ init location =
         ( navState, navCmd ) =
             Navbar.initialState NavMsg
 
-        initialModel =
-            { page = Home
+        model =
+            { page = pageFromLocation location
             , navState = navState
             , modalState = Modal.hiddenState
             , accordionState = Accordion.initialState
             , tiltakStates = TiltakAndGroupData.initialTiltakStates
+            , chartIds = []
             }
-
-        model =
-            urlUpdate location initialModel
     in
         -- if we had more than one cmd, use Cmd.batch : List Cmd -> Cmd
         ( model, navCmd )
@@ -53,8 +51,45 @@ subscriptions model =
     Sub.batch
         [ Navbar.subscriptions model.navState NavMsg
         , Accordion.subscriptions model.accordionState AccordionMsg
-        , Ports.charts Charts
+        , Ports.charts ChartsChanged
         ]
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        UrlChange location ->
+            ( { model | page = pageFromLocation location }
+            , destroyAllCharts model
+            )
+
+        NavMsg state ->
+            ( { model | navState = state }, Cmd.none )
+
+        ModalMsg state ->
+            ( { model | modalState = state }, Cmd.none )
+
+        AccordionMsg state ->
+            ( { model | accordionState = state }, Cmd.none )
+
+        UpdateField tiltak field stringValue ->
+            updateField model tiltak field stringValue
+
+        UpdateBooleanField field booleanValue ->
+            Debug.log (toString msg) ( model, Cmd.none )
+
+        ChartsChanged chartIds ->
+            ( { model | chartIds = chartIds }, Cmd.none )
+
+
+destroyAllCharts : Model -> Cmd msg
+destroyAllCharts model =
+    model.chartIds |> List.map Ports.destroyC3 |> Cmd.batch
+
+
+pageFromLocation : Navigation.Location -> Page
+pageFromLocation location =
+    decode location |> Maybe.withDefault NotFound
 
 
 computeGraphCmd : Tiltak -> TiltakStates -> ( GraphState, GraphState ) -> Cmd Msg
@@ -112,41 +147,6 @@ updateField model tiltak field stringValue =
             , newGraphState
             )
         )
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        UrlChange location ->
-            ( urlUpdate location model, Cmd.none )
-
-        NavMsg state ->
-            ( { model | navState = state }, Cmd.none )
-
-        ModalMsg state ->
-            ( { model | modalState = state }, Cmd.none )
-
-        AccordionMsg state ->
-            ( { model | accordionState = state }, Cmd.none )
-
-        UpdateField tiltak field stringValue ->
-            updateField model tiltak field stringValue
-
-        UpdateBooleanField field booleanValue ->
-            Debug.log (toString msg) ( model, Cmd.none )
-
-        Charts chartIds ->
-            Debug.log (toString chartIds) ( model, Cmd.none )
-
-
-urlUpdate : Navigation.Location -> Model -> Model
-urlUpdate location model =
-    { model
-        | page =
-            decode location
-                |> Maybe.map identity
-                |> Maybe.withDefault NotFound
-    }
 
 
 decode : Location -> Maybe Page
