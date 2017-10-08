@@ -16,6 +16,7 @@ import Group
 import TiltakAndGroupData
 import Assets
 import TiltakView
+import Color
 
 
 view : Model -> Html Msg
@@ -51,7 +52,8 @@ menu : Navbar.State -> Html Msg
 menu navState =
     Navbar.config NavMsg
         |> Navbar.withAnimation
-        |> Navbar.container
+        |> Navbar.inverse
+        |> Navbar.darkCustom (Color.rgb 0x3B 0x3B 0x3B)
         |> Navbar.brand
             [ href "#" ]
             [ text "TØI Kollektivtrafikk tiltak kalkulator" ]
@@ -61,7 +63,7 @@ menu navState =
 
 mainContent : Model -> Html Msg
 mainContent model =
-    Grid.container [] <|
+    Grid.containerFluid [] <|
         case model.page of
             Home ->
                 pageHome model
@@ -78,7 +80,12 @@ mainContent model =
 
 pageHome : Model -> List (Html Msg)
 pageHome model =
-    [ h1 [] [ text "TØI Kollektivtrafikk kalkulator" ]
+    [ div [ class "jumbotron" ]
+        [ text "NKA verktøy"
+        ]
+    , h1
+        []
+        [ text "TØI Kollektivtrafikk kalkulator" ]
     , p [] [ text "Kalkulatorer for kostnad-nytte-analyse av tiltak for kollektivtrafikk" ]
     , Grid.row []
         [ Grid.col []
@@ -168,7 +175,7 @@ modal modalState =
 appFooter : Html Msg
 appFooter =
     footer [ class "footer" ]
-        [ Grid.container []
+        [ Grid.containerFluid []
             [ text "Kontakt: "
             , a [ href "mailto:naf@toi.no" ] [ text "Nils Fearnley" ]
             , br [] []

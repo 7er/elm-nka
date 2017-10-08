@@ -33,6 +33,19 @@ tiltakCard model tiltak =
 
                 GraphOff ->
                     [ h3 [] [ text "Mangler data for å grafe" ] ]
+
+        chartWrapper =
+            div []
+                [ div [ id graphId ] graphNodeContent
+                , div []
+                    [ div [] [ text "Grafen viser hvordan kost-nytte nåverdier varierer med antall passasjerjer" ]
+                    , div []
+                        [ text "Vis heller: "
+                        , a [] [ text "Var1" ]
+                        , a [] [ text "Var2" ]
+                        ]
+                    ]
+                ]
     in
         Accordion.card
             { id = sendTo tiltak .domId
@@ -50,7 +63,7 @@ tiltakCard model tiltak =
                             ]
                         ]
                     ]
-                    [ Card.custom <| div [ id graphId ] graphNodeContent
+                    [ Card.custom <| chartWrapper
                     ]
                 ]
             }

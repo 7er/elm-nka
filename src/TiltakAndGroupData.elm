@@ -16,7 +16,13 @@ import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
 
 alleTyper : List Group
 alleTyper =
-    [ Holdeplasser, Informasjon, StrekningOgFramkommelighet ]
+    [ Holdeplasser
+    , Informasjon
+
+    --, Trygghet
+    --, Kjoeremateriell
+    , StrekningOgFramkommelighet
+    ]
 
 
 tiltakForGroup : Group -> List Tiltak

@@ -9,6 +9,8 @@ import TiltakStates exposing (TiltakStates)
 type Group
     = Holdeplasser
     | Informasjon
+      --| Trygghet
+      --| Kjoeremateriell
     | StrekningOgFramkommelighet
 
 
