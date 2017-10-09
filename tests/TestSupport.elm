@@ -18,7 +18,13 @@ closeTo expected precision actual =
         if difference < epsilon then
             Expect.pass
         else
-            (toString actual) ++ " is not near enough to " ++ (toString expected) ++ " using " ++ (toString precision) ++ " digits of precision" |> Expect.fail
+            (toString actual)
+                ++ " is not near enough to "
+                ++ (toString expected)
+                ++ " using "
+                ++ (toString precision)
+                ++ " digits of precision"
+                |> Expect.fail
 
 
 checkMaybe : (a -> Expectation) -> Maybe a -> Expectation

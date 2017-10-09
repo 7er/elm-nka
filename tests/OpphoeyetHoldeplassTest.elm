@@ -87,12 +87,21 @@ suite =
                         Nothing ->
                             Debug.crash "TODO"
              in
-                [ skip <|
-                    test "graphFor" <|
-                        \() ->
-                            state
-                                |> TiltakCharting.graphData tiltak
-                                |> Expect.equal [ ( 1, 2 ), ( 3, 4 ) ]
+                [ test "graphFor" <|
+                    \() ->
+                        state
+                            |> TiltakCharting.graphData tiltak
+                            |> Expect.equal
+                                [ ( 0, 15633.141578094202 )
+                                , ( 50, 16794.86876781479 )
+                                , ( 100, 17956.595957535377 )
+                                , ( 150, 19118.323147255964 )
+                                , ( 200, 20280.05033697655 )
+                                , ( 250, 21441.777526697144 )
+                                , ( 300, 22603.50471641773 )
+                                , ( 350, 23765.231906138317 )
+                                , ( 400, 24926.95909585891 )
+                                ]
                 , describe "findVariableToGraph"
                     [ test "passengersPerYear" <|
                         \() ->
