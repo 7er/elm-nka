@@ -11,6 +11,16 @@ type GraphState
     | GraphOn
 
 
+chartRecord tiltak tiltakStates =
+    { domId = sendTo tiltak .graphId
+    , data = graphData tiltak tiltakStates
+    , variableTitle =
+        findVariableToGraph tiltak tiltakStates
+            |> Maybe.map .title
+            |> Maybe.withDefault "WAT!!!!"
+    }
+
+
 findVariableToGraph : Tiltak -> TiltakStates -> Maybe Field
 findVariableToGraph this state =
     let

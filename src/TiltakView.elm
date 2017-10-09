@@ -14,15 +14,9 @@ import AnalyseView
 import TiltakCharting exposing (GraphState(..))
 
 
-tiltakCard : Model -> Tiltak -> Accordion.Card Msg
-tiltakCard model tiltak =
+chart : Model -> Tiltak -> Html Msg
+chart model tiltak =
     let
-        analyse =
-            AnalyseView.view <| Tiltak.analyse tiltak model.tiltakStates
-
-        title =
-            sendTo tiltak .title
-
         graphId =
             sendTo tiltak .graphId
 
@@ -33,19 +27,28 @@ tiltakCard model tiltak =
 
                 GraphOff ->
                     [ h3 [] [ text "Mangler data for å grafe" ] ]
-
-        chartWrapper =
-            div []
-                [ div [ id graphId ] graphNodeContent
+    in
+        div []
+            [ div [ id graphId ] graphNodeContent
+            , div []
+                [ div [] [ text "Grafen viser hvordan kost-nytte nåverdier varierer med <forutsetnings navn her>" ]
                 , div []
-                    [ div [] [ text "Grafen viser hvordan kost-nytte nåverdier varierer med antall passasjerjer" ]
-                    , div []
-                        [ text "Vis heller: "
-                        , a [] [ text "Var1" ]
-                        , a [] [ text "Var2" ]
-                        ]
+                    [ text "Vis heller: "
+                    , a [] [ text "<Annen forutsetning>" ]
+                    , a [] [ text "<Tredje forutseting>" ]
                     ]
                 ]
+            ]
+
+
+tiltakCard : Model -> Tiltak -> Accordion.Card Msg
+tiltakCard model tiltak =
+    let
+        analyse =
+            AnalyseView.view <| Tiltak.analyse tiltak model.tiltakStates
+
+        title =
+            sendTo tiltak .title
     in
         Accordion.card
             { id = sendTo tiltak .domId
@@ -63,7 +66,7 @@ tiltakCard model tiltak =
                             ]
                         ]
                     ]
-                    [ Card.custom <| chartWrapper
+                    [ Card.custom <| chart model tiltak
                     ]
                 ]
             }

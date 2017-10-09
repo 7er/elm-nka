@@ -59,9 +59,13 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         UrlChange location ->
-            ( { model | page = pageFromLocation location }
-            , destroyAllCharts model
-            )
+            let
+                newModel =
+                    { model | page = pageFromLocation location }
+            in
+                ( newModel
+                , destroyAndCreateCharts model newModel
+                )
 
         NavMsg state ->
             ( { model | navState = state }, Cmd.none )
@@ -82,9 +86,46 @@ update msg model =
             ( { model | chartIds = chartIds }, Cmd.none )
 
 
-destroyAllCharts : Model -> Cmd msg
-destroyAllCharts model =
-    model.chartIds |> List.map Ports.destroyC3 |> Cmd.batch
+destroyAndCreateCharts : Model -> Model -> Cmd msg
+destroyAndCreateCharts oldModel newModel =
+    Cmd.batch
+        [ case oldModel.page of
+            GroupPage group ->
+                groupDestroyCharts group oldModel
+
+            _ ->
+                Cmd.none
+        , case newModel.page of
+            GroupPage group ->
+                groupCreateCharts group newModel
+
+            _ ->
+                Cmd.none
+        ]
+
+
+groupDestroyCharts : Group -> Model -> Cmd msg
+groupDestroyCharts group model =
+    TiltakAndGroupData.tiltakForGroup group
+        |> List.filter
+            (\tiltak ->
+                TiltakCharting.graphState tiltak model.tiltakStates == GraphOn
+            )
+        |> List.map (\tiltak -> sendTo tiltak .graphId)
+        |> List.map Ports.destroyC3
+        |> Cmd.batch
+
+
+groupCreateCharts : Group -> Model -> Cmd msg
+groupCreateCharts group model =
+    TiltakAndGroupData.tiltakForGroup group
+        |> List.filter
+            (\tiltak ->
+                TiltakCharting.graphState tiltak model.tiltakStates == GraphOn
+            )
+        |> List.map (\tiltak -> TiltakCharting.chartRecord tiltak model.tiltakStates)
+        |> List.map Ports.generateC3
+        |> Cmd.batch
 
 
 pageFromLocation : Navigation.Location -> Page

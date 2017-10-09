@@ -130,10 +130,10 @@ pageGettingStarted model =
 
 
 pageGroup : Group -> Model -> List (Html Msg)
-pageGroup tiltaksGruppeType model =
+pageGroup tiltaksGruppe model =
     let
         tiltakene =
-            TiltakAndGroupData.tiltakForGroup tiltaksGruppeType
+            TiltakAndGroupData.tiltakForGroup tiltaksGruppe
 
         allCards =
             List.map (TiltakView.tiltakCard model) tiltakene

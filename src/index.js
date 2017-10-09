@@ -20,9 +20,9 @@ var app = Elm.Main.embed(mountNode);
 var charts = {};
 
 
-
-app.ports.generateC3.subscribe(function (object) {
-  console.log("generateC3", object.domId);
+function generateChart(object) {
+  var element = document.getElementById(object.domId);
+  console.log("chart element is: ", element);
   var chart = c3.generate({
     bindto: "#" + object.domId,
     type: 'line',
@@ -58,6 +58,16 @@ app.ports.generateC3.subscribe(function (object) {
   charts[object.domId] = chart;
   updateChart(chart, object.data, object.variableTitle);
   app.ports.charts.send(Object.keys(charts));
+  
+}
+
+app.ports.generateC3.subscribe(function (object) {
+  console.log("generateC3", object.domId);
+  requestAnimationFrame(
+    function() {
+      generateChart(object);
+    },
+    1);
 });
 
 function updateChart(chart, realData, variableTitle) {
@@ -82,6 +92,5 @@ app.ports.destroyC3.subscribe(function (domId) {
   console.log("destroyC3", domId);
   charts[domId].destroy();
   delete charts[domId];
-  console.log("remaining charts", charts);
   app.ports.charts.send(Object.keys(charts));
 });
