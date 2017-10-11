@@ -11,6 +11,10 @@ type GraphState
     | GraphOn
 
 
+chartRecord :
+    Tiltak
+    -> TiltakStates
+    -> { data : List ( Float, Float ), domId : String, variableTitle : String }
 chartRecord tiltak tiltakStates =
     { domId = sendTo tiltak .graphId
     , data = graphData tiltak tiltakStates
