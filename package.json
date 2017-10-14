@@ -13,7 +13,7 @@
     "client": "webpack-dev-server --port 3000 --env development",
     "start": "nodemon --watch webpack.config.js --exec 'yarn run client'",
     "test": "elm-test",
-    "test:watch": "elm-test --watch --warn",
+    "test:watch": "elm-test --watch",
     "tdd": "yarn test:watch",
     "predeploy": "yarn run build",
     "deploy": "./sspa deploy_bucket nka-verktoy.7ern.no"

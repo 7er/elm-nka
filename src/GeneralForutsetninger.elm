@@ -1,12 +1,6 @@
 module GeneralForutsetninger exposing (..)
 
 
-verdisettinger :
-    { operatoerKostnad : Float
-    , opphoyetHoldeplass : Float
-    , reisetidBil : Float
-    , reisetidKollektivTransport : Float
-    }
 verdisettinger =
     -- alle verdier i NOK
     { opphoyetHoldeplass =
