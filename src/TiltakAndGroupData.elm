@@ -13,15 +13,15 @@ import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
 import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
+import Tiltak.Belysning as Belysning
 
 
 alleTyper : List Group
 alleTyper =
     [ Holdeplasser
     , Informasjon
-
-    --, Trygghet
-    --, Kjoeremateriell
+    , Trygghet
+    , Kjoeremateriell
     , StrekningOgFramkommelighet
     ]
 
@@ -50,6 +50,13 @@ tiltakForGroup gruppeType =
             -- , SeparatSykkelveg.tiltak
             ]
 
+        Trygghet ->
+            [ Belysning.tiltak
+            ]
+
+        Kjoeremateriell ->
+            []
+
         StrekningOgFramkommelighet ->
             [ KollektivPrioriteringLyskryss.tiltak ]
 
@@ -61,11 +68,10 @@ alleTiltak =
 
 initialTiltakStates : TiltakStates
 initialTiltakStates =
-    { -- sykkelParkeringUte = SykkelparkeringUte.initialState
-      --     , separatSykkelveg = SeparatSykkelveg.initialState
-      leskurUtenSitteplass = LeskurMedSitteplass.initialState
+    { leskurUtenSitteplass = LeskurMedSitteplass.initialState
     , skiltingIBuss = LeskurMedSitteplass.initialState
     , leskurMedSitteplass = LeskurMedSitteplass.initialState
     , kollektivPrioriteringLyskryss = KollektivPrioriteringLyskryss.initialState
     , opphoeyetHoldeplass = OpphoeyetHoldeplass.initialState
+    , belysning = Belysning.initialState
     }

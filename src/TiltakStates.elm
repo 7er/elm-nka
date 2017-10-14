@@ -53,6 +53,7 @@ type alias TiltakStates =
       leskurUtenSitteplass : SimpleCommonState
     , leskurMedSitteplass : SimpleCommonState
     , skiltingIBuss : SimpleCommonState
+    , belysning : SimpleCommonState
     , kollektivPrioriteringLyskryss : KollektivPrioriteringLyskryssState
     , opphoeyetHoldeplass : OpphoyetHoldeplassState
     }

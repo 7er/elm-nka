@@ -44,7 +44,7 @@ tiltak =
     in
         Tiltak
             { basicTiltakRecord
-                | title = \_ -> "Leskur med sitteplass"
+                | title = \_ -> "Pakke: Leskur og sitteplass på holdeplass"
                 , fields = \_ -> fields
                 , skyggepris = skyggepris
                 , yearlyPassasjerNytte = yearlyPassasjerNytte

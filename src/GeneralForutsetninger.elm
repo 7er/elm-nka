@@ -21,6 +21,12 @@ verdisettinger =
     , leskurPaaBussholdeplassenUtenSitteplass =
         -- pr kollektivreise
         3.55543669527093
+    , skiltingIBuss =
+        -- pr kollektivreise
+        4.18219636911676
+    , belysning =
+        -- pr kollektivreise
+        3.21356778226411
     }
 
 

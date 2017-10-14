@@ -1,4 +1,4 @@
-module Tiltak.LeskurUtenSitteplass exposing (..)
+module Tiltak.Belysning exposing (..)
 
 import GeneralForutsetninger exposing (verdisettinger)
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
@@ -9,26 +9,26 @@ import Tiltak.BasicTiltak as BasicTiltak
 
 levetid : number
 levetid =
-    12
+    20
 
 
 yearlyPassasjerNytte : StateCalculationMethod
-yearlyPassasjerNytte this ({ leskurUtenSitteplass } as state) =
-    leskurUtenSitteplass.passengersPerYear
+yearlyPassasjerNytte this ({ belysning } as state) =
+    belysning.passengersPerYear
         |> Maybe.map
-            ((*) verdisettinger.leskurPaaBussholdeplassenUtenSitteplass)
+            ((*) verdisettinger.belysning)
 
 
 investeringsKostInklRestverdi : StateCalculationMethod
-investeringsKostInklRestverdi this ({ leskurUtenSitteplass } as state) =
+investeringsKostInklRestverdi this ({ belysning } as state) =
     BasicTiltak.investeringsKostInklRestverdi
-        leskurUtenSitteplass
+        belysning
         levetid
 
 
 skyggepris : StateCalculationMethod
-skyggepris this ({ leskurUtenSitteplass } as state) =
-    sendTo this .skyggeprisHelper state leskurUtenSitteplass.bompengeAndel
+skyggepris this ({ belysning } as state) =
+    sendTo this .skyggeprisHelper state belysning.bompengeAndel
 
 
 initialState : TiltakStates.SimpleCommonState
@@ -87,14 +87,14 @@ fields =
     let
         stateMap func tiltakStates =
             { tiltakStates
-                | leskurUtenSitteplass = func tiltakStates.leskurUtenSitteplass
+                | belysning = func tiltakStates.belysning
             }
 
         updateTiltakStateHelper =
             TiltakStates.stateUpdateHelper stateMap
 
         thisValueHelper =
-            TiltakStates.valueHelper .leskurUtenSitteplass
+            TiltakStates.valueHelper .belysning
     in
         fieldDefinitions
             |> Field.transformToFields
@@ -111,10 +111,10 @@ tiltak =
     in
         Tiltak
             { basicTiltakRecord
-                | title = \_ -> "Leskur uten sitteplass"
+                | title = \_ -> "Belysning på holdeplass"
                 , fields = \_ -> fields
                 , skyggepris = skyggepris
                 , yearlyPassasjerNytte = yearlyPassasjerNytte
-                , driftOgVedlihKost = \_ { leskurUtenSitteplass } -> BasicTiltak.driftOgVedlihKost leskurUtenSitteplass
+                , driftOgVedlihKost = \_ { belysning } -> BasicTiltak.driftOgVedlihKost belysning
                 , investeringsKostInklRestverdi = investeringsKostInklRestverdi
             }
