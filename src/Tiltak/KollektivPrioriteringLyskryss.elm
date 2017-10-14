@@ -19,35 +19,27 @@ tidsbesparelsePerAvgangSeconds =
 
 yearlyPassasjerNytte : StateCalculationMethod
 yearlyPassasjerNytte this ({ kollektivPrioriteringLyskryss } as state) =
-    let
-        verdisettinger =
-            GeneralForutsetninger.verdisettinger
-    in
-        kollektivPrioriteringLyskryss.passengersPerYear
-            |> Maybe.map
-                (\passengersPerYear ->
-                    (tidsbesparelsePerAvgangSeconds / 60)
-                        * verdisettinger.reisetidKollektivTransport
-                        * passengersPerYear
-                )
+    kollektivPrioriteringLyskryss.passengersPerYear
+        |> Maybe.map
+            (\passengersPerYear ->
+                (tidsbesparelsePerAvgangSeconds / 60)
+                    * verdisettinger.reisetidKollektivTransport
+                    * passengersPerYear
+            )
 
 
 yearlyTrafikantNytte : StateCalculationMethod
 yearlyTrafikantNytte this ({ kollektivPrioriteringLyskryss } as state) =
-    let
-        verdisettinger =
-            GeneralForutsetninger.verdisettinger
-    in
-        Maybe.map3
-            (\antallBilerForsinketPerAvgang antallPasserendeAvgangerPerYear forsinkelsePerBilSeconds ->
-                antallBilerForsinketPerAvgang
-                    * antallPasserendeAvgangerPerYear
-                    * (negate forsinkelsePerBilSeconds / 60)
-                    * verdisettinger.reisetidBil
-            )
-            kollektivPrioriteringLyskryss.antallBilerForsinketPerAvgang
-            kollektivPrioriteringLyskryss.antallPasserendeAvgangerPerYear
-            kollektivPrioriteringLyskryss.forsinkelsePerBilSeconds
+    Maybe.map3
+        (\antallBilerForsinketPerAvgang antallPasserendeAvgangerPerYear forsinkelsePerBilSeconds ->
+            antallBilerForsinketPerAvgang
+                * antallPasserendeAvgangerPerYear
+                * (negate forsinkelsePerBilSeconds / 60)
+                * verdisettinger.reisetidBil
+        )
+        kollektivPrioriteringLyskryss.antallBilerForsinketPerAvgang
+        kollektivPrioriteringLyskryss.antallPasserendeAvgangerPerYear
+        kollektivPrioriteringLyskryss.forsinkelsePerBilSeconds
 
 
 yearlyOperatoerNytte : StateCalculationMethod
@@ -137,8 +129,8 @@ fieldDefinitions =
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
-      , title = "Antall passasjerer per år"
-      , placeholder = "Påstigende passasjerer per år"
+      , title = "Antall passasjerer ombord per år"
+      , placeholder = "Passasjerer ombord"
       , setter =
             (\value state ->
                 { state

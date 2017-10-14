@@ -207,7 +207,5 @@ routeParser =
             |> List.map groupToParser
             |> List.append
                 [ UrlParser.map Home UrlParser.top
-                , UrlParser.map GettingStarted
-                    (UrlParser.s "getting-started")
                 ]
             |> UrlParser.oneOf

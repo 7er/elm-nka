@@ -10,6 +10,7 @@ import Tiltak exposing (Tiltak)
 
 import Tiltak.SkiltingIBuss as SkiltingIBuss
 import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
+import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
 
@@ -31,8 +32,8 @@ tiltakForGroup gruppeType =
         Holdeplasser ->
             [ OpphoeyetHoldeplass.tiltak
             , LeskurMedSitteplass.tiltak
+            , LeskurUtenSitteplass.tiltak
 
-            --            , LeskurUtenSitteplass.tiltak
             --            , SykkelparkeringUte.tiltak
             {-
                , { name = "Sitteplass på hpl"

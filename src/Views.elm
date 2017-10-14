@@ -36,16 +36,10 @@ menuItemLinks =
             Navbar.itemLink
                 [ href (Group.groupPath group) ]
                 [ text (Group.groupTitle group) ]
-
-        gettingStarted =
-            Navbar.itemLink
-                [ href "#getting-started" ]
-                [ text "Komme i gang" ]
     in
-        gettingStarted
-            :: List.map
-                groupToItemLink
-                TiltakAndGroupData.alleTyper
+        List.map
+            groupToItemLink
+            TiltakAndGroupData.alleTyper
 
 
 menu : Navbar.State -> Html Msg
@@ -68,9 +62,6 @@ mainContent model =
             Home ->
                 pageHome model
 
-            GettingStarted ->
-                pageGettingStarted model
-
             NotFound ->
                 pageNotFound
 
@@ -85,7 +76,7 @@ pageHome model =
         ]
     , h1
         []
-        [ text "TØI Kollektivtrafikk kalkulator" ]
+        [ text "NKA-verktøy" ]
     , p [] [ text "Kalkulatorer for kostnad-nytte-analyse av tiltak for kollektivtrafikk" ]
     , Grid.row []
         [ Grid.col []
@@ -95,7 +86,7 @@ pageHome model =
                     [ Card.text [] [ text "Hvordan komme i gang" ]
                     , Card.custom <|
                         Button.linkButton
-                            [ Button.primary, Button.attrs [ href "#getting-started" ] ]
+                            [ Button.primary, Button.attrs [ href "#informasjon" ] ]
                             [ text "Start" ]
                     ]
                 |> Card.view

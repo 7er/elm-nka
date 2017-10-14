@@ -1,6 +1,6 @@
 module Tiltak.LeskurMedSitteplass exposing (tiltak, initialState)
 
-import GeneralForutsetninger
+import GeneralForutsetninger exposing (verdisettinger)
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
 import Field exposing (Field, SimpleField)
 import TiltakStates exposing (TiltakStates)
@@ -16,7 +16,7 @@ yearlyPassasjerNytte : StateCalculationMethod
 yearlyPassasjerNytte this ({ leskurMedSitteplass } as state) =
     leskurMedSitteplass.passengersPerYear
         |> Maybe.map
-            ((*) GeneralForutsetninger.leskurPaaBussholdeplassenMedSitteplassNOK)
+            ((*) verdisettinger.leskurPaaBussholdeplassenMedSitteplass)
 
 
 investeringsKostInklRestverdi : StateCalculationMethod

@@ -16,7 +16,6 @@ type Group
 
 type Page
     = Home
-    | GettingStarted
     | GroupPage Group
     | NotFound
 

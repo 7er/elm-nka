@@ -21,6 +21,12 @@ verdisettinger =
     , operatoerKostnad =
         -- per minutt
         7.30197811291267
+    , leskurPaaBussholdeplassenMedSitteplass =
+        -- pr kollektivreise
+        5.81177152111594
+    , leskurPaaBussholdeplassenUtenSitteplass =
+        -- pr kollektivreise
+        3.55543669527093
     }
 
 
@@ -110,11 +116,6 @@ sykkelParkeringInneNOK =
 garderobeFasiliteterNOK : Float
 garderobeFasiliteterNOK =
     21.49
-
-
-leskurPaaBussholdeplassenMedSitteplassNOK : Float
-leskurPaaBussholdeplassenMedSitteplassNOK =
-    5.81177152111594
 
 
 skyggepris : Float
