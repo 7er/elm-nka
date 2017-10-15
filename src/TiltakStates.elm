@@ -1,21 +1,6 @@
 module TiltakStates exposing (..)
 
 
-type alias SykkelparkeringUteState =
-    { tripsPerYear : Maybe Int
-    , installationCost : Maybe Float
-    , yearlyMaintenance : Maybe Float
-    }
-
-
-type alias SeparatSykkelvegState =
-    { lengthKm : Maybe Float
-    , tripsPerYear : Maybe Int
-    , minutesSaved : Maybe Float
-    , investmentCost : Maybe Float
-    }
-
-
 type alias KollektivPrioriteringLyskryssState =
     { installationCost : Maybe Float
     , yearlyMaintenance : Maybe Float
@@ -46,14 +31,11 @@ type alias SimpleCommonState =
 
 
 type alias TiltakStates =
-    { {-
-             sykkelParkeringUte : SykkelparkeringUteState
-         , separatSykkelveg : SeparatSykkelvegState
-      -}
-      leskurUtenSitteplass : SimpleCommonState
+    { leskurUtenSitteplass : SimpleCommonState
     , leskurMedSitteplass : SimpleCommonState
     , skiltingIBuss : SimpleCommonState
     , belysning : SimpleCommonState
+    , sitteplassPaaHpl : SimpleCommonState
     , kollektivPrioriteringLyskryss : KollektivPrioriteringLyskryssState
     , opphoeyetHoldeplass : OpphoyetHoldeplassState
     }

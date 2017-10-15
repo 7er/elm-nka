@@ -27,6 +27,9 @@ verdisettinger =
     , belysning =
         -- pr kollektivreise
         3.21356778226411
+    , sitteplassPaaHpl =
+        -- pr kollektivreise
+        2.25633482584501
     }
 
 

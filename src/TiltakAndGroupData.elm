@@ -54,6 +54,17 @@ tiltakForGroup gruppeType =
                 , title =
                     "Leskur uten sitteplass"
                 }
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | sitteplassPaaHpl = func tiltakStates.sitteplassPaaHpl
+                        }
+                , getter = .sitteplassPaaHpl
+                , nytteMultiplikator = verdisettinger.sitteplassPaaHpl
+                , levetid = 12
+                , title = "Sitteplass på holdeplass"
+                }
             ]
 
         Informasjon ->
@@ -104,4 +115,5 @@ initialTiltakStates =
     , kollektivPrioriteringLyskryss = KollektivPrioriteringLyskryss.initialState
     , opphoeyetHoldeplass = OpphoeyetHoldeplass.initialState
     , belysning = SimpleTiltak.initialState
+    , sitteplassPaaHpl = SimpleTiltak.initialState
     }
