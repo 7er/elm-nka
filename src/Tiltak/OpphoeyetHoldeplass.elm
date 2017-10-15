@@ -3,7 +3,7 @@ module Tiltak.OpphoeyetHoldeplass exposing (..)
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (Field, SimpleField)
 import TiltakStates exposing (TiltakStates, OpphoyetHoldeplassState)
-import Tiltak.BasicTiltak as BasicTiltak
+import BasicTiltak
 import GeneralForutsetninger
 
 

@@ -2,7 +2,7 @@ module Tiltak.KollektivPrioriteringLyskryss exposing (..)
 
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (SimpleField, Field)
-import Tiltak.BasicTiltak as BasicTiltak
+import BasicTiltak
 import TiltakStates exposing (KollektivPrioriteringLyskryssState)
 import GeneralForutsetninger exposing (verdisettinger)
 

@@ -14,6 +14,11 @@ import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
 import Tiltak.Belysning as Belysning
+import SimpleTiltak
+
+
+-- TODO: organize simple tiltak in a Collection with tiltak and
+-- initial state paired together
 
 
 alleTyper : List Group
@@ -73,5 +78,5 @@ initialTiltakStates =
     , leskurMedSitteplass = LeskurMedSitteplass.initialState
     , kollektivPrioriteringLyskryss = KollektivPrioriteringLyskryss.initialState
     , opphoeyetHoldeplass = OpphoeyetHoldeplass.initialState
-    , belysning = Belysning.initialState
+    , belysning = SimpleTiltak.initialState
     }

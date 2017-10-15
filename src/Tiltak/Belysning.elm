@@ -3,118 +3,54 @@ module Tiltak.Belysning exposing (..)
 import GeneralForutsetninger exposing (verdisettinger)
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
 import Field exposing (Field, SimpleField)
-import TiltakStates exposing (TiltakStates)
-import Tiltak.BasicTiltak as BasicTiltak
+import BasicTiltak
+import SimpleTiltak
 
 
-levetid : number
-levetid =
-    20
-
-
-yearlyPassasjerNytte : StateCalculationMethod
-yearlyPassasjerNytte this ({ belysning } as state) =
-    belysning.passengersPerYear
-        |> Maybe.map
-            ((*) verdisettinger.belysning)
-
-
-investeringsKostInklRestverdi : StateCalculationMethod
-investeringsKostInklRestverdi this ({ belysning } as state) =
-    BasicTiltak.investeringsKostInklRestverdi
-        belysning
-        levetid
-
-
-skyggepris : StateCalculationMethod
-skyggepris this ({ belysning } as state) =
-    sendTo this .skyggeprisHelper state belysning.bompengeAndel
-
-
-initialState : TiltakStates.SimpleCommonState
-initialState =
-    { installationCost = Nothing
-    , yearlyMaintenance = Nothing
-    , passengersPerYear = Nothing
-    , bompengeAndel = 0
-    }
-
-
-fieldDefinitions : List (SimpleField TiltakStates.SimpleCommonState)
-fieldDefinitions =
-    [ { name = "installationCost"
-      , title = "Installasjonskostnad"
-      , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-      , setter =
-            (\value state ->
-                { state
-                    | installationCost = value
-                }
-            )
-      , accessor = .installationCost
-      , stepSize = 50000
-      }
-    , { name = "yearlyMaintenance"
-      , title = "Årlige drifts- og vedlikeholdskostnader"
-      , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , setter =
-            (\value state ->
-                { state
-                    | yearlyMaintenance = value
-                }
-            )
-      , accessor = .yearlyMaintenance
-      , stepSize = 5000
-      }
-    , { name = "passengersPerYear"
-      , title = "Antall passasjerer per år"
-      , placeholder = "Påstigende passasjerer per år"
-      , setter =
-            (\value state ->
-                { state
-                    | passengersPerYear =
-                        value
-                }
-            )
-      , accessor = .passengersPerYear
-      , stepSize = 50
-      }
-    ]
-
-
-fields : List Field
-fields =
+tiltak : Tiltak
+tiltak =
     let
         stateMap func tiltakStates =
             { tiltakStates
                 | belysning = func tiltakStates.belysning
             }
 
-        updateTiltakStateHelper =
-            TiltakStates.stateUpdateHelper stateMap
+        getter =
+            .belysning
 
-        thisValueHelper =
-            TiltakStates.valueHelper .belysning
-    in
-        fieldDefinitions
-            |> Field.transformToFields
-                stateMap
-                updateTiltakStateHelper
-                thisValueHelper
+        nytteMultiplikator =
+            verdisettinger.belysning
 
+        levetid =
+            20
 
-tiltak : Tiltak
-tiltak =
-    let
+        title =
+            "Belysning på holdeplass"
+
         basicTiltakRecord =
             BasicTiltak.basicTiltakRecord
     in
         Tiltak
             { basicTiltakRecord
-                | title = \_ -> "Belysning på holdeplass"
-                , fields = \_ -> fields
-                , skyggepris = skyggepris
-                , yearlyPassasjerNytte = yearlyPassasjerNytte
-                , driftOgVedlihKost = \_ { belysning } -> BasicTiltak.driftOgVedlihKost belysning
-                , investeringsKostInklRestverdi = investeringsKostInklRestverdi
+                | title = \_ -> title
+                , fields =
+                    \_ ->
+                        Field.compileFields stateMap
+                            getter
+                            SimpleTiltak.fieldDefinitions
+                , skyggepris =
+                    \this state ->
+                        sendTo this .skyggeprisHelper state ((getter state).bompengeAndel)
+                , yearlyPassasjerNytte =
+                    \_ state ->
+                        (getter state).passengersPerYear
+                            |> Maybe.map ((*) nytteMultiplikator)
+                , driftOgVedlihKost =
+                    \_ state ->
+                        BasicTiltak.driftOgVedlihKost (getter state)
+                , investeringsKostInklRestverdi =
+                    \_ state ->
+                        BasicTiltak.investeringsKostInklRestverdi
+                            (getter state)
+                            levetid
             }

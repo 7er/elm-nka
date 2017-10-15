@@ -75,3 +75,18 @@ transformToFields stateMap updateTiltakStateHelper valueHelper fieldDefinitions 
     in
         fieldDefinitions
             |> List.map toRealField
+
+
+compileFields stateMap stateGetter fieldDefinitions =
+    let
+        updateTiltakStateHelper =
+            TiltakStates.stateUpdateHelper stateMap
+
+        thisValueHelper =
+            TiltakStates.valueHelper stateGetter
+    in
+        fieldDefinitions
+            |> transformToFields
+                stateMap
+                updateTiltakStateHelper
+                thisValueHelper

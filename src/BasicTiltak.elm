@@ -1,4 +1,4 @@
-module Tiltak.BasicTiltak exposing (..)
+module BasicTiltak exposing (..)
 
 import Tiltak exposing (..)
 import TiltakStates exposing (TiltakStates)

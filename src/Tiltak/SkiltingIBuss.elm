@@ -4,7 +4,7 @@ import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
 import Field exposing (Field, SimpleField)
 import TiltakStates exposing (TiltakStates)
 import GeneralForutsetninger exposing (verdisettinger)
-import Tiltak.BasicTiltak as BasicTiltak
+import BasicTiltak
 
 
 levetid : number
