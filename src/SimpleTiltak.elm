@@ -1,31 +1,18 @@
 module SimpleTiltak exposing (..)
 
-import TiltakStates exposing (TiltakStates, SimpleCommonState)
+import TiltakStates exposing (SimpleCommonState)
 import Field exposing (SimpleField)
 import BasicTiltak
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
 
 
-{-
-   type alias SimpleTiltak =
-   {
-       stateMap : (SimpleCommonState -> SimpleCommonState) -> TiltakStates -> TiltakStates
-   , getter : SimpleCommon
-
-           getter =
-               .belysning
-
-           nytteMultiplikator =
-               verdisettinger.belysning
-
-           levetid =
-               20
-
-           title =
-               "Belysning på holdeplass"
-
-       }
--}
+type alias SimpleTiltak =
+    { getter : TiltakStates.TiltakStates -> SimpleCommonState
+    , levetid : Float
+    , nytteMultiplikator : Float
+    , stateMap : TiltakStates.StateMap SimpleCommonState
+    , title : String
+    }
 
 
 initialState : TiltakStates.SimpleCommonState
@@ -79,10 +66,7 @@ fieldDefinitions =
     ]
 
 
-
---createTiltak : SimpleTiltak -> Tiltak
-
-
+createTiltak : SimpleTiltak -> Tiltak
 createTiltak simpleTiltak =
     let
         basicTiltakRecord =

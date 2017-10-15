@@ -3,14 +3,6 @@ module TiltakAndGroupData exposing (..)
 import Models exposing (..)
 import TiltakStates exposing (TiltakStates)
 import Tiltak exposing (Tiltak)
-
-
--- import Tiltak.SykkelparkeringUte as SykkelparkeringUte
--- import Tiltak.SeparatSykkelveg as SeparatSykkelveg
-
-import Tiltak.SkiltingIBuss as SkiltingIBuss
-import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
-import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
 import SimpleTiltak
@@ -36,23 +28,46 @@ tiltakForGroup gruppeType =
     case gruppeType of
         Holdeplasser ->
             [ OpphoeyetHoldeplass.tiltak
-            , LeskurMedSitteplass.tiltak
-            , LeskurUtenSitteplass.tiltak
-
-            --            , SykkelparkeringUte.tiltak
-            {-
-               , { name = "Sitteplass på hpl"
-                 , page = \model -> [ text "Sitteplass side" ]
-                 , toggleVisible = \model -> model
-                 }
-            -}
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | leskurMedSitteplass = func tiltakStates.leskurMedSitteplass
+                        }
+                , getter = .leskurMedSitteplass
+                , nytteMultiplikator = verdisettinger.leskurPaaBussholdeplassenMedSitteplass
+                , levetid = 12
+                , title = "Pakke: Leskur og sitteplass på holdeplass"
+                }
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | leskurUtenSitteplass = func tiltakStates.leskurUtenSitteplass
+                        }
+                , getter =
+                    .leskurUtenSitteplass
+                , nytteMultiplikator =
+                    verdisettinger.leskurPaaBussholdeplassenUtenSitteplass
+                , levetid =
+                    12
+                , title =
+                    "Leskur uten sitteplass"
+                }
             ]
 
         Informasjon ->
-            [ SkiltingIBuss.tiltak
-
-            --            , TiltakObject "Hpl. opprop" (\model -> [ text "Hpl. opprop side" ]) (\model -> model)
-            -- , SeparatSykkelveg.tiltak
+            [ SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | skiltingIBuss = func tiltakStates.skiltingIBuss
+                        }
+                , getter = .skiltingIBuss
+                , nytteMultiplikator = verdisettinger.skiltingIBuss
+                , levetid = 7
+                , title = "Elektronisk skilting i bussen av neste holdeplass"
+                }
             ]
 
         Trygghet ->
@@ -83,9 +98,9 @@ alleTiltak =
 
 initialTiltakStates : TiltakStates
 initialTiltakStates =
-    { leskurUtenSitteplass = LeskurMedSitteplass.initialState
-    , skiltingIBuss = LeskurMedSitteplass.initialState
-    , leskurMedSitteplass = LeskurMedSitteplass.initialState
+    { leskurUtenSitteplass = SimpleTiltak.initialState
+    , skiltingIBuss = SimpleTiltak.initialState
+    , leskurMedSitteplass = SimpleTiltak.initialState
     , kollektivPrioriteringLyskryss = KollektivPrioriteringLyskryss.initialState
     , opphoeyetHoldeplass = OpphoeyetHoldeplass.initialState
     , belysning = SimpleTiltak.initialState

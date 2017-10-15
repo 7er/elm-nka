@@ -77,6 +77,11 @@ transformToFields stateMap updateTiltakStateHelper valueHelper fieldDefinitions 
             |> List.map toRealField
 
 
+compileFields :
+    StateMap specificState
+    -> (TiltakStates -> specificState)
+    -> List (SimpleField specificState)
+    -> List Field
 compileFields stateMap stateGetter fieldDefinitions =
     let
         updateTiltakStateHelper =
