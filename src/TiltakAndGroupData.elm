@@ -13,8 +13,8 @@ import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass
 import Tiltak.LeskurUtenSitteplass as LeskurUtenSitteplass
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
-import Tiltak.Belysning as Belysning
 import SimpleTiltak
+import GeneralForutsetninger exposing (verdisettinger)
 
 
 -- TODO: organize simple tiltak in a Collection with tiltak and
@@ -56,7 +56,17 @@ tiltakForGroup gruppeType =
             ]
 
         Trygghet ->
-            [ Belysning.tiltak
+            [ SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | belysning = func tiltakStates.belysning
+                        }
+                , getter = .belysning
+                , nytteMultiplikator = verdisettinger.belysning
+                , levetid = 20
+                , title = "Belysning på holdeplass"
+                }
             ]
 
         Kjoeremateriell ->
