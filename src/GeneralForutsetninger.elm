@@ -33,6 +33,12 @@ verdisettinger =
     , lokalkartPaaHpl =
         -- pr kollektivreise
         0.490012108643109
+    , rutekartPaaHpl =
+        -- pr kollektivreise
+        0.490012108643109
+    , pakkeSkiltOgOppropBuss =
+        -- pr kollektivreise
+        4.78616478209548
     }
 
 

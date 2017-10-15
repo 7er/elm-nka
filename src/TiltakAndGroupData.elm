@@ -76,6 +76,17 @@ tiltakForGroup gruppeType =
                 , levetid = 10
                 , title = "Lokalkart på holdeplass"
                 }
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | rutekartPaaHpl = func tiltakStates.rutekartPaaHpl
+                        }
+                , getter = .rutekartPaaHpl
+                , nytteMultiplikator = verdisettinger.rutekartPaaHpl
+                , levetid = 1
+                , title = "Rutekart på holdeplass"
+                }
             ]
 
         Informasjon ->
@@ -89,6 +100,18 @@ tiltakForGroup gruppeType =
                 , nytteMultiplikator = verdisettinger.skiltingIBuss
                 , levetid = 7
                 , title = "Elektronisk skilting i bussen av neste holdeplass"
+                }
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | pakkeSkiltOgOppropBuss = func tiltakStates.pakkeSkiltOgOppropBuss
+                        }
+                , getter = .pakkeSkiltOgOppropBuss
+                , nytteMultiplikator = verdisettinger.pakkeSkiltOgOppropBuss
+                , levetid = 7
+                , title =
+                    "Pakke: Elektronisk skilting + Opprop i bussen av neste holdeplass"
                 }
             ]
 
@@ -128,4 +151,6 @@ initialTiltakStates =
     , belysning = SimpleTiltak.initialState
     , sitteplassPaaHpl = SimpleTiltak.initialState
     , lokalkartPaaHpl = SimpleTiltak.initialState
+    , rutekartPaaHpl = SimpleTiltak.initialState
+    , pakkeSkiltOgOppropBuss = SimpleTiltak.initialState
     }
