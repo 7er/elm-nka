@@ -30,6 +30,9 @@ verdisettinger =
     , sitteplassPaaHpl =
         -- pr kollektivreise
         2.25633482584501
+    , lokalkartPaaHpl =
+        -- pr kollektivreise
+        0.490012108643109
     }
 
 

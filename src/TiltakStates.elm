@@ -36,6 +36,7 @@ type alias TiltakStates =
     , skiltingIBuss : SimpleCommonState
     , belysning : SimpleCommonState
     , sitteplassPaaHpl : SimpleCommonState
+    , lokalkartPaaHpl : SimpleCommonState
     , kollektivPrioriteringLyskryss : KollektivPrioriteringLyskryssState
     , opphoeyetHoldeplass : OpphoyetHoldeplassState
     }

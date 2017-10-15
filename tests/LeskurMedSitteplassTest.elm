@@ -4,10 +4,10 @@ module LeskurMedSitteplassTest exposing (..)
 
 import Test exposing (Test, describe, test)
 import TestSupport exposing (..)
-import Tiltak.LeskurMedSitteplass as LeskurMedSitteplass exposing (tiltak)
 import GeneralForutsetninger
 import Tiltak
 import TiltakAndGroupData
+import Models exposing (Group(Holdeplasser))
 
 
 suite : Test
@@ -25,6 +25,21 @@ suite =
                     , bompengeAndel = 0.2
                     }
             }
+
+        holdeplassTiltak =
+            TiltakAndGroupData.tiltakForGroup Holdeplasser
+
+        tiltak =
+            holdeplassTiltak
+                |> List.filter (\tiltak -> (Tiltak.sendTo tiltak .title) == "Pakke: Leskur og sitteplass på holdeplass")
+                |> List.head
+                |> \maybeTiltak ->
+                    case maybeTiltak of
+                        Just tiltak ->
+                            tiltak
+
+                        Nothing ->
+                            Debug.crash "fant ikke tiltaket"
 
         checkWithState description accessor expectation =
             test description <|

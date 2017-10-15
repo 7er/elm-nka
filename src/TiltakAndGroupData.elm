@@ -65,6 +65,17 @@ tiltakForGroup gruppeType =
                 , levetid = 12
                 , title = "Sitteplass på holdeplass"
                 }
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | lokalkartPaaHpl = func tiltakStates.lokalkartPaaHpl
+                        }
+                , getter = .lokalkartPaaHpl
+                , nytteMultiplikator = verdisettinger.lokalkartPaaHpl
+                , levetid = 10
+                , title = "Lokalkart på holdeplass"
+                }
             ]
 
         Informasjon ->
@@ -116,4 +127,5 @@ initialTiltakStates =
     , opphoeyetHoldeplass = OpphoeyetHoldeplass.initialState
     , belysning = SimpleTiltak.initialState
     , sitteplassPaaHpl = SimpleTiltak.initialState
+    , lokalkartPaaHpl = SimpleTiltak.initialState
     }
