@@ -28,6 +28,7 @@ suite =
                 [ test "1000 becomes '1 000,00'" (\_ -> prettyTwoDecimals 1000 |> Expect.equal "1 000,00")
                 , test "1 becomes '1,00'" (\_ -> prettyTwoDecimals 1 |> Expect.equal "1,00")
                 , test "0 becomes '0,00'" (\_ -> prettyTwoDecimals 0 |> Expect.equal "0,00")
+                , test "0.005 becomes '0,01'" (\_ -> prettyTwoDecimals 0.005 |> Expect.equal "0,01")
                 ]
             , describe "gives 2 decimals"
                 [ test "3.14 becomes '3,14'" (\_ -> prettyTwoDecimals 3.14 |> Expect.equal "3,14")

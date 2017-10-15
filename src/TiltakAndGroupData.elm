@@ -113,6 +113,18 @@ tiltakForGroup gruppeType =
                 , title =
                     "Pakke: Elektronisk skilting + Opprop i bussen av neste holdeplass"
                 }
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | destinasjonsSkiltPaaBuss = func tiltakStates.destinasjonsSkiltPaaBuss
+                        }
+                , getter = .destinasjonsSkiltPaaBuss
+                , nytteMultiplikator = verdisettinger.destinasjonsSkiltPaaBuss
+                , levetid = 10
+                , title =
+                    "Destinasjonsskilt bak og på siden av bussen"
+                }
             ]
 
         Trygghet ->
@@ -153,4 +165,5 @@ initialTiltakStates =
     , lokalkartPaaHpl = SimpleTiltak.initialState
     , rutekartPaaHpl = SimpleTiltak.initialState
     , pakkeSkiltOgOppropBuss = SimpleTiltak.initialState
+    , destinasjonsSkiltPaaBuss = SimpleTiltak.initialState
     }

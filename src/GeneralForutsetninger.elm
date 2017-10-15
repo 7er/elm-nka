@@ -39,6 +39,9 @@ verdisettinger =
     , pakkeSkiltOgOppropBuss =
         -- pr kollektivreise
         4.78616478209548
+    , destinasjonsSkiltPaaBuss =
+        -- pr kollektivreise
+        0.694635934120579
     }
 
 
