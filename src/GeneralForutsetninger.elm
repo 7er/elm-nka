@@ -1,6 +1,21 @@
 module GeneralForutsetninger exposing (..)
 
 
+verdisettinger :
+    { belysning : Float
+    , destinasjonsSkiltPaaBuss : Float
+    , leskurPaaBussholdeplassenMedSitteplass : Float
+    , leskurPaaBussholdeplassenUtenSitteplass : Float
+    , lokalkartPaaHpl : Float
+    , operatoerKostnad : Float
+    , opphoyetHoldeplass : Float
+    , pakkeSkiltOgOppropBuss : Float
+    , reisetidBil : Float
+    , reisetidKollektivTransport : Float
+    , rutekartPaaHpl : Float
+    , sitteplassPaaHpl : Float
+    , skiltingIBuss : Float
+    }
 verdisettinger =
     -- alle verdier i NOK
     { opphoyetHoldeplass =
