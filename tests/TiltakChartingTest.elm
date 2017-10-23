@@ -1,4 +1,4 @@
-module OpphoeyetHoldeplassTest exposing (suite, tiltakSuiteTest)
+module TiltakChartingTest exposing (suite, tiltakSuiteTest)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test, only, skip)
