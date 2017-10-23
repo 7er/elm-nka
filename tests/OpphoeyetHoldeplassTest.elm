@@ -102,10 +102,10 @@ suite =
                                 , ( 350, 23765.231906138317 )
                                 , ( 400, 24926.95909585891 )
                                 ]
-                , describe "findVariableToGraph"
+                , describe "maybeFieldToGraph"
                     [ test "passengersPerYear" <|
                         \() ->
-                            TiltakCharting.findVariableToGraph tiltak state
+                            TiltakCharting.maybeFieldToGraph tiltak state
                                 |> Expect.equal (Just passengersPerYear)
                     , test "all fields are valid" <|
                         \() ->
@@ -121,7 +121,7 @@ suite =
                                             }
                                     }
                             in
-                                TiltakCharting.findVariableToGraph tiltak modifiedState
+                                TiltakCharting.maybeFieldToGraph tiltak modifiedState
                                     |> Expect.equal Nothing
                     , test "two fields are invalid" <|
                         \() ->
@@ -137,7 +137,7 @@ suite =
                                             }
                                     }
                             in
-                                TiltakCharting.findVariableToGraph tiltak modifiedState
+                                TiltakCharting.maybeFieldToGraph tiltak modifiedState
                                     |> Expect.equal Nothing
                     ]
                 ]
