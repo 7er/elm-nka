@@ -31,11 +31,6 @@ type alias FieldValue =
     String
 
 
-updateTiltakStateFromField : Field -> FieldValue -> TiltakStates -> TiltakStates
-updateTiltakStateFromField field stringValue tiltakStates =
-    field.updateTiltakState stringValue tiltakStates
-
-
 transformToFields :
     StateMap specificState
     ->

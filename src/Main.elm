@@ -173,10 +173,7 @@ updateField model tiltak field stringValue =
             TiltakCharting.graphState tiltak newTiltakStates
 
         newTiltakStates =
-            Field.updateTiltakStateFromField
-                field
-                stringValue
-                model.tiltakStates
+            field.updateTiltakState stringValue model.tiltakStates
     in
         ( { model
             | tiltakStates = newTiltakStates
