@@ -1,4 +1,4 @@
-module Assets exposing (Image(..), byvaapen, toiLogo, src)
+module Assets exposing (..)
 
 {-| Assets, such as images, videos, and audio. (We only have images for now.)
 We should never expose asset URLs directly; this module should be in charge of
@@ -25,6 +25,11 @@ byvaapen =
 toiLogo : Image
 toiLogo =
     Image "./images/toi_logo_navn.png"
+
+
+backArrow : Image
+backArrow =
+    Image "./images/689246_arrows_512x512.png"
 
 
 

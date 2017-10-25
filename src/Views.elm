@@ -22,9 +22,7 @@ import Color
 view : Model -> Html Msg
 view model =
     div [ class "contents" ]
-        [ menu model.navState
-        , mainContent model
-        , modal model.modalState
+        [ mainContent model
         , appFooter
         ]
 
@@ -57,7 +55,7 @@ menu navState =
 
 mainContent : Model -> Html Msg
 mainContent model =
-    Grid.containerFluid [] <|
+    Grid.container [] <|
         case model.page of
             Home ->
                 pageHome model
@@ -67,6 +65,12 @@ mainContent model =
 
             GroupPage tiltaksGruppeType ->
                 pageGroup tiltaksGruppeType model
+
+
+groupLink group =
+    a
+        [ href (Group.groupPath group) ]
+        [ text (Group.groupTitle group) ]
 
 
 pageHome : Model -> List (Html Msg)
@@ -81,25 +85,42 @@ pageHome model =
     , Grid.row []
         [ Grid.col []
             [ Card.config [ Card.outlinePrimary ]
-                |> Card.headerH4 [] [ text "Komme i gang" ]
                 |> Card.block []
-                    [ Card.text [] [ text "Hvordan komme i gang" ]
-                    , Card.custom <|
-                        Button.linkButton
-                            [ Button.primary, Button.attrs [ href "#informasjon" ] ]
-                            [ text "Start" ]
+                    [ Card.text []
+                        [ groupLink Holdeplasser
+                        ]
                     ]
                 |> Card.view
             ]
         , Grid.col []
             [ Card.config [ Card.outlineDanger ]
-                |> Card.headerH4 [] [ text "Underlagsmateriale" ]
                 |> Card.block []
-                    [ Card.text [] [ text "Bla bla om materiale som verktøyet baserer seg på" ]
-                    , Card.custom <|
-                        Button.linkButton
-                            [ Button.primary, Button.attrs [ href "http://www.toi.no" ] ]
-                            [ text "Underlag" ]
+                    [ Card.text [] [ groupLink Informasjon ]
+                    ]
+                |> Card.view
+            ]
+        ]
+    , Grid.row []
+        [ Grid.col []
+            [ Card.config [ Card.outlinePrimary ]
+                |> Card.block []
+                    [ Card.text [] [ groupLink Trygghet ]
+                    ]
+                |> Card.view
+            ]
+        , Grid.col []
+            [ Card.config [ Card.outlineDanger ]
+                |> Card.block []
+                    [ Card.text [] [ groupLink Kjoeremateriell ]
+                    ]
+                |> Card.view
+            ]
+        ]
+    , Grid.row []
+        [ Grid.col []
+            [ Card.config [ Card.outlinePrimary ]
+                |> Card.block []
+                    [ Card.text [] [ groupLink StrekningOgFramkommelighet ]
                     ]
                 |> Card.view
             ]
@@ -108,18 +129,32 @@ pageHome model =
 
 
 pageGroup : Group -> Model -> List (Html Msg)
-pageGroup tiltaksGruppe model =
+pageGroup group model =
     let
-        tiltakene =
-            TiltakAndGroupData.tiltakForGroup tiltaksGruppe
-
         allCards =
-            List.map (TiltakView.tiltakCard model) tiltakene
+            TiltakAndGroupData.tiltakForGroup group
+                |> List.map (TiltakView.tiltakCard model)
+
+        header =
+            div [ class "groupHeader" ]
+                [ a [ href "#" ]
+                    [ img
+                        [ Assets.src Assets.backArrow
+                        , class "backArrow"
+                        , alt "Tilbake til forsiden"
+                        ]
+                        []
+                    ]
+                ]
+
+        tiltakAccordions =
+            Accordion.config AccordionMsg
+                |> Accordion.withAnimation
+                |> Accordion.cards allCards
+                |> Accordion.view model.accordionState
     in
-        [ Accordion.config AccordionMsg
-            |> Accordion.withAnimation
-            |> Accordion.cards allCards
-            |> Accordion.view model.accordionState
+        [ header
+        , tiltakAccordions
         ]
 
 
@@ -153,7 +188,7 @@ modal modalState =
 appFooter : Html Msg
 appFooter =
     footer [ class "footer" ]
-        [ Grid.containerFluid []
+        [ Grid.container []
             [ text "Kontakt: "
             , a [ href "mailto:naf@toi.no" ] [ text "Nils Fearnley" ]
             , br [] []
