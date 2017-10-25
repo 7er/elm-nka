@@ -32,10 +32,43 @@ backArrow =
     Image "./images/689246_arrows_512x512.png"
 
 
-
 trikkRikshospitalet : Image
 trikkRikshospitalet =
     Image "./images/trikk_rikshospitalet.jpg"
+
+
+caretRight : Image
+caretRight =
+    Image "./images/caret_right.gif"
+
+
+
+-- Group icons
+
+
+holdeplasser =
+    Image
+        "./images/holdeplass_noun_1230795_cc.gif"
+
+
+informasjon =
+    Image
+        "./images/info_noun_45.gif"
+
+
+trygghet =
+    Image "./images/sikkerhet.gif"
+
+
+kjoeremateriell =
+    Image
+        "./images/buss_noun_1308908_cc.gif"
+
+
+strekningOgFramkommelighet =
+    Image "./images/gatekryss_noun_1277963_cc.gif"
+
+
 
 -- USING IMAGES --
 

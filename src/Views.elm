@@ -19,6 +19,25 @@ import TiltakView
 import Color
 
 
+groupIcon : Group -> Assets.Image
+groupIcon group =
+    case group of
+        Holdeplasser ->
+            Assets.holdeplasser
+
+        Informasjon ->
+            Assets.informasjon
+
+        Trygghet ->
+            Assets.trygghet
+
+        Kjoeremateriell ->
+            Assets.kjoeremateriell
+
+        StrekningOgFramkommelighet ->
+            Assets.strekningOgFramkommelighet
+
+
 view : Model -> Html Msg
 view model =
     div [ class "contents" ]
@@ -73,29 +92,42 @@ groupLink group =
         [ text (Group.groupTitle group) ]
 
 
+groupPanel group =
+    a
+        [ href (Group.groupPath group) ]
+        [ Card.config [ Card.outlinePrimary ]
+            |> Card.block []
+                [ Card.text []
+                    [ img [ Assets.src (groupIcon group) ] []
+                    , div [] [ text (Group.groupTitle group) ]
+                    , img
+                        [ Assets.src Assets.caretRight
+                        , class "caretRight"
+                        ]
+                        []
+                    ]
+                ]
+            |> Card.view
+        ]
+
+
 pageHome : Model -> List (Html Msg)
 pageHome model =
     [ div [ class "bilde_wrapper" ]
         [ img
             [ Assets.src Assets.trikkRikshospitalet
-              , class "trikkRikshospitalet"
-              , alt "Trikk utenfor Rikshospitalet"
+            , class "trikkRikshospitalet"
+            , alt "Trikk utenfor Rikshospitalet"
             ]
-           []
+            []
         ]
     , h1
-        [class "forside__overskrift"]
+        [ class "forside__overskrift" ]
         [ text "Kollektivkalkulator" ]
     , p [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
     , Grid.row []
         [ Grid.col []
-            [ Card.config [ Card.outlinePrimary ]
-                |> Card.block []
-                    [ Card.text []
-                        [ groupLink Holdeplasser
-                        ]
-                    ]
-                |> Card.view
+            [ groupPanel Holdeplasser
             ]
         , Grid.col []
             [ Card.config [ Card.outlineDanger ]
