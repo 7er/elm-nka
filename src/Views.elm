@@ -2,12 +2,10 @@ module Views exposing (view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Card as Card
-import Bootstrap.Button as Button
 import Bootstrap.Modal as Modal
 import Bootstrap.Accordion as Accordion
 import Models exposing (Model, Page(..), Group(..))
@@ -86,15 +84,12 @@ mainContent model =
                 pageGroup tiltaksGruppeType model
 
 
-groupLink group =
-    a
-        [ href (Group.groupPath group) ]
-        [ text (Group.groupTitle group) ]
-
-
+groupPanel : Group -> Html Msg
 groupPanel group =
     a
-        [ href (Group.groupPath group) ]
+        [ href (Group.groupPath group)
+        , class "groupPanel"
+        ]
         [ Card.config [ Card.outlinePrimary ]
             |> Card.block []
                 [ Card.text []
@@ -130,37 +125,18 @@ pageHome model =
             [ groupPanel Holdeplasser
             ]
         , Grid.col []
-            [ Card.config [ Card.outlineDanger ]
-                |> Card.block []
-                    [ Card.text [] [ groupLink Informasjon ]
-                    ]
-                |> Card.view
+            [ groupPanel Informasjon
             ]
         ]
     , Grid.row []
         [ Grid.col []
-            [ Card.config [ Card.outlinePrimary ]
-                |> Card.block []
-                    [ Card.text [] [ groupLink Trygghet ]
-                    ]
-                |> Card.view
-            ]
+            [ groupPanel Trygghet ]
         , Grid.col []
-            [ Card.config [ Card.outlineDanger ]
-                |> Card.block []
-                    [ Card.text [] [ groupLink Kjoeremateriell ]
-                    ]
-                |> Card.view
-            ]
+            [ groupPanel Kjoeremateriell ]
         ]
     , Grid.row []
         [ Grid.col []
-            [ Card.config [ Card.outlinePrimary ]
-                |> Card.block []
-                    [ Card.text [] [ groupLink StrekningOgFramkommelighet ]
-                    ]
-                |> Card.view
-            ]
+            [ groupPanel StrekningOgFramkommelighet ]
         ]
     ]
 
