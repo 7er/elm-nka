@@ -84,7 +84,7 @@ pageHome model =
            []
         ]
     , h1
-        []
+        [class "forside__overskrift"]
         [ text "Kollektivkalkulator" ]
     , p [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
     , Grid.row []
@@ -192,7 +192,7 @@ modal modalState =
 
 appFooter : Html Msg
 appFooter =
-    footer [ class "footer" ]
+    footer [ class "footer footer-text" ]
         [ Grid.container []
             [ text "Kontakt: "
             , a [ href "mailto:naf@toi.no" ] [ text "Nils Fearnley" ]

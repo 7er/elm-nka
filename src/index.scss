@@ -10,6 +10,7 @@ body {
   /* Margin bottom by footer height */
     margin-bottom: $footer-height;
     padding-bottom: 10px;
+    font-family: 'Raleway', sans-serif;
 }
 
 footer {
@@ -17,7 +18,7 @@ footer {
     bottom: 0;
     width: 100%;
     /* same as body margin-bottom here */
-    height: $footer-height;
+    min-height: $footer-height;
     color: #F3F3F3;
     background-color: #3b3b3b;
     padding-top: 10px;
@@ -58,6 +59,12 @@ a {
     }
 }
 
+
+.forside__overskrift {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-style: italic;
+}
 .trikkRikshospitalet {
     width: 100%;
     min-height: 200px;
