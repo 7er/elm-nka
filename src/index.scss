@@ -59,18 +59,62 @@ a {
     }
 }
 
+.jumbotron, .homeHeader {
+    min-height: 200px;
+    max-height: 500px;
+    background-image: url('images/trikk_rikshospitalet.jpg');
+    background-position: center center;
+    border-radius: 0;
+    color: white;
+}
 
-.forside__overskrift {
-    font-family: 'Lora', serif;
+.homeHeader h1 {
     font-weight: 700;
     font-style: italic;
-}
-.trikkRikshospitalet {
-    width: 100%;
-    min-height: 200px;
-    border-radius: 4px;
+    font-size: 36px;
+    font-family: 'Lora', serif;
 }
 
-.bilde_wrapper {
-  margin-top: 1rem;
+.homeHeader p {
+    font-weight: 800;
+    font-size: 24px;
+}
+
+.caretRight {
+    height: 15px;
+}
+
+img.groupIcon {
+    width: 5rem;
+}
+
+.groupPanel {
+    text-align: center;
+    color: #202020;
+    font-size: 1.5rem;    
+}
+
+.groupPanel .card {
+    margin-bottom: 2rem;
+}
+
+.groupPanels {
+    margin-bottom: 4rem;
+}
+
+.backArrow {
+    height: 24px;
+}
+
+.groupHeader {
+    margin-top: 14px;
+}
+
+.groupHeader h1 {
+    text-align: center;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 36px;
+    font-family: 'Lora', serif;
+    margin-bottom: 1rem;
 }

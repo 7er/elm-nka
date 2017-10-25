@@ -89,10 +89,14 @@ groupPanel group =
         [ href (Group.groupPath group)
         , class "groupPanel"
         ]
-        [ Card.config [ Card.outlinePrimary ]
+        [ Card.config []
             |> Card.block []
                 [ Card.text []
-                    [ img [ Assets.src (groupIcon group) ] []
+                    [ img
+                        [ class "groupIcon"
+                        , Assets.src (groupIcon group)
+                        ]
+                        []
                     , div [] [ text (Group.groupTitle group) ]
                     , img
                         [ Assets.src Assets.caretRight
@@ -108,24 +112,14 @@ groupPanel group =
 pageHome : Model -> Html Msg
 pageHome model =
     div []
-        [ div [ class "jumbotron" ]
+        [ div [ class "jumbotron homeHeader" ]
             [ Grid.container []
-                [ div [ class "bilde_wrapper" ]
-                    [ img
-                        [ Assets.src Assets.trikkRikshospitalet
-                        , class "trikkRikshospitalet"
-                        , alt "Trikk utenfor Rikshospitalet"
-                        ]
-                        []
-                    ]
+                [ h1 [] [ text "Kollektivkalkulator" ]
+                , p [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
                 ]
             ]
-        , Grid.container []
-            [ h1
-                [ class "forside__overskrift" ]
-                [ text "Kollektivkalkulator" ]
-            , p [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
-            , Grid.row []
+        , Grid.container [ class "groupPanels" ]
+            [ Grid.row []
                 [ Grid.col []
                     [ groupPanel Holdeplasser
                     ]
@@ -154,8 +148,8 @@ pageGroup group model =
             TiltakAndGroupData.tiltakForGroup group
                 |> List.map (TiltakView.tiltakCard model)
 
-        header =
-            div [ class "groupHeader" ]
+        pageHeader =
+            header [ class "groupHeader" ]
                 [ a [ href "#" ]
                     [ img
                         [ Assets.src Assets.backArrow
@@ -164,6 +158,7 @@ pageGroup group model =
                         ]
                         []
                     ]
+                , h1 [] [ text (Group.groupTitle group) ]
                 ]
 
         tiltakAccordions =
@@ -173,7 +168,7 @@ pageGroup group model =
                 |> Accordion.view model.accordionState
     in
         div []
-            [ Grid.container [] [ header ]
+            [ Grid.containerFluid [] [ pageHeader ]
             , Grid.container [] [ tiltakAccordions ]
             ]
 
