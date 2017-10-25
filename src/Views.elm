@@ -80,9 +80,9 @@ pageHome model =
            []
         ]
     , h1
-        []
-        [ text "NKA-verktøy" ]
-    , p [] [ text "Kalkulatorer for kostnad-nytte-analyse av tiltak for kollektivtrafikk" ]
+        [class "forside__overskrift"]
+        [ text "TØI Kollektivtrafikk kalkulator" ]
+    , p [] [ text "Kalkulatorer for kostnad- og nytteanalyse av tiltak for kollektivtrafikk" ]
     , Grid.row []
         [ Grid.col []
             [ Card.config [ Card.outlinePrimary ]
@@ -170,7 +170,7 @@ modal modalState =
 
 appFooter : Html Msg
 appFooter =
-    footer [ class "footer" ]
+    footer [ class "footer footer-text" ]
         [ Grid.containerFluid []
             [ text "Kontakt: "
             , a [ href "mailto:naf@toi.no" ] [ text "Nils Fearnley" ]
