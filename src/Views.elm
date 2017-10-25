@@ -50,7 +50,7 @@ menu navState =
         |> Navbar.darkCustom (Color.rgb 0x3B 0x3B 0x3B)
         |> Navbar.brand
             [ href "#" ]
-            [ text "TØI Kollektivtrafikk tiltak kalkulator" ]
+            [ text "Kollektivkalkulator" ]
         |> Navbar.items menuItemLinks
         |> Navbar.view navState
 
@@ -72,12 +72,12 @@ mainContent model =
 pageHome : Model -> List (Html Msg)
 pageHome model =
     [ div [ class "jumbotron" ]
-        [ text "NKA verktøy"
+        [ text "Kollektivkalkulator"
         ]
     , h1
         []
-        [ text "NKA-verktøy" ]
-    , p [] [ text "Kalkulatorer for kostnad-nytte-analyse av tiltak for kollektivtrafikk" ]
+        [ text "Kollektivkalkulator" ]
+    , p [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
     , Grid.row []
         [ Grid.col []
             [ Card.config [ Card.outlinePrimary ]
@@ -104,19 +104,6 @@ pageHome model =
                 |> Card.view
             ]
         ]
-    ]
-
-
-pageGettingStarted : Model -> List (Html Msg)
-pageGettingStarted model =
-    [ h2 [] [ text "Komme i gang" ]
-    , Button.button
-        [ Button.success
-        , Button.large
-        , Button.block
-        , Button.attrs [ onClick <| ModalMsg Modal.visibleState ]
-        ]
-        [ text "Trykk meg" ]
     ]
 
 

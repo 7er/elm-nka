@@ -26,7 +26,7 @@ chartRecord tiltak tiltakStates =
 
 
 maybeFieldToGraph : Tiltak -> TiltakStates -> Maybe Field
-maybeFieldToGraph this state =
+maybeFieldToGraph tiltak state =
     let
         filterFunc field =
             case field.value state of
@@ -37,20 +37,24 @@ maybeFieldToGraph this state =
                     True
 
         nothingFields =
-            sendTo this .fields
+            sendTo tiltak .fields
                 |> List.filter filterFunc
     in
         case nothingFields of
             [ head ] ->
                 Just head
 
+            [] ->
+                Nothing
+
+            -- Tiltak.preferredField tiltak state
             _ ->
                 Nothing
 
 
 graphState : Tiltak -> TiltakStates -> GraphState
-graphState this state =
-    maybeFieldToGraph this state
+graphState tiltak state =
+    maybeFieldToGraph tiltak state
         |> Maybe.map (always GraphOn)
         |> Maybe.withDefault GraphOff
 
@@ -60,21 +64,21 @@ graphDataForField :
     -> TiltakStates
     -> Field
     -> List ( Float, Float )
-graphDataForField this state field =
+graphDataForField tiltak state field =
     let
         generateData x =
             let
                 newState =
                     field.updateValue x state
             in
-                sendTo this .nettoNytte newState |> Maybe.map (\y -> ( x, y ))
+                sendTo tiltak .nettoNytte newState |> Maybe.map (\y -> ( x, y ))
 
         sampleFunc x =
             let
                 newState =
                     field.updateValue x state
             in
-                case sendTo this .nettoNytte newState of
+                case sendTo tiltak .nettoNytte newState of
                     Just value ->
                         value
 
@@ -87,14 +91,14 @@ graphDataForField this state field =
 
 
 graphData : Tiltak -> TiltakStates -> List ( Float, Float )
-graphData this state =
+graphData tiltak state =
     let
         maybeField =
-            maybeFieldToGraph this state
+            maybeFieldToGraph tiltak state
     in
         case maybeField of
             Nothing ->
                 []
 
             Just field ->
-                graphDataForField this state field
+                graphDataForField tiltak state field
