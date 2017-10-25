@@ -2,7 +2,6 @@ module TiltakChartingTest exposing (suite)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test, only, skip)
-import TestSupport exposing (..)
 import Tiltak exposing (TiltakAccessor, sendTo)
 import TiltakCharting
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass exposing (tiltak)
@@ -60,22 +59,23 @@ suite =
                     \() ->
                         TiltakCharting.maybeFieldToGraph tiltak state
                             |> Expect.equal (Just passengersPerYear)
-                , test "all fields are valid" <|
-                    \() ->
-                        let
-                            opphoeyetHoldeplassFelt =
-                                state.opphoeyetHoldeplass
+                , skip <|
+                    test "all fields are valid" <|
+                        \() ->
+                            let
+                                opphoeyetHoldeplassFelt =
+                                    state.opphoeyetHoldeplass
 
-                            modifiedState =
-                                { state
-                                    | opphoeyetHoldeplass =
-                                        { opphoeyetHoldeplassFelt
-                                            | passengersPerYear = Just 10
-                                        }
-                                }
-                        in
-                            TiltakCharting.maybeFieldToGraph tiltak modifiedState
-                                |> Expect.equal (Just passengersPerYear)
+                                modifiedState =
+                                    { state
+                                        | opphoeyetHoldeplass =
+                                            { opphoeyetHoldeplassFelt
+                                                | passengersPerYear = Just 10
+                                            }
+                                    }
+                            in
+                                TiltakCharting.maybeFieldToGraph tiltak modifiedState
+                                    |> Expect.equal (Just passengersPerYear)
                 , test "two fields are invalid" <|
                     \() ->
                         let
