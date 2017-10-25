@@ -24,6 +24,7 @@ suite =
                         , antallBilerForsinketPerAvgang = Just 3
                         , antallPasserendeAvgangerPerYear = Just 1000
                         , forsinkelsePerBilSeconds = Just 2
+                        , preferredToGraph = ""
                         }
                 }
 

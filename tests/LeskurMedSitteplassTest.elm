@@ -23,6 +23,7 @@ suite =
                     , yearlyMaintenance = Just 200
                     , passengersPerYear = Just 30
                     , bompengeAndel = 0.2
+                    , preferredToGraph = ""
                     }
             }
 

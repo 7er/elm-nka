@@ -99,6 +99,7 @@ initialState =
     , antallBilerForsinketPerAvgang = Nothing
     , forsinkelsePerBilSeconds = Nothing
     , antallPasserendeAvgangerPerYear = Nothing
+    , preferredToGraph = ""
     }
 
 

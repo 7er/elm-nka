@@ -85,6 +85,7 @@ initialState =
     , passengersPerYear = Nothing
     , beleggForbiPassasjererPerBuss = Nothing
     , aarligTidsbesparelseMinutter = Nothing
+    , preferredToGraph = ""
     }
 
 

@@ -19,5 +19,8 @@ groupTitle tag =
         StrekningOgFramkommelighet ->
             "Strekning og framkommelighet"
 
+        Kjoeremateriell ->
+            "Kjøremateriell"
+
         _ ->
             tag |> toString
