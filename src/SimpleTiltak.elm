@@ -21,6 +21,7 @@ initialState =
     , yearlyMaintenance = Nothing
     , passengersPerYear = Nothing
     , bompengeAndel = 0
+    , preferredToGraph = ""
     }
 
 

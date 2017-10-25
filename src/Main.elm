@@ -143,7 +143,7 @@ computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
             { domId = graphId
             , data = TiltakCharting.graphData tiltak tiltakStates
             , variableTitle =
-                TiltakCharting.findVariableToGraph tiltak tiltakStates
+                TiltakCharting.maybeFieldToGraph tiltak tiltakStates
                     |> Maybe.map .title
                     |> Maybe.withDefault "WAT!!!!"
             }
@@ -173,10 +173,7 @@ updateField model tiltak field stringValue =
             TiltakCharting.graphState tiltak newTiltakStates
 
         newTiltakStates =
-            Field.updateTiltakStateFromField
-                field
-                stringValue
-                model.tiltakStates
+            field.updateTiltakState stringValue model.tiltakStates
     in
         ( { model
             | tiltakStates = newTiltakStates

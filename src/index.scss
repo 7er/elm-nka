@@ -59,8 +59,18 @@ a {
     }
 }
 
+
 .forside__overskrift {
     font-family: 'Lora', serif;
     font-weight: 700;
     font-style: italic;
+}
+.trikkRikshospitalet {
+    width: 100%;
+    min-height: 200px;
+    border-radius: 4px;
+}
+
+.bilde_wrapper {
+  margin-top: 1rem;
 }

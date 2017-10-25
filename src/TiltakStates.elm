@@ -9,6 +9,7 @@ type alias KollektivPrioriteringLyskryssState =
     , antallBilerForsinketPerAvgang : Maybe Float
     , forsinkelsePerBilSeconds : Maybe Float
     , antallPasserendeAvgangerPerYear : Maybe Float
+    , preferredToGraph : String
     }
 
 
@@ -19,6 +20,7 @@ type alias OpphoyetHoldeplassState =
     , passengersPerYear : Maybe Float
     , beleggForbiPassasjererPerBuss : Maybe Float
     , aarligTidsbesparelseMinutter : Maybe Float
+    , preferredToGraph : String
     }
 
 
@@ -27,6 +29,7 @@ type alias SimpleCommonState =
     , yearlyMaintenance : Maybe Float
     , passengersPerYear : Maybe Float
     , bompengeAndel : Float
+    , preferredToGraph : String
     }
 
 

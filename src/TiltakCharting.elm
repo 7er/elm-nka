@@ -19,14 +19,14 @@ chartRecord tiltak tiltakStates =
     { domId = sendTo tiltak .graphId
     , data = graphData tiltak tiltakStates
     , variableTitle =
-        findVariableToGraph tiltak tiltakStates
+        maybeFieldToGraph tiltak tiltakStates
             |> Maybe.map .title
             |> Maybe.withDefault "WAT!!!!"
     }
 
 
-findVariableToGraph : Tiltak -> TiltakStates -> Maybe Field
-findVariableToGraph this state =
+maybeFieldToGraph : Tiltak -> TiltakStates -> Maybe Field
+maybeFieldToGraph this state =
     let
         filterFunc field =
             case field.value state of
@@ -50,7 +50,7 @@ findVariableToGraph this state =
 
 graphState : Tiltak -> TiltakStates -> GraphState
 graphState this state =
-    findVariableToGraph this state
+    maybeFieldToGraph this state
         |> Maybe.map (always GraphOn)
         |> Maybe.withDefault GraphOff
 
@@ -90,7 +90,7 @@ graphData : Tiltak -> TiltakStates -> List ( Float, Float )
 graphData this state =
     let
         maybeField =
-            findVariableToGraph this state
+            maybeFieldToGraph this state
     in
         case maybeField of
             Nothing ->
