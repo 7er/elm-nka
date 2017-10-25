@@ -10,7 +10,7 @@ const PATHS = {
 const makeConfig = (isDevelopment) => {
   return {
     entry: {
-      app: PATHS.app,
+      app: PATHS.app
     },
     output: {
       path: PATHS.build,
@@ -70,6 +70,14 @@ const makeConfig = (isDevelopment) => {
             name: '[name]-[hash].[ext]'
           }
         },
+        {
+          test: /favicon.ico$/,
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]'
+          }
+        },
+        
       ],
 
       //noParse: /\.elm$/,

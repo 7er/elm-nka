@@ -59,23 +59,22 @@ suite =
                     \() ->
                         TiltakCharting.maybeFieldToGraph tiltak state
                             |> Expect.equal (Just passengersPerYear)
-                , skip <|
-                    test "all fields are valid" <|
-                        \() ->
-                            let
-                                opphoeyetHoldeplassFelt =
-                                    state.opphoeyetHoldeplass
+                , test "all fields are valid" <|
+                    \() ->
+                        let
+                            opphoeyetHoldeplassFelt =
+                                state.opphoeyetHoldeplass
 
-                                modifiedState =
-                                    { state
-                                        | opphoeyetHoldeplass =
-                                            { opphoeyetHoldeplassFelt
-                                                | passengersPerYear = Just 10
-                                            }
-                                    }
-                            in
-                                TiltakCharting.maybeFieldToGraph tiltak modifiedState
-                                    |> Expect.equal (Just passengersPerYear)
+                            modifiedState =
+                                { state
+                                    | opphoeyetHoldeplass =
+                                        { opphoeyetHoldeplassFelt
+                                            | passengersPerYear = Just 10
+                                        }
+                                }
+                        in
+                            TiltakCharting.maybeFieldToGraph tiltak modifiedState
+                                |> Expect.equal Nothing
                 , test "two fields are invalid" <|
                     \() ->
                         let
