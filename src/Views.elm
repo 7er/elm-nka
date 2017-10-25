@@ -72,16 +72,15 @@ menu navState =
 
 mainContent : Model -> Html Msg
 mainContent model =
-    Grid.container [] <|
-        case model.page of
-            Home ->
-                pageHome model
+    case model.page of
+        Home ->
+            pageHome model
 
-            NotFound ->
-                pageNotFound
+        NotFound ->
+            pageNotFound
 
-            GroupPage tiltaksGruppeType ->
-                pageGroup tiltaksGruppeType model
+        GroupPage tiltaksGruppeType ->
+            pageGroup tiltaksGruppeType model
 
 
 groupPanel : Group -> Html Msg
@@ -106,42 +105,49 @@ groupPanel group =
         ]
 
 
-pageHome : Model -> List (Html Msg)
+pageHome : Model -> Html Msg
 pageHome model =
-    [ div [ class "bilde_wrapper" ]
-        [ img
-            [ Assets.src Assets.trikkRikshospitalet
-            , class "trikkRikshospitalet"
-            , alt "Trikk utenfor Rikshospitalet"
+    div []
+        [ div [ class "jumbotron" ]
+            [ Grid.container []
+                [ div [ class "bilde_wrapper" ]
+                    [ img
+                        [ Assets.src Assets.trikkRikshospitalet
+                        , class "trikkRikshospitalet"
+                        , alt "Trikk utenfor Rikshospitalet"
+                        ]
+                        []
+                    ]
+                ]
             ]
-            []
-        ]
-    , h1
-        [ class "forside__overskrift" ]
-        [ text "Kollektivkalkulator" ]
-    , p [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
-    , Grid.row []
-        [ Grid.col []
-            [ groupPanel Holdeplasser
+        , Grid.container []
+            [ h1
+                [ class "forside__overskrift" ]
+                [ text "Kollektivkalkulator" ]
+            , p [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
+            , Grid.row []
+                [ Grid.col []
+                    [ groupPanel Holdeplasser
+                    ]
+                , Grid.col []
+                    [ groupPanel Informasjon
+                    ]
+                ]
+            , Grid.row []
+                [ Grid.col []
+                    [ groupPanel Trygghet ]
+                , Grid.col []
+                    [ groupPanel Kjoeremateriell ]
+                ]
+            , Grid.row []
+                [ Grid.col []
+                    [ groupPanel StrekningOgFramkommelighet ]
+                ]
             ]
-        , Grid.col []
-            [ groupPanel Informasjon
-            ]
         ]
-    , Grid.row []
-        [ Grid.col []
-            [ groupPanel Trygghet ]
-        , Grid.col []
-            [ groupPanel Kjoeremateriell ]
-        ]
-    , Grid.row []
-        [ Grid.col []
-            [ groupPanel StrekningOgFramkommelighet ]
-        ]
-    ]
 
 
-pageGroup : Group -> Model -> List (Html Msg)
+pageGroup : Group -> Model -> Html Msg
 pageGroup group model =
     let
         allCards =
@@ -166,16 +172,18 @@ pageGroup group model =
                 |> Accordion.cards allCards
                 |> Accordion.view model.accordionState
     in
-        [ header
-        , tiltakAccordions
-        ]
+        div []
+            [ Grid.container [] [ header ]
+            , Grid.container [] [ tiltakAccordions ]
+            ]
 
 
-pageNotFound : List (Html Msg)
+pageNotFound : Html Msg
 pageNotFound =
-    [ h1 [] [ text "Ugyldig side" ]
-    , text "Beklager, kan ikke finne siden"
-    ]
+    Grid.container []
+        [ h1 [] [ text "Ugyldig side" ]
+        , text "Beklager, kan ikke finne siden"
+        ]
 
 
 modal : Modal.State -> Html Msg
