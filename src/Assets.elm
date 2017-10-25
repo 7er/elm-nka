@@ -33,6 +33,10 @@ backArrow =
 
 
 
+trikkRikshospitalet : Image
+trikkRikshospitalet =
+    Image "./images/trikk_rikshospitalet.jpg"
+
 -- USING IMAGES --
 
 

@@ -75,8 +75,13 @@ groupLink group =
 
 pageHome : Model -> List (Html Msg)
 pageHome model =
-    [ div [ class "jumbotron" ]
-        [ text "Kollektivkalkulator"
+    [ div [ class "bilde_wrapper" ]
+        [ img
+            [ Assets.src Assets.trikkRikshospitalet
+              , class "trikkRikshospitalet"
+              , alt "Trikk utenfor Rikshospitalet"
+            ]
+           []
         ]
     , h1
         []
