@@ -1,5 +1,6 @@
 module BasicTiltak exposing (..)
 
+import Regex
 import Tiltak exposing (..)
 import TiltakStates exposing (TiltakStates)
 import GeneralForutsetninger
@@ -7,7 +8,12 @@ import GeneralForutsetninger
 
 toDomId : String -> String
 toDomId string =
-    string |> String.words |> String.join "-"
+    string
+        -- add all invalid characters in domId here
+        |> Regex.replace Regex.All (Regex.regex "[:]") (\_ -> "")
+        -- whitespace is handled here
+        |> String.words
+        |> String.join "-"
 
 
 nytte : StateCalculationMethod
