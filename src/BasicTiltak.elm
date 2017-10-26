@@ -6,11 +6,22 @@ import TiltakStates exposing (TiltakStates)
 import GeneralForutsetninger
 
 
+{--
+these are not valid in id's for css selectors which is what we use
+
+!"#$%&'()*+,./:;<=>?@[\]^`{|}~
+
+the toDomId function should probably just validate with a white-list
+rather than a black list like it does now
+
+--}
+
+
 toDomId : String -> String
 toDomId string =
     string
         -- add all invalid characters in domId here
-        |> Regex.replace Regex.All (Regex.regex "[:]") (\_ -> "")
+        |> Regex.replace Regex.All (Regex.regex "[:/]") (\_ -> " ")
         -- whitespace is handled here
         |> String.words
         |> String.join "-"

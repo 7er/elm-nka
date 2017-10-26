@@ -1,21 +1,6 @@
 module GeneralForutsetninger exposing (..)
 
 
-verdisettinger :
-    { belysning : Float
-    , destinasjonsSkiltPaaBuss : Float
-    , leskurPaaBussholdeplassenMedSitteplass : Float
-    , leskurPaaBussholdeplassenUtenSitteplass : Float
-    , lokalkartPaaHpl : Float
-    , operatoerKostnad : Float
-    , opphoyetHoldeplass : Float
-    , pakkeSkiltOgOppropBuss : Float
-    , reisetidBil : Float
-    , reisetidKollektivTransport : Float
-    , rutekartPaaHpl : Float
-    , sitteplassPaaHpl : Float
-    , skiltingIBuss : Float
-    }
 verdisettinger =
     -- alle verdier i NOK
     { opphoyetHoldeplass =
@@ -57,6 +42,12 @@ verdisettinger =
     , destinasjonsSkiltPaaBuss =
         -- pr kollektivreise
         0.694635934120579
+    , avviksinformasjonHoeyttaler =
+        -- pr kollektivreise
+        0.786298499915686
+    , alarmsystemPaaHpl =
+        -- pr kollektivreise
+        1.94498061553762
     }
 
 

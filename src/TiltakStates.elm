@@ -43,6 +43,8 @@ type alias TiltakStates =
     , rutekartPaaHpl : SimpleCommonState
     , pakkeSkiltOgOppropBuss : SimpleCommonState
     , destinasjonsSkiltPaaBuss : SimpleCommonState
+    , avviksinformasjonHoeyttaler : SimpleCommonState
+    , alarmsystemPaaHpl : SimpleCommonState
     , kollektivPrioriteringLyskryss : KollektivPrioriteringLyskryssState
     , opphoeyetHoldeplass : OpphoyetHoldeplassState
     }

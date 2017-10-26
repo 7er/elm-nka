@@ -65,6 +65,10 @@ tiltakForGroup gruppeType =
                 , levetid = 12
                 , title = "Sitteplass på holdeplass"
                 }
+
+            {--
+
+Dette er mer komplekst, har 2 sett med forutsetninger
             , SimpleTiltak.createTiltak
                 { stateMap =
                     \func tiltakStates ->
@@ -76,6 +80,7 @@ tiltakForGroup gruppeType =
                 , levetid = 10
                 , title = "Lokalkart på holdeplass"
                 }
+
             , SimpleTiltak.createTiltak
                 { stateMap =
                     \func tiltakStates ->
@@ -87,6 +92,7 @@ tiltakForGroup gruppeType =
                 , levetid = 1
                 , title = "Rutekart på holdeplass"
                 }
+--}
             ]
 
         Informasjon ->
@@ -125,6 +131,18 @@ tiltakForGroup gruppeType =
                 , title =
                     "Destinasjonsskilt bak og på siden av bussen"
                 }
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | avviksinformasjonHoeyttaler = func tiltakStates.avviksinformasjonHoeyttaler
+                        }
+                , getter = .avviksinformasjonHoeyttaler
+                , nytteMultiplikator = verdisettinger.avviksinformasjonHoeyttaler
+                , levetid = 20
+                , title =
+                    "Informasjon over høyttaler på holdeplass om avvik"
+                }
             ]
 
         Trygghet ->
@@ -138,6 +156,17 @@ tiltakForGroup gruppeType =
                 , nytteMultiplikator = verdisettinger.belysning
                 , levetid = 20
                 , title = "Belysning på holdeplass"
+                }
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | alarmsystemPaaHpl = func tiltakStates.alarmsystemPaaHpl
+                        }
+                , getter = .alarmsystemPaaHpl
+                , nytteMultiplikator = verdisettinger.alarmsystemPaaHpl
+                , levetid = 20
+                , title = "Alarmsystem / Nødtelefon på holdeplass"
                 }
             ]
 
@@ -166,4 +195,6 @@ initialTiltakStates =
     , rutekartPaaHpl = SimpleTiltak.initialState
     , pakkeSkiltOgOppropBuss = SimpleTiltak.initialState
     , destinasjonsSkiltPaaBuss = SimpleTiltak.initialState
+    , avviksinformasjonHoeyttaler = SimpleTiltak.initialState
+    , alarmsystemPaaHpl = SimpleTiltak.initialState
     }

@@ -140,8 +140,8 @@ fieldDefinitions =
       , stepSize = 50
       }
     , { name = "aarligTidsbesparelseMinutter"
-      , title = "Årlig tidsbesparelse i minutter"
-      , placeholder = "Se tekst i rapport for detaljer"
+      , title = "Årlig tidsbesparelse ved raskere på- og avstigning, minutter"
+      , placeholder = "Se forklarende tekst i rapport"
       , setter =
             (\value state ->
                 { state

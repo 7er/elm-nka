@@ -4,6 +4,7 @@ import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
 import TestSupport exposing (..)
 import Charting
+import BasicTiltak
 
 
 suite : Test
@@ -21,6 +22,11 @@ suite =
                 \_ ->
                     Just 80 |> checkMaybe (Expect.equal 80)
             ]
+         , test "toDomId" <|
+            \() ->
+                "Alarmsystem / nødtelefon: på holdeplass"
+                    |> BasicTiltak.toDomId
+                    |> Expect.equal "Alarmsystem-nødtelefon-på-holdeplass"
          , describe "samples"
             [ test "linear function" <|
                 \() ->
