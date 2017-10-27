@@ -48,6 +48,15 @@ verdisettinger =
     , alarmsystemPaaHpl =
         -- pr kollektivreise
         1.94498061553762
+    , renholdPaaHpl =
+        -- pr kollektivreise
+        4.12521821694896
+    , fjerningAvIsSnoePaaHpl =
+        -- pr kollektivreise
+        5.66362832547965
+    , vektere =
+        -- pr kollektivreise
+        3.65378501347425
     }
 
 
@@ -104,79 +113,6 @@ afaktor =
     afaktorCalculation drente
 
 
-nokPrMinPrSyklist : Float
-nokPrMinPrSyklist =
-    147.47 / 60.0
-
-
-wtpSeparatSykkelveg : Float
-wtpSeparatSykkelveg =
-    2.68
-
-
-wtpKombinertGangOgSykkelveg : Float
-wtpKombinertGangOgSykkelveg =
-    1.69
-
-
-wtpSykkelfelt : Float
-wtpSykkelfelt =
-    1.42
-
-
-sykkelParkeringUteNOK : Float
-sykkelParkeringUteNOK =
-    11.75
-
-
-sykkelParkeringInneNOK : Float
-sykkelParkeringInneNOK =
-    13.58
-
-
-garderobeFasiliteterNOK : Float
-garderobeFasiliteterNOK =
-    21.49
-
-
 skyggepris : Float
 skyggepris =
     0.2
-
-
-helsegevinstOgEndretUlykkesrisikoNOKPerKm : Float
-helsegevinstOgEndretUlykkesrisikoNOKPerKm =
-    26.019435971
-
-
-miljoOgKlimaeffektNOKPerKm : Float
-miljoOgKlimaeffektNOKPerKm =
-    0.315774159
-
-
-koreduksjonSlitasjeDriftNOKPerKm : Float
-koreduksjonSlitasjeDriftNOKPerKm =
-    1.194014079
-
-
-avgTripLengthKm : Float
-avgTripLengthKm =
-    8.0
-
-
-usageIncrease :
-    { gangOgSykkelveg : Float
-    , garderobeFasiliteter : Float
-    , separatSykkelveg : Float
-    , sykkelParkeringInne : Float
-    , sykkelParkeringUte : Float
-    , sykkelfelt : Float
-    }
-usageIncrease =
-    { gangOgSykkelveg = 0.08
-    , sykkelfelt = 0.05
-    , separatSykkelveg = 0.1
-    , sykkelParkeringInne = 0.05
-    , sykkelParkeringUte = 0.05
-    , garderobeFasiliteter = 0.05
-    }

@@ -33,6 +33,14 @@ type alias SimpleCommonState =
     }
 
 
+type alias SuperSimpleCommonState =
+    { yearlyMaintenance : Maybe Float
+    , passengersPerYear : Maybe Float
+    , bompengeAndel : Float
+    , preferredToGraph : String
+    }
+
+
 type alias TiltakStates =
     { leskurUtenSitteplass : SimpleCommonState
     , leskurMedSitteplass : SimpleCommonState
@@ -47,6 +55,9 @@ type alias TiltakStates =
     , alarmsystemPaaHpl : SimpleCommonState
     , kollektivPrioriteringLyskryss : KollektivPrioriteringLyskryssState
     , opphoeyetHoldeplass : OpphoyetHoldeplassState
+    , renholdPaaHpl : SuperSimpleCommonState
+    , fjerningAvIsSnoePaaHpl : SuperSimpleCommonState
+    , vektere : SuperSimpleCommonState
     }
 
 

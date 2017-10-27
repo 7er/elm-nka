@@ -6,6 +6,7 @@ import Tiltak exposing (Tiltak)
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
 import SimpleTiltak
+import SuperSimpleTiltak
 import GeneralForutsetninger exposing (verdisettinger)
 
 
@@ -27,19 +28,8 @@ tiltakForGroup : Group -> List Tiltak
 tiltakForGroup gruppeType =
     case gruppeType of
         Holdeplasser ->
-            [ OpphoeyetHoldeplass.tiltak
-            , SimpleTiltak.createTiltak
-                { stateMap =
-                    \func tiltakStates ->
-                        { tiltakStates
-                            | leskurMedSitteplass = func tiltakStates.leskurMedSitteplass
-                        }
-                , getter = .leskurMedSitteplass
-                , nytteMultiplikator = verdisettinger.leskurPaaBussholdeplassenMedSitteplass
-                , levetid = 12
-                , title = "Pakke: Leskur og sitteplass på holdeplass"
-                }
-            , SimpleTiltak.createTiltak
+            [ -- Sykkelparkering.tiltak
+              SimpleTiltak.createTiltak
                 { stateMap =
                     \func tiltakStates ->
                         { tiltakStates
@@ -65,6 +55,38 @@ tiltakForGroup gruppeType =
                 , levetid = 12
                 , title = "Sitteplass på holdeplass"
                 }
+            , SimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | leskurMedSitteplass = func tiltakStates.leskurMedSitteplass
+                        }
+                , getter = .leskurMedSitteplass
+                , nytteMultiplikator = verdisettinger.leskurPaaBussholdeplassenMedSitteplass
+                , levetid = 12
+                , title = "Pakke: Leskur og sitteplass på holdeplass"
+                }
+            , SuperSimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | renholdPaaHpl = func tiltakStates.renholdPaaHpl
+                        }
+                , getter = .renholdPaaHpl
+                , nytteMultiplikator = verdisettinger.renholdPaaHpl
+                , title = "Renhold på holdeplass"
+                }
+            , SuperSimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | fjerningAvIsSnoePaaHpl = func tiltakStates.fjerningAvIsSnoePaaHpl
+                        }
+                , getter = .fjerningAvIsSnoePaaHpl
+                , nytteMultiplikator = verdisettinger.fjerningAvIsSnoePaaHpl
+                , title = "Fjerning av is og snø på holdeplass"
+                }
+            , OpphoeyetHoldeplass.tiltak
 
             {--
 
@@ -168,9 +190,20 @@ Dette er mer komplekst, har 2 sett med forutsetninger
                 , levetid = 20
                 , title = "Alarmsystem / Nødtelefon på holdeplass"
                 }
+            , SuperSimpleTiltak.createTiltak
+                { stateMap =
+                    \func tiltakStates ->
+                        { tiltakStates
+                            | vektere = func tiltakStates.vektere
+                        }
+                , getter = .vektere
+                , nytteMultiplikator = verdisettinger.vektere
+                , title = "Vektere på holdeplass"
+                }
             ]
 
         Kjoeremateriell ->
+            -- Bussrenhold og Laventrebuss, to litt mer komplekse tiltak
             []
 
         StrekningOgFramkommelighet ->
@@ -197,4 +230,7 @@ initialTiltakStates =
     , destinasjonsSkiltPaaBuss = SimpleTiltak.initialState
     , avviksinformasjonHoeyttaler = SimpleTiltak.initialState
     , alarmsystemPaaHpl = SimpleTiltak.initialState
+    , renholdPaaHpl = SuperSimpleTiltak.initialState
+    , fjerningAvIsSnoePaaHpl = SuperSimpleTiltak.initialState
+    , vektere = SuperSimpleTiltak.initialState
     }
