@@ -116,7 +116,7 @@ fieldDefinitions =
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
-      , title = "Antall passasjerer på holdeplassen"
+      , title = "Antall av- og påstigende passasjerer på holdeplassen"
       , placeholder = "På- og avstigende passasjerer per år"
       , setter =
             (\value state ->
@@ -128,7 +128,7 @@ fieldDefinitions =
       , stepSize = 50
       }
     , { name = "beleggForbiPassasjererPerBuss"
-      , title = "Gjennomstsbelegg forbi holdeplassen"
+      , title = "Gjennomsnittsbelegg forbi holdeplassen"
       , placeholder = "Passasjerer pr buss"
       , setter =
             (\value state ->
@@ -137,7 +137,7 @@ fieldDefinitions =
                 }
             )
       , accessor = .beleggForbiPassasjererPerBuss
-      , stepSize = 50
+      , stepSize = 5
       }
     , { name = "aarligTidsbesparelseMinutter"
       , title = "Årlig tidsbesparelse ved raskere på- og avstigning, minutter"
