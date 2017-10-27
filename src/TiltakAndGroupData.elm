@@ -5,6 +5,7 @@ import TiltakStates exposing (TiltakStates)
 import Tiltak exposing (Tiltak)
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
+import Tiltak.HplOpprop as HplOpprop
 import SimpleTiltak
 import SuperSimpleTiltak
 import GeneralForutsetninger exposing (verdisettinger)
@@ -129,6 +130,7 @@ Dette er mer komplekst, har 2 sett med forutsetninger
                 , levetid = 7
                 , title = "Elektronisk skilting i bussen av neste holdeplass"
                 }
+            , HplOpprop.tiltak
             , SimpleTiltak.createTiltak
                 { stateMap =
                     \func tiltakStates ->
@@ -233,4 +235,5 @@ initialTiltakStates =
     , renholdPaaHpl = SuperSimpleTiltak.initialState
     , fjerningAvIsSnoePaaHpl = SuperSimpleTiltak.initialState
     , vektere = SuperSimpleTiltak.initialState
+    , hplOpprop = HplOpprop.initialState
     }

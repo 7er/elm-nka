@@ -41,6 +41,12 @@ type alias SuperSimpleCommonState =
     }
 
 
+type alias HplOppropState =
+    { passengersPerYear : Maybe Float
+    , preferredToGraph : String
+    }
+
+
 type alias TiltakStates =
     { leskurUtenSitteplass : SimpleCommonState
     , leskurMedSitteplass : SimpleCommonState
@@ -58,6 +64,7 @@ type alias TiltakStates =
     , renholdPaaHpl : SuperSimpleCommonState
     , fjerningAvIsSnoePaaHpl : SuperSimpleCommonState
     , vektere : SuperSimpleCommonState
+    , hplOpprop : HplOppropState
     }
 
 

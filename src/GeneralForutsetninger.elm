@@ -57,6 +57,9 @@ verdisettinger =
     , vektere =
         -- pr kollektivreise
         3.65378501347425
+    , hplOpprop =
+        -- pr kollektivreise
+        4.12521821694896
     }
 
 
