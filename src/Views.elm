@@ -121,6 +121,39 @@ pageHome model =
         , Grid.container [ class "groupPanels" ]
             [ Grid.row []
                 [ Grid.col []
+                    [ p []
+                        [ text """
+Kollektivkalkulatoren er et
+nyttekostnadsberegningsverktøy for
+enklere kollektivtransporttiltak. Kalkulatoren følger gjeldende
+tilnærming og metodikk for nyttekostnadsanalyser i
+transportsektoren. Derfor kan NKA-beregningene sammenlignes med andre
+samferdselstiltak.
+"""
+                        ]
+                    , p []
+                        [ text """
+Velg hovedkategori av tiltak fra boksene nedenfor, og deretter konkret tiltak.
+Ved å legge inn bakgrunnsinformasjon om prosjektet, beregner kalkulatoren nytte for
+ulike aktører, tiltakets nettonåverdi og nettonytte per budsjettkrone (nyttekostnadsbrøk).
+"""
+                        ]
+                    , p [] [ text """
+Kalkulatoren viser ved hjelp av en graf hvordan tiltakets nettonåverdi
+varierer med nivået på en valgt forutsetning. På den måten kan
+kalkulatoren brukes selv om ikke alle forutsetninger er kjent.
+""" ]
+                    , p []
+                        [ text "Beregningsopplegget er dokumentert i "
+                        , a [ href "https://www.toi.no/publikasjoner/article29858-8.html" ]
+                            [ text "TØI-rapport 1121" ]
+                        , text
+                            ". Her fins også nærmere veiledning til utfylling og bruk av kalkulatoren."
+                        ]
+                    ]
+                ]
+            , Grid.row []
+                [ Grid.col []
                     [ groupPanel Holdeplasser
                     ]
                 , Grid.col []
