@@ -13,7 +13,7 @@ conclusionRow : AnalyseData -> Html Msg
 conclusionRow data =
     let
         conclusionContent isProfitable =
-            [ span [ style [ ( "font-size", "1.4em" ) ] ]
+            [ span [ class "isProfitableMark" ]
                 [ text
                     (String.fromChar
                         (case isProfitable of
@@ -38,12 +38,13 @@ conclusionRow data =
                 )
             ]
     in
-        Grid.row []
-            [ Grid.col []
-                [ h4 [] [ text "Konklusjon" ]
-                , div [ class "conclusion" ]
-                    (data.isProfitable |> Maybe.map conclusionContent |> Maybe.withDefault [ text "Ufullstendige data" ])
-                ]
+        div [ class "conclusion" ]
+            [ h4 [] [ text "Konklusjon" ]
+            , p []
+                (data.isProfitable
+                    |> Maybe.map conclusionContent
+                    |> Maybe.withDefault [ text "Ufullstendige data" ]
+                )
             ]
 
 
@@ -57,7 +58,7 @@ view data =
             , ( "Øvrige trafikanters nytte over " ++ (toString data.analysePeriode) ++ " år"
               , data.trafikantNytte |> NumberFormat.maybePretty
               )
-            , ( "Operatørens nytte over " ++ (toString data.analysePeriode) ++ " år"
+            , ( "Operatørnytte over " ++ (toString data.analysePeriode) ++ " år"
               , data.operatoerNytte |> NumberFormat.maybePretty
               )
             , ( "Sum nytteelementer over " ++ (toString data.analysePeriode) ++ " år"
@@ -72,7 +73,7 @@ view data =
             , ( "Tiltakets nettonåverdi"
               , data.nettoNytte |> NumberFormat.maybePretty
               )
-            , ( "Nettonytte per budsjettkrone (Nyttekostnadsbrøk)"
+            , ( "Nettonytte per budsjettkrone (nyttekostnadsbrøk)"
               , data.nettoNyttePerBudsjettKrone |> NumberFormat.maybePrettyTwoDecimals
               )
             ]

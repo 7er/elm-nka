@@ -31,7 +31,8 @@ chart model tiltak =
         div []
             [ div [ id graphId ] graphNodeContent
             , div []
-                [ div [] [ text "Grafen viser hvordan kost-nytte nåverdier varierer med <forutsetnings navn her>" ]
+                [ div [] [ text """Grafen viser hvordan tiltakets nettonåverdi
+                                 varierer med <forutsetnings navn her>""" ]
                 , div []
                     [ text "Vis heller: "
                     , a [] [ text "<Annen forutsetning>" ]
