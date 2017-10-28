@@ -249,13 +249,5 @@ appFooter =
                     ]
                     []
                 ]
-            , a [ href "https://www.oslo.kommune.no" ]
-                [ img
-                    [ Assets.src Assets.byvaapen
-                    , class "byvaapen"
-                    , alt "Oslo byvåpen"
-                    ]
-                    []
-                ]
             ]
         ]
