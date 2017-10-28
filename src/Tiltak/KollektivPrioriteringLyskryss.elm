@@ -79,7 +79,7 @@ tiltak =
     in
         Tiltak
             { basicTiltakRecord
-                | title = \_ -> "Kollektiv prioritering lyskryss"
+                | title = \_ -> "Kollektivprioritering lyskryss"
                 , yearlyPassasjerNytte = yearlyPassasjerNytte
                 , yearlyTrafikantNytte = yearlyTrafikantNytte
                 , yearlyOperatoerNytte = yearlyOperatoerNytte

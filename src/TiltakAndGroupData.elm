@@ -65,7 +65,7 @@ tiltakForGroup gruppeType =
                 , getter = .leskurMedSitteplass
                 , nytteMultiplikator = verdisettinger.leskurPaaBussholdeplassenMedSitteplass
                 , levetid = 12
-                , title = "Pakke: Leskur og sitteplass på holdeplass"
+                , title = "Leskur med sitteplass"
                 }
             , SuperSimpleTiltak.createTiltak
                 { stateMap =
@@ -141,7 +141,7 @@ Dette er mer komplekst, har 2 sett med forutsetninger
                 , nytteMultiplikator = verdisettinger.pakkeSkiltOgOppropBuss
                 , levetid = 7
                 , title =
-                    "Pakke: Elektronisk skilting + Opprop i bussen av neste holdeplass"
+                    "Elektronisk skilting og opprop i bussen av neste holdeplass"
                 }
             , SimpleTiltak.createTiltak
                 { stateMap =
