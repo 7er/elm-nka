@@ -32,7 +32,7 @@ suite =
 
         tiltak =
             holdeplassTiltak
-                |> List.filter (\tiltak -> (Tiltak.sendTo tiltak .title) == "Pakke: Leskur og sitteplass på holdeplass")
+                |> List.filter (\tiltak -> (Tiltak.sendTo tiltak .title) == "Leskur med sitteplass")
                 |> List.head
                 |> \maybeTiltak ->
                     case maybeTiltak of
