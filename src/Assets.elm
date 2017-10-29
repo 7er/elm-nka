@@ -36,6 +36,9 @@ trikkRikshospitalet : Image
 trikkRikshospitalet =
     Image "./images/trikk_rikshospitalet.jpg"
 
+bussholdeplass : Image
+bussholdeplass =
+    Image "./images/samuel-foster-199587.jpg"
 
 caretRight : Image
 caretRight =
