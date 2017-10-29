@@ -63,6 +63,12 @@ verdisettinger =
     , bussrenhold =
         -- pr kollektivreise
         2.83411461121196
+    , lavgulvMedTilpassetHoldeplass =
+        -- pr kollektivreise
+        2.35889549974706
+    , lavgulvUtenTilpassetHoldeplass =
+        -- pr kollektivreise
+        1.90307028240463
     }
 
 

@@ -70,6 +70,18 @@ type alias BussrenholdState =
     }
 
 
+type alias LaventrebussState =
+    { installationCost : Maybe Float
+    , yearlyMaintenance : Maybe Float
+    , bompengeAndel : Float
+    , passengersPerYear : Maybe Float
+    , passasjererPerBuss : Maybe Float
+    , yearlyTidsbesparelseMinutter : Maybe Float
+    , passasjererTilpassedeHoldplasserPercent : Maybe Float -- bruk Percent type
+    , preferredToGraph : String
+    }
+
+
 type alias TiltakStates =
     { leskurUtenSitteplass : SimpleCommonState
     , leskurMedSitteplass : SimpleCommonState
@@ -90,6 +102,7 @@ type alias TiltakStates =
     , hplOpprop : HplOppropState
     , kollektivPrioriteringSkilting : KollektivPrioriteringSkiltingState
     , bussrenhold : BussrenholdState
+    , laventrebuss : LaventrebussState
     }
 
 
