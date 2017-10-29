@@ -7,6 +7,7 @@ import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import Tiltak.KollektivPrioriteringSkilting as KollektivPrioriteringSkilting
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
 import Tiltak.HplOpprop as HplOpprop
+import Tiltak.Bussrenhold as Bussrenhold
 import SimpleTiltak
 import SuperSimpleTiltak
 import GeneralForutsetninger exposing (verdisettinger)
@@ -207,7 +208,7 @@ Dette er mer komplekst, har 2 sett med forutsetninger
 
         Kjoeremateriell ->
             -- Bussrenhold og Laventrebuss, to litt mer komplekse tiltak
-            []
+            [ Bussrenhold.tiltak ]
 
         StrekningOgFramkommelighet ->
             [ KollektivPrioriteringLyskryss.tiltak
@@ -240,4 +241,5 @@ initialTiltakStates =
     , vektere = SuperSimpleTiltak.initialState
     , hplOpprop = HplOpprop.initialState
     , kollektivPrioriteringSkilting = KollektivPrioriteringSkilting.initialState
+    , bussrenhold = Bussrenhold.initialState
     }

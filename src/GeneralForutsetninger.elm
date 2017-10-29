@@ -60,6 +60,9 @@ verdisettinger =
     , hplOpprop =
         -- pr kollektivreise
         4.12521821694896
+    , bussrenhold =
+        -- pr kollektivreise
+        2.83411461121196
     }
 
 
