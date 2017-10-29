@@ -191,6 +191,13 @@ pageGroup group model =
                         ]
                         []
                     ]
+               , div [class "groupPageHeader"]
+                     [ img
+                          [ class "groupIcon"
+                          , Assets.src (groupIcon group)
+                          ]
+                          []
+                     ]
                 , h1 [] [ text (Group.groupTitle group) ]
                 ]
 
