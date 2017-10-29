@@ -13,6 +13,20 @@ type alias KollektivPrioriteringLyskryssState =
     }
 
 
+type alias KollektivPrioriteringSkiltingState =
+    { installationCost : Maybe Float
+    , yearlyMaintenance : Maybe Float
+    , passengersPerYear : Maybe Float
+    , bompengeAndel : Float
+    , antallBilerForsinketPerYear : Maybe Float
+    , forsinkelsePerBilSeconds : Maybe Float
+    , antallBilerForkjoersrettPerYear : Maybe Float
+    , tidsgevinstPerBilSeconds : Maybe Float
+    , antallPasserendeAvgangerPerYear : Maybe Float
+    , preferredToGraph : String
+    }
+
+
 type alias OpphoyetHoldeplassState =
     { installationCost : Maybe Float
     , yearlyMaintenance : Maybe Float
@@ -65,6 +79,7 @@ type alias TiltakStates =
     , fjerningAvIsSnoePaaHpl : SuperSimpleCommonState
     , vektere : SuperSimpleCommonState
     , hplOpprop : HplOppropState
+    , kollektivPrioriteringSkilting : KollektivPrioriteringSkiltingState
     }
 
 

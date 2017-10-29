@@ -4,6 +4,7 @@ import Models exposing (..)
 import TiltakStates exposing (TiltakStates)
 import Tiltak exposing (Tiltak)
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
+import Tiltak.KollektivPrioriteringSkilting as KollektivPrioriteringSkilting
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
 import Tiltak.HplOpprop as HplOpprop
 import SimpleTiltak
@@ -209,7 +210,9 @@ Dette er mer komplekst, har 2 sett med forutsetninger
             []
 
         StrekningOgFramkommelighet ->
-            [ KollektivPrioriteringLyskryss.tiltak ]
+            [ KollektivPrioriteringLyskryss.tiltak
+            , KollektivPrioriteringSkilting.tiltak
+            ]
 
 
 alleTiltak : List Tiltak
@@ -236,4 +239,5 @@ initialTiltakStates =
     , fjerningAvIsSnoePaaHpl = SuperSimpleTiltak.initialState
     , vektere = SuperSimpleTiltak.initialState
     , hplOpprop = HplOpprop.initialState
+    , kollektivPrioriteringSkilting = KollektivPrioriteringSkilting.initialState
     }
