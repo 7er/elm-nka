@@ -15,10 +15,6 @@ import SuperSimpleTiltak
 import GeneralForutsetninger exposing (verdisettinger)
 
 
--- TODO: organize simple tiltak in a Collection with tiltak and
--- initial state paired together
-
-
 alleTyper : List Group
 alleTyper =
     [ Holdeplasser
@@ -26,7 +22,125 @@ alleTyper =
     , Trygghet
     , Kjoeremateriell
     , StrekningOgFramkommelighet
+    , Tilgjengelighet
     ]
+
+
+
+-- TODO: organize simple tiltak in a Collection with tiltak and
+-- initial state paired together
+
+
+leskurMedSitteplassTiltak =
+    SimpleTiltak.createTiltak
+        { stateMap =
+            \func tiltakStates ->
+                { tiltakStates
+                    | leskurMedSitteplass = func tiltakStates.leskurMedSitteplass
+                }
+        , getter = .leskurMedSitteplass
+        , nytteMultiplikator = verdisettinger.leskurPaaBussholdeplassenMedSitteplass
+        , levetid = 12
+        , title = "Leskur med sitteplass"
+        }
+
+
+sitteplassPaaHplTiltak =
+    SimpleTiltak.createTiltak
+        { stateMap =
+            \func tiltakStates ->
+                { tiltakStates
+                    | sitteplassPaaHpl = func tiltakStates.sitteplassPaaHpl
+                }
+        , getter = .sitteplassPaaHpl
+        , nytteMultiplikator = verdisettinger.sitteplassPaaHpl
+        , levetid = 12
+        , title = "Sitteplass på holdeplass"
+        }
+
+
+renholdPaaHplTiltak =
+    SuperSimpleTiltak.createTiltak
+        { stateMap =
+            \func tiltakStates ->
+                { tiltakStates
+                    | renholdPaaHpl = func tiltakStates.renholdPaaHpl
+                }
+        , getter = .renholdPaaHpl
+        , nytteMultiplikator = verdisettinger.renholdPaaHpl
+        , title = "Renhold på holdeplass"
+        }
+
+
+fjerningAvIsSnoePaaHplTiltak =
+    SuperSimpleTiltak.createTiltak
+        { stateMap =
+            \func tiltakStates ->
+                { tiltakStates
+                    | fjerningAvIsSnoePaaHpl = func tiltakStates.fjerningAvIsSnoePaaHpl
+                }
+        , getter = .fjerningAvIsSnoePaaHpl
+        , nytteMultiplikator = verdisettinger.fjerningAvIsSnoePaaHpl
+        , title = "Økt fjerning av is og snø på holdeplass"
+        }
+
+
+skiltingIBussTiltak =
+    SimpleTiltak.createTiltak
+        { stateMap =
+            \func tiltakStates ->
+                { tiltakStates
+                    | skiltingIBuss = func tiltakStates.skiltingIBuss
+                }
+        , getter = .skiltingIBuss
+        , nytteMultiplikator = verdisettinger.skiltingIBuss
+        , levetid = 7
+        , title = "Elektronisk skilting i bussen av neste holdeplass"
+        }
+
+
+pakkeSkiltOgOppropBussTiltak =
+    SimpleTiltak.createTiltak
+        { stateMap =
+            \func tiltakStates ->
+                { tiltakStates
+                    | pakkeSkiltOgOppropBuss = func tiltakStates.pakkeSkiltOgOppropBuss
+                }
+        , getter = .pakkeSkiltOgOppropBuss
+        , nytteMultiplikator = verdisettinger.pakkeSkiltOgOppropBuss
+        , levetid = 7
+        , title =
+            "Elektronisk skilting og opprop i bussen av neste holdeplass"
+        }
+
+
+avviksinformasjonHoeyttalerTiltak =
+    SimpleTiltak.createTiltak
+        { stateMap =
+            \func tiltakStates ->
+                { tiltakStates
+                    | avviksinformasjonHoeyttaler = func tiltakStates.avviksinformasjonHoeyttaler
+                }
+        , getter = .avviksinformasjonHoeyttaler
+        , nytteMultiplikator = verdisettinger.avviksinformasjonHoeyttaler
+        , levetid = 20
+        , title =
+            "Informasjon over høyttaler på holdeplass om avvik"
+        }
+
+
+belysningTiltak =
+    SimpleTiltak.createTiltak
+        { stateMap =
+            \func tiltakStates ->
+                { tiltakStates
+                    | belysning = func tiltakStates.belysning
+                }
+        , getter = .belysning
+        , nytteMultiplikator = verdisettinger.belysning
+        , levetid = 20
+        , title = "Belysning på holdeplass"
+        }
 
 
 tiltakForGroup : Group -> List Tiltak
@@ -49,48 +163,10 @@ tiltakForGroup gruppeType =
                 , title =
                     "Leskur uten sitteplass"
                 }
-            , SimpleTiltak.createTiltak
-                { stateMap =
-                    \func tiltakStates ->
-                        { tiltakStates
-                            | sitteplassPaaHpl = func tiltakStates.sitteplassPaaHpl
-                        }
-                , getter = .sitteplassPaaHpl
-                , nytteMultiplikator = verdisettinger.sitteplassPaaHpl
-                , levetid = 12
-                , title = "Sitteplass på holdeplass"
-                }
-            , SimpleTiltak.createTiltak
-                { stateMap =
-                    \func tiltakStates ->
-                        { tiltakStates
-                            | leskurMedSitteplass = func tiltakStates.leskurMedSitteplass
-                        }
-                , getter = .leskurMedSitteplass
-                , nytteMultiplikator = verdisettinger.leskurPaaBussholdeplassenMedSitteplass
-                , levetid = 12
-                , title = "Leskur med sitteplass"
-                }
-            , SuperSimpleTiltak.createTiltak
-                { stateMap =
-                    \func tiltakStates ->
-                        { tiltakStates
-                            | renholdPaaHpl = func tiltakStates.renholdPaaHpl
-                        }
-                , getter = .renholdPaaHpl
-                , nytteMultiplikator = verdisettinger.renholdPaaHpl
-                , title = "Renhold på holdeplass"
-                }
-            , SuperSimpleTiltak.createTiltak
-                { stateMap =
-                    \func tiltakStates ->
-                        { tiltakStates
-                            | fjerningAvIsSnoePaaHpl = func tiltakStates.fjerningAvIsSnoePaaHpl
-                        }
-                , getter = .fjerningAvIsSnoePaaHpl
-                , nytteMultiplikator = verdisettinger.fjerningAvIsSnoePaaHpl
-                , title = "Fjerning av is og snø på holdeplass"
-                }
+            , sitteplassPaaHplTiltak
+            , leskurMedSitteplassTiltak
+            , renholdPaaHplTiltak
+            , fjerningAvIsSnoePaaHplTiltak
             , OpphoeyetHoldeplass.tiltak
 
             {--
@@ -123,30 +199,9 @@ Dette er mer komplekst, har 2 sett med forutsetninger
             ]
 
         Informasjon ->
-            [ SimpleTiltak.createTiltak
-                { stateMap =
-                    \func tiltakStates ->
-                        { tiltakStates
-                            | skiltingIBuss = func tiltakStates.skiltingIBuss
-                        }
-                , getter = .skiltingIBuss
-                , nytteMultiplikator = verdisettinger.skiltingIBuss
-                , levetid = 7
-                , title = "Elektronisk skilting i bussen av neste holdeplass"
-                }
+            [ skiltingIBussTiltak
             , HplOpprop.tiltak
-            , SimpleTiltak.createTiltak
-                { stateMap =
-                    \func tiltakStates ->
-                        { tiltakStates
-                            | pakkeSkiltOgOppropBuss = func tiltakStates.pakkeSkiltOgOppropBuss
-                        }
-                , getter = .pakkeSkiltOgOppropBuss
-                , nytteMultiplikator = verdisettinger.pakkeSkiltOgOppropBuss
-                , levetid = 7
-                , title =
-                    "Elektronisk skilting og opprop i bussen av neste holdeplass"
-                }
+            , pakkeSkiltOgOppropBussTiltak
             , SimpleTiltak.createTiltak
                 { stateMap =
                     \func tiltakStates ->
@@ -159,32 +214,11 @@ Dette er mer komplekst, har 2 sett med forutsetninger
                 , title =
                     "Destinasjonsskilt bak og på siden av bussen"
                 }
-            , SimpleTiltak.createTiltak
-                { stateMap =
-                    \func tiltakStates ->
-                        { tiltakStates
-                            | avviksinformasjonHoeyttaler = func tiltakStates.avviksinformasjonHoeyttaler
-                        }
-                , getter = .avviksinformasjonHoeyttaler
-                , nytteMultiplikator = verdisettinger.avviksinformasjonHoeyttaler
-                , levetid = 20
-                , title =
-                    "Informasjon over høyttaler på holdeplass om avvik"
-                }
+            , avviksinformasjonHoeyttalerTiltak
             ]
 
         Trygghet ->
-            [ SimpleTiltak.createTiltak
-                { stateMap =
-                    \func tiltakStates ->
-                        { tiltakStates
-                            | belysning = func tiltakStates.belysning
-                        }
-                , getter = .belysning
-                , nytteMultiplikator = verdisettinger.belysning
-                , levetid = 20
-                , title = "Belysning på holdeplass"
-                }
+            [ belysningTiltak
             , SimpleTiltak.createTiltak
                 { stateMap =
                     \func tiltakStates ->
@@ -219,10 +253,19 @@ Dette er mer komplekst, har 2 sett med forutsetninger
             , KollektivPrioriteringSkilting.tiltak
             ]
 
-
-alleTiltak : List Tiltak
-alleTiltak =
-    alleTyper |> List.concatMap tiltakForGroup
+        Tilgjengelighet ->
+            [ OpphoeyetHoldeplass.tiltak
+            , leskurMedSitteplassTiltak
+            , sitteplassPaaHplTiltak
+            , renholdPaaHplTiltak
+            , fjerningAvIsSnoePaaHplTiltak
+            , skiltingIBussTiltak
+            , HplOpprop.tiltak
+            , pakkeSkiltOgOppropBussTiltak
+            , avviksinformasjonHoeyttalerTiltak
+            , belysningTiltak
+            , Laventrebuss.tiltak
+            ]
 
 
 initialTiltakStates : TiltakStates

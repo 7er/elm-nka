@@ -2,11 +2,8 @@ module Views exposing (view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Bootstrap.Navbar as Navbar
 import Bootstrap.Grid as Grid
-import Bootstrap.Grid.Col as Col
 import Bootstrap.Card as Card
-import Bootstrap.Modal as Modal
 import Bootstrap.Accordion as Accordion
 import Models exposing (Model, Page(..), Group(..))
 import Msgs exposing (Msg(..))
@@ -14,7 +11,6 @@ import Group
 import TiltakAndGroupData
 import Assets
 import TiltakView
-import Color
 
 
 groupIcon : Group -> Assets.Image
@@ -35,6 +31,9 @@ groupIcon group =
         StrekningOgFramkommelighet ->
             Assets.strekningOgFramkommelighet
 
+        Tilgjengelighet ->
+            Assets.tilgjengelighet
+
 
 view : Model -> Html Msg
 view model =
@@ -42,32 +41,6 @@ view model =
         [ mainContent model
         , appFooter
         ]
-
-
-menuItemLinks : List (Navbar.Item Msg)
-menuItemLinks =
-    let
-        groupToItemLink group =
-            Navbar.itemLink
-                [ href (Group.groupPath group) ]
-                [ text (Group.groupTitle group) ]
-    in
-        List.map
-            groupToItemLink
-            TiltakAndGroupData.alleTyper
-
-
-menu : Navbar.State -> Html Msg
-menu navState =
-    Navbar.config NavMsg
-        |> Navbar.withAnimation
-        |> Navbar.inverse
-        |> Navbar.darkCustom (Color.rgb 0x3B 0x3B 0x3B)
-        |> Navbar.brand
-            [ href "#" ]
-            [ text "Kollektivkalkulator" ]
-        |> Navbar.items menuItemLinks
-        |> Navbar.view navState
 
 
 mainContent : Model -> Html Msg
@@ -169,6 +142,8 @@ kalkulatoren brukes selv om ikke alle forutsetninger er kjent.
             , Grid.row []
                 [ Grid.col []
                     [ groupPanel StrekningOgFramkommelighet ]
+                , Grid.col []
+                    [ groupPanel Tilgjengelighet ]
                 ]
             ]
         ]
@@ -191,13 +166,13 @@ pageGroup group model =
                         ]
                         []
                     ]
-               , div [class "groupPageHeader"]
-                     [ img
-                          [ class "groupIcon"
-                          , Assets.src (groupIcon group)
-                          ]
-                          []
-                     ]
+                , div [ class "groupPageHeader" ]
+                    [ img
+                        [ class "groupIcon"
+                        , Assets.src (groupIcon group)
+                        ]
+                        []
+                    ]
                 , h1 [] [ text (Group.groupTitle group) ]
                 ]
 
@@ -219,26 +194,6 @@ pageNotFound =
         [ h1 [] [ text "Ugyldig side" ]
         , text "Beklager, kan ikke finne siden"
         ]
-
-
-modal : Modal.State -> Html Msg
-modal modalState =
-    Modal.config ModalMsg
-        |> Modal.small
-        |> Modal.h4 [] [ text "Getting started ?" ]
-        |> Modal.body []
-            [ Grid.containerFluid []
-                [ Grid.row []
-                    [ Grid.col
-                        [ Col.xs6 ]
-                        [ text "Col 1" ]
-                    , Grid.col
-                        [ Col.xs6 ]
-                        [ text "Col 2" ]
-                    ]
-                ]
-            ]
-        |> Modal.view modalState
 
 
 appFooter : Html Msg

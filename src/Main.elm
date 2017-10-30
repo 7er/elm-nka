@@ -1,8 +1,6 @@
 module Main exposing (main)
 
 import Navigation exposing (Location)
-import Bootstrap.Navbar as Navbar
-import Bootstrap.Modal as Modal
 import Bootstrap.Accordion as Accordion
 import UrlParser exposing ((</>))
 import Models exposing (..)
@@ -30,27 +28,21 @@ main =
 init : Location -> ( Model, Cmd Msg )
 init location =
     let
-        ( navState, navCmd ) =
-            Navbar.initialState NavMsg
-
         model =
             { page = pageFromLocation location
-            , navState = navState
-            , modalState = Modal.hiddenState
             , accordionState = Accordion.initialState
             , tiltakStates = TiltakAndGroupData.initialTiltakStates
             , chartIds = []
             }
     in
         -- if we had more than one cmd, use Cmd.batch : List Cmd -> Cmd
-        ( model, navCmd )
+        ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Navbar.subscriptions model.navState NavMsg
-        , Accordion.subscriptions model.accordionState AccordionMsg
+        [ Accordion.subscriptions model.accordionState AccordionMsg
         , Ports.charts ChartsChanged
         ]
 
@@ -66,12 +58,6 @@ update msg model =
                 ( newModel
                 , destroyAndCreateCharts model newModel
                 )
-
-        NavMsg state ->
-            ( { model | navState = state }, Cmd.none )
-
-        ModalMsg state ->
-            ( { model | modalState = state }, Cmd.none )
 
         AccordionMsg state ->
             ( { model | accordionState = state }, Cmd.none )
