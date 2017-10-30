@@ -82,6 +82,17 @@ type alias LaventrebussState =
     }
 
 
+type alias KantsteinstoppState =
+    { installationCost : Maybe Float
+    , yearlyMaintenance : Maybe Float
+    , bompengeAndel : Float
+    , passengersPerYear : Maybe Float
+    , antallBilerForsinketPerAvgang : Maybe Float
+    , antallBussavgangerPerYear : Maybe Float
+    , preferredToGraph : String
+    }
+
+
 type alias TiltakStates =
     { leskurUtenSitteplass : SimpleCommonState
     , leskurMedSitteplass : SimpleCommonState
@@ -103,6 +114,7 @@ type alias TiltakStates =
     , kollektivPrioriteringSkilting : KollektivPrioriteringSkiltingState
     , bussrenhold : BussrenholdState
     , laventrebuss : LaventrebussState
+    , kantsteinstopp : KantsteinstoppState
     }
 
 

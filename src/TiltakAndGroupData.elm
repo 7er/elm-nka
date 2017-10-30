@@ -9,6 +9,7 @@ import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass
 import Tiltak.HplOpprop as HplOpprop
 import Tiltak.Bussrenhold as Bussrenhold
 import Tiltak.Laventrebuss as Laventrebuss
+import Tiltak.Kantsteinstopp as Kantsteinstopp
 import SimpleTiltak
 import SuperSimpleTiltak
 import GeneralForutsetninger exposing (verdisettinger)
@@ -208,13 +209,13 @@ Dette er mer komplekst, har 2 sett med forutsetninger
             ]
 
         Kjoeremateriell ->
-            -- Bussrenhold og Laventrebuss, to litt mer komplekse tiltak
             [ Bussrenhold.tiltak
             , Laventrebuss.tiltak
             ]
 
         StrekningOgFramkommelighet ->
-            [ KollektivPrioriteringLyskryss.tiltak
+            [ Kantsteinstopp.tiltak
+            , KollektivPrioriteringLyskryss.tiltak
             , KollektivPrioriteringSkilting.tiltak
             ]
 
@@ -246,4 +247,5 @@ initialTiltakStates =
     , kollektivPrioriteringSkilting = KollektivPrioriteringSkilting.initialState
     , bussrenhold = Bussrenhold.initialState
     , laventrebuss = Laventrebuss.initialState
+    , kantsteinstopp = Kantsteinstopp.initialState
     }
