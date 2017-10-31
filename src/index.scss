@@ -97,6 +97,30 @@ img.groupIcon {
     margin-bottom: 2rem;
 }
 
+.groupPanel .card .card-block {
+    border: 4px solid white;
+    transition: all 200ms;
+}
+
+.groupPanel .card .card-block:hover {
+   border: 4px solid #a9a9a9;
+}
+
+.group-box-title {
+    min-height: 4.8rem;
+    display: flex;
+}
+
+.group-box-title-text {
+    width: 100%;
+    align-self: center;
+    text-align: center;
+}
+
+.card-header a {
+    color: #06579c;
+}
+
 .groupPanels {
     margin-bottom: 4rem;
 }

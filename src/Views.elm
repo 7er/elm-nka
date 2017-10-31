@@ -70,7 +70,12 @@ groupPanel group =
                         , Assets.src (groupIcon group)
                         ]
                         []
-                    , div [] [ text (Group.groupTitle group) ]
+                    , div
+                        [class "group-box-title"]
+                        [ div
+                            [ class "group-box-title-text"]
+                            [ text (Group.groupTitle group)]
+                        ]
                     , img
                         [ Assets.src Assets.caretRight
                         , class "caretRight"
