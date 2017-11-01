@@ -91,12 +91,12 @@ pageHome : Model -> Html Msg
 pageHome model =
     div []
         [ div [ class "jumbotron homeHeader" ]
-            [ Grid.container []
+            [ Grid.container [ class "container__narrow" ]
                 [ h1 [] [ text "Kollektivkalkulator" ]
                 , p [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
                 ]
             ]
-        , Grid.container [ class "groupPanels" ]
+        , Grid.container [ class "groupPanels container__narrow" ]
             [ Grid.row []
                 [ Grid.col []
                     [ p []
@@ -189,13 +189,13 @@ pageGroup group model =
     in
         div []
             [ Grid.containerFluid [] [ pageHeader ]
-            , Grid.container [] [ tiltakAccordions ]
+            , Grid.container [ class "container__narrow" ] [ tiltakAccordions ]
             ]
 
 
 pageNotFound : Html Msg
 pageNotFound =
-    Grid.container []
+    Grid.container [ class "container__narrow" ]
         [ h1 [] [ text "Ugyldig side" ]
         , text "Beklager, kan ikke finne siden"
         ]
@@ -204,7 +204,7 @@ pageNotFound =
 appFooter : Html Msg
 appFooter =
     footer [ class "footer footer-text" ]
-        [ Grid.container []
+        [ Grid.container [ class "container__narrow" ]
             [ text "Kontakt: "
             , a [ href "mailto:naf@toi.no" ] [ text "Nils Fearnley" ]
             , br [] []
@@ -216,5 +216,6 @@ appFooter =
                     ]
                     []
                 ]
+             , div [class "colophon" ] [ text "Utvikling og design Syver Enstad & Thomas Flemming" ]
             ]
         ]

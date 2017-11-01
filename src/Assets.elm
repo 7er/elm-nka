@@ -75,7 +75,7 @@ strekningOgFramkommelighet =
 
 
 tilgjengelighet =
-    Image "./images/noun_1174765_cc.png"
+    Image "./images/noun_1050600_cc.gif"
 
 
 

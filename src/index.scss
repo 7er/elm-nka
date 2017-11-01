@@ -11,6 +11,44 @@ body {
     margin-bottom: $footer-height;
     padding-bottom: 10px;
     font-family: 'Raleway', sans-serif;
+    letter-spacing: 0.05em;
+    word-spacing: 0.1em;
+    font-size: 18px;
+}
+
+@media (min-width: 1200px) { 
+    .container__narrow {
+        width: 800px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container__narrow {
+        width: 800px;
+    }
+}
+
+@media (max-width: 1080px) {
+    .homeHeader h1 {
+        font-size: 7vw;
+    }
+}
+
+@media (min-width: 1081px) {
+    .homeHeader h1 {
+        font-size: 86px;
+    }
+}
+
+@media (max-width: 700px) {
+    .homeHeader h1 {
+        font-size: 8vw;
+    }
+}
+
+a {
+    text-decoration: underline;
+    color: #06579c;
 }
 
 footer {
@@ -31,8 +69,16 @@ footer {
     font-weight: 400;
     font-smoothing: antialiased;
     -webkit-font-smoothing: antialiased;
+
+    a {
+        color: #8fc1eb;
+    }
 }
 
+.colophon {
+    margin-top: 1em;
+    font-size: 16px;
+}
 
 .toiLogo {
     width: 500px;
@@ -62,16 +108,15 @@ footer {
     background-image: url('images/samuel-foster-199587.jpg');
     background-position: center center;
     border-radius: 0;
-    color: #e0e0e0;
+    color: #e3e3e3;
     background-size: cover;
-    /* text-align: center; */
 }
 
 .homeHeader h1 {
     font-weight: 700;
     font-style: italic;
-    font-size: 36px;
     font-family: 'Lora', serif;
+    text-shadow: 1px 1px 2px black;
 }
 
 .homeHeader p {
