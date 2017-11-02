@@ -97,8 +97,9 @@ pageHome model =
                 ]
             ]
         , Grid.container [ class "groupPanels container__narrow" ]
-            [ Grid.row []
-                [ Grid.col []
+            [ div [ class "forsidetekst" ]
+               [ Grid.row []
+                 [ Grid.col []
                     [ p []
                         [ text """
 Kollektivkalkulatoren er et
@@ -130,6 +131,7 @@ kalkulatoren brukes selv om ikke alle forutsetninger er kjent.
                         ]
                     ]
                 ]
+             ]
             , Grid.row []
                 [ Grid.col []
                     [ groupPanel Holdeplasser
