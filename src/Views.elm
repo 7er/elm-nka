@@ -71,10 +71,10 @@ groupPanel group =
                         ]
                         []
                     , div
-                        [class "group-box-title"]
+                        [ class "group-box-title" ]
                         [ div
-                            [ class "group-box-title-text"]
-                            [ text (Group.groupTitle group)]
+                            [ class "group-box-title-text" ]
+                            [ text (Group.groupTitle group) ]
                         ]
                     , img
                         [ Assets.src Assets.caretRight
@@ -93,15 +93,15 @@ pageHome model =
         [ div [ class "jumbotron homeHeader" ]
             [ Grid.container [ class "container__narrow" ]
                 [ h1 [] [ text "Kollektivkalkulator" ]
-                , p [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
+                , h2 [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
                 ]
             ]
         , Grid.container [ class "groupPanels container__narrow" ]
             [ div [ class "forsidetekst" ]
-               [ Grid.row []
-                 [ Grid.col []
-                    [ p []
-                        [ text """
+                [ Grid.row []
+                    [ Grid.col []
+                        [ p []
+                            [ text """
 Kollektivkalkulatoren er et
 nyttekostnadsberegningsverktøy for
 enklere kollektivtransporttiltak. Kalkulatoren følger gjeldende
@@ -109,29 +109,29 @@ tilnærming og metodikk for nyttekostnadsanalyser i
 transportsektoren. Derfor kan NKA-beregningene sammenlignes med andre
 samferdselstiltak.
 """
-                        ]
-                    , p []
-                        [ text """
+                            ]
+                        , p []
+                            [ text """
 Velg hovedkategori av tiltak fra boksene nedenfor, og deretter konkret tiltak.
 Ved å legge inn bakgrunnsinformasjon om prosjektet, beregner kalkulatoren nytte for
 ulike aktører, tiltakets nettonåverdi og nettonytte per budsjettkrone (nyttekostnadsbrøk).
 """
-                        ]
-                    , p [] [ text """
+                            ]
+                        , p [] [ text """
 Kalkulatoren viser ved hjelp av en graf hvordan tiltakets nettonåverdi
 varierer med nivået på en valgt forutsetning. På den måten kan
 kalkulatoren brukes selv om ikke alle forutsetninger er kjent.
 """ ]
-                    , p []
-                        [ text "Beregningsopplegget er dokumentert i "
-                        , a [ href "https://www.toi.no/publikasjoner/article29858-8.html" ]
-                            [ text "TØI-rapport 1121" ]
-                        , text
-                            ". Her fins også nærmere veiledning til utfylling og bruk av kalkulatoren."
+                        , p []
+                            [ text "Beregningsopplegget er dokumentert i "
+                            , a [ href "https://www.toi.no/publikasjoner/article29858-8.html" ]
+                                [ text "TØI-rapport 1121" ]
+                            , text
+                                ". Her fins også nærmere veiledning til utfylling og bruk av kalkulatoren."
+                            ]
                         ]
                     ]
                 ]
-             ]
             , Grid.row []
                 [ Grid.col []
                     [ groupPanel Holdeplasser
@@ -218,6 +218,6 @@ appFooter =
                     ]
                     []
                 ]
-             , div [class "colophon" ] [ text "Utvikling og design Syver Enstad & Thomas Flemming" ]
+            , div [ class "colophon" ] [ text "Utvikling og design Syver Enstad & Thomas Flemming" ]
             ]
         ]

@@ -15,6 +15,22 @@ import Views exposing (view)
 import Ports
 
 
+titleFromPage page =
+    let
+        appName =
+            "Kollektivkalkulator"
+    in
+        case page of
+            Home ->
+                appName
+
+            NotFound ->
+                "Ugyldig side"
+
+            GroupPage group ->
+                (Group.groupTitle group) ++ " - " ++ appName
+
+
 main : Program Never Model Msg
 main =
     Navigation.program UrlChange
@@ -56,7 +72,10 @@ update msg model =
                     { model | page = pageFromLocation location }
             in
                 ( newModel
-                , destroyAndCreateCharts model newModel
+                , Cmd.batch
+                    [ destroyAndCreateCharts model newModel
+                    , Ports.setTitle (titleFromPage newModel.page)
+                    ]
                 )
 
         AccordionMsg state ->

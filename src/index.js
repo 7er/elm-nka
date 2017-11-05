@@ -95,3 +95,7 @@ app.ports.destroyC3.subscribe(function (domId) {
   delete charts[domId];
   app.ports.charts.send(Object.keys(charts));
 });
+
+app.ports.setTitle.subscribe(function (title) {
+  document.title = title;
+});

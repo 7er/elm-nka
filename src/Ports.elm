@@ -22,3 +22,6 @@ port updateC3 : GraphData -> Cmd msg
 
 
 port charts : (List String -> msg) -> Sub msg
+
+
+port setTitle : String -> Cmd msg

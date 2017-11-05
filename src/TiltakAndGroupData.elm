@@ -31,6 +31,7 @@ alleTyper =
 -- initial state paired together
 
 
+leskurMedSitteplassTiltak : Tiltak
 leskurMedSitteplassTiltak =
     SimpleTiltak.createTiltak
         { stateMap =
