@@ -39,14 +39,6 @@ yearlyMaintenance =
         )
 
 
-yearlyMaintenanceValue =
-    yearlyMaintenance => value
-
-
-passengersPerYearValue =
-    passengersPerYear => value
-
-
 passengersPerYear : Focus { specificState | passengersPerYear : a } a
 passengersPerYear =
     Focus.create

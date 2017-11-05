@@ -8,9 +8,9 @@ import TiltakStates
         ( TiltakStates
         , OpphoeyetHoldeplassState
         , formattedValueDefault
-        , installationCostValue
-        , yearlyMaintenanceValue
-        , passengersPerYearValue
+        , installationCost
+        , yearlyMaintenance
+        , passengersPerYear
         , value
         )
 import BasicTiltak
@@ -136,22 +136,22 @@ fieldDefinitions =
         [ { name = "installationCost"
           , title = "Installasjonskostnad"
           , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-          , setter = Focus.set installationCostValue
-          , accessor = Focus.get installationCostValue
+          , setter = Focus.set (installationCost => value)
+          , accessor = Focus.get (installationCost => value)
           , stepSize = 50000
           }
         , { name = "yearlyMaintenance"
           , title = "Årlige drifts- og vedlikeholdskostnader"
           , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-          , setter = Focus.set yearlyMaintenanceValue
-          , accessor = Focus.get yearlyMaintenanceValue
+          , setter = Focus.set (yearlyMaintenance => value)
+          , accessor = Focus.get (yearlyMaintenance => value)
           , stepSize = 5000
           }
         , { name = "passengersPerYear"
           , title = "Antall av- og påstigende passasjerer på holdeplassen"
           , placeholder = "På- og avstigende passasjerer per år"
-          , setter = Focus.set passengersPerYearValue
-          , accessor = Focus.get passengersPerYearValue
+          , setter = Focus.set (passengersPerYear => value)
+          , accessor = Focus.get (passengersPerYear => value)
           , stepSize = 50
           }
         , { name = "beleggForbiPassasjererPerBuss"

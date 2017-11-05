@@ -6,8 +6,9 @@ import TiltakStates
         ( SimpleCommonState
         , SuperSimpleCommonState
         , formattedValueDefault
-        , yearlyMaintenanceValue
-        , passengersPerYearValue
+        , passengersPerYear
+        , yearlyMaintenance
+        , value
         )
 import Field exposing (SimpleField)
 import BasicTiltak
@@ -36,15 +37,15 @@ fieldDefinitions =
     [ { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , setter = Focus.set yearlyMaintenanceValue
-      , accessor = Focus.get yearlyMaintenanceValue
+      , setter = Focus.set (yearlyMaintenance => value)
+      , accessor = Focus.get (yearlyMaintenance => value)
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
       , placeholder = "Påstigende passasjerer per år"
-      , setter = Focus.set passengersPerYearValue
-      , accessor = Focus.get passengersPerYearValue
+      , setter = Focus.set (passengersPerYear => value)
+      , accessor = Focus.get (passengersPerYear => value)
       , stepSize = 50
       }
     ]
