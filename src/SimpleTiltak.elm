@@ -1,9 +1,18 @@
 module SimpleTiltak exposing (..)
 
-import TiltakStates exposing (SimpleCommonState)
+import TiltakStates
+    exposing
+        ( SimpleCommonState
+        , formattedValueDefault
+        , installationCost
+        , value
+        , yearlyMaintenance
+        , passengersPerYear
+        )
 import Field exposing (SimpleField)
 import BasicTiltak
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
+import Focus exposing ((=>))
 
 
 type alias SimpleTiltak =
@@ -17,9 +26,9 @@ type alias SimpleTiltak =
 
 initialState : TiltakStates.SimpleCommonState
 initialState =
-    { installationCost = Nothing
-    , yearlyMaintenance = Nothing
-    , passengersPerYear = Nothing
+    { installationCost = formattedValueDefault
+    , yearlyMaintenance = formattedValueDefault
+    , passengersPerYear = formattedValueDefault
     , bompengeAndel = 0
     , preferredToGraph = ""
     }
@@ -30,38 +39,22 @@ fieldDefinitions =
     [ { name = "installationCost"
       , title = "Installasjonskostnad"
       , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-      , setter =
-            (\value state ->
-                { state
-                    | installationCost = value
-                }
-            )
-      , accessor = .installationCost
+      , setter = Focus.set (installationCost => value)
+      , accessor = Focus.get (installationCost => value)
       , stepSize = 50000
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , setter =
-            (\value state ->
-                { state
-                    | yearlyMaintenance = value
-                }
-            )
-      , accessor = .yearlyMaintenance
+      , setter = Focus.set (yearlyMaintenance => value)
+      , accessor = Focus.get (yearlyMaintenance => value)
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
       , placeholder = "Påstigende passasjerer per år"
-      , setter =
-            (\value state ->
-                { state
-                    | passengersPerYear =
-                        value
-                }
-            )
-      , accessor = .passengersPerYear
+      , setter = Focus.set (passengersPerYear => value)
+      , accessor = Focus.get (passengersPerYear => value)
       , stepSize = 50
       }
     ]
@@ -86,7 +79,7 @@ createTiltak simpleTiltak =
                         sendTo this .skyggeprisHelper state ((simpleTiltak.getter state).bompengeAndel)
                 , yearlyPassasjerNytte =
                     \_ state ->
-                        (simpleTiltak.getter state).passengersPerYear
+                        (simpleTiltak.getter state).passengersPerYear.value
                             |> Maybe.map ((*) simpleTiltak.nytteMultiplikator)
                 , driftOgVedlihKost =
                     \_ state ->

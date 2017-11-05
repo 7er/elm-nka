@@ -81,8 +81,8 @@ fieldView tiltak model ({ name, title, placeholder } as field) =
             [ Input.id name
             , Input.placeholder placeholder
             , Input.onInput <| UpdateField tiltak field
-            , Input.value <|
-                Maybe.withDefault "" <|
+            , field.value model.tiltakStates
+                {--
                     (case field.isEditable model.tiltakStates of
                         True ->
                             Maybe.map toString
@@ -90,8 +90,10 @@ fieldView tiltak model ({ name, title, placeholder } as field) =
                         False ->
                             Maybe.map NumberFormat.pretty
                     )
-                    <|
-                        field.value model.tiltakStates
+-}
+                |> Maybe.map toString
+                |> Maybe.withDefault ""
+                |> Input.value
             ]
         ]
 

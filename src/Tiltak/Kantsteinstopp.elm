@@ -1,16 +1,28 @@
 module Tiltak.Kantsteinstopp exposing (..)
 
+import Focus exposing ((=>))
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (Field, SimpleField)
-import TiltakStates exposing (TiltakStates, KantsteinstoppState)
+import TiltakStates
+    exposing
+        ( TiltakStates
+        , KantsteinstoppState
+        , installationCost
+        , value
+        , yearlyMaintenance
+        , passengersPerYear
+        , formattedValueDefault
+        )
 import BasicTiltak
 import GeneralForutsetninger exposing (verdisettinger)
 
 
+tidsgevinstPerBussavgangSeconds : number
 tidsgevinstPerBussavgangSeconds =
     5
 
 
+bilenesGjennomsnittsForsinkelseSeconds : Float
 bilenesGjennomsnittsForsinkelseSeconds =
     12.5
 
@@ -23,7 +35,7 @@ yearlyPassasjerNytte this ({ kantsteinstopp } as state) =
                 * passengersPerYear
                 * verdisettinger.reisetidKollektivTransport
         )
-        kantsteinstopp.passengersPerYear
+        kantsteinstopp.passengersPerYear.value
 
 
 yearlyOperatoerNytte : StateCalculationMethod
@@ -34,7 +46,7 @@ yearlyOperatoerNytte this ({ kantsteinstopp } as state) =
                 * (tidsgevinstPerBussavgangSeconds / 60)
                 * verdisettinger.operatoerKostnad
     in
-        kantsteinstopp.antallBussavgangerPerYear
+        kantsteinstopp.antallBussavgangerPerYear.value
             |> Maybe.map func
 
 
@@ -49,8 +61,8 @@ yearlyTrafikantNytte this ({ kantsteinstopp } as state) =
                 |> negate
     in
         Maybe.map2 func
-            kantsteinstopp.antallBilerForsinketPerAvgang
-            kantsteinstopp.antallBussavgangerPerYear
+            kantsteinstopp.antallBilerForsinketPerAvgang.value
+            kantsteinstopp.antallBussavgangerPerYear.value
 
 
 levetid : number
@@ -91,79 +103,73 @@ tiltak =
 
 initialState : KantsteinstoppState
 initialState =
-    { installationCost = Nothing
-    , yearlyMaintenance = Nothing
+    { installationCost = formattedValueDefault
+    , yearlyMaintenance = formattedValueDefault
     , bompengeAndel = 0
-    , passengersPerYear = Nothing
-    , antallBilerForsinketPerAvgang = Nothing
-    , antallBussavgangerPerYear = Nothing
+    , passengersPerYear = formattedValueDefault
+    , antallBilerForsinketPerAvgang = formattedValueDefault
+    , antallBussavgangerPerYear = formattedValueDefault
     , preferredToGraph = ""
     }
 
 
 fieldDefinitions : List (SimpleField KantsteinstoppState)
 fieldDefinitions =
-    [ { name = "installationCost"
-      , title = "Installasjonskostnad"
-      , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-      , setter =
-            (\value state ->
-                { state
-                    | installationCost = value
-                }
-            )
-      , accessor = .installationCost
-      , stepSize = 50000
-      }
-    , { name = "yearlyMaintenance"
-      , title = "Årlige drifts- og vedlikeholdskostnader"
-      , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , setter =
-            (\value state ->
-                { state
-                    | yearlyMaintenance = value
-                }
-            )
-      , accessor = .yearlyMaintenance
-      , stepSize = 5000
-      }
-    , { name = "passengersPerYear"
-      , title = "Antall passasjerer om bord og på holdeplass per år"
-      , placeholder = "Passasjerer per år"
-      , setter =
-            (\value state ->
-                { state
-                    | passengersPerYear = value
-                }
-            )
-      , accessor = .passengersPerYear
-      , stepSize = 1000
-      }
-    , { name = "antallBilerForsinketPerAvgang"
-      , title = "Antall biler som forsinkes per avgang"
-      , placeholder = "Forsinkete biler per avgang"
-      , setter =
-            (\value state ->
-                { state
-                    | antallBilerForsinketPerAvgang = value
-                }
-            )
-      , accessor = .antallBilerForsinketPerAvgang
-      , stepSize = 2
-      }
-    , { name = "antallBussavgangerPerYear"
-      , title = "Antall bussavganger som bruker holdeplassen per år"
-      , placeholder = "Bussavganger per år"
-      , setter =
-            (\value state ->
-                { state
-                    | antallBussavgangerPerYear = value
-                }
-            )
-      , accessor = .antallBussavgangerPerYear
-      , stepSize = 1000
-      }
-    ]
+    let
+        antallBilerForsinketPerAvgang =
+            Focus.create
+                .antallBilerForsinketPerAvgang
+                (\f state ->
+                    { state
+                        | antallBilerForsinketPerAvgang = f state.antallBilerForsinketPerAvgang
+                    }
+                )
+
+        antallBussavgangerPerYear =
+            Focus.create
+                .antallBussavgangerPerYear
+                (\f state ->
+                    { state
+                        | antallBussavgangerPerYear = f state.antallBussavgangerPerYear
+                    }
+                )
+    in
+        [ { name = "installationCost"
+          , title = "Installasjonskostnad"
+          , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
+          , setter = Focus.set (installationCost => value)
+          , accessor = Focus.get (installationCost => value)
+          , stepSize = 50000
+          }
+        , { name = "yearlyMaintenance"
+          , title = "Årlige drifts- og vedlikeholdskostnader"
+          , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
+          , setter = Focus.set (yearlyMaintenance => value)
+          , accessor = Focus.get (yearlyMaintenance => value)
+          , stepSize = 5000
+          }
+        , { name = "passengersPerYear"
+          , title = "Antall passasjerer om bord og på holdeplass per år"
+          , placeholder = "Passasjerer per år"
+          , setter = Focus.set (passengersPerYear => value)
+          , accessor = Focus.get (passengersPerYear => value)
+          , stepSize = 1000
+          }
+        , { name = "antallBilerForsinketPerAvgang"
+          , title = "Antall biler som forsinkes per avgang"
+          , placeholder = "Forsinkete biler per avgang"
+          , setter = Focus.set (antallBilerForsinketPerAvgang => value)
+          , accessor = Focus.get (antallBilerForsinketPerAvgang => value)
+          , stepSize = 2
+          }
+        , { name = "antallBussavgangerPerYear"
+          , title = "Antall bussavganger som bruker holdeplassen per år"
+          , placeholder = "Bussavganger per år"
+          , setter = Focus.set (antallBussavgangerPerYear => value)
+          , accessor = Focus.get (antallBussavgangerPerYear => value)
+          , stepSize = 1000
+          }
+        ]
 
 
 fields : List Field
