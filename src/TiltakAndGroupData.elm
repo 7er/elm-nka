@@ -46,6 +46,7 @@ leskurMedSitteplassTiltak =
         }
 
 
+sitteplassPaaHplTiltak : Tiltak
 sitteplassPaaHplTiltak =
     SimpleTiltak.createTiltak
         { stateMap =
@@ -60,6 +61,7 @@ sitteplassPaaHplTiltak =
         }
 
 
+renholdPaaHplTiltak : Tiltak
 renholdPaaHplTiltak =
     SuperSimpleTiltak.createTiltak
         { stateMap =
@@ -73,6 +75,7 @@ renholdPaaHplTiltak =
         }
 
 
+fjerningAvIsSnoePaaHplTiltak : Tiltak
 fjerningAvIsSnoePaaHplTiltak =
     SuperSimpleTiltak.createTiltak
         { stateMap =
@@ -86,6 +89,7 @@ fjerningAvIsSnoePaaHplTiltak =
         }
 
 
+skiltingIBussTiltak : Tiltak
 skiltingIBussTiltak =
     SimpleTiltak.createTiltak
         { stateMap =
@@ -100,6 +104,7 @@ skiltingIBussTiltak =
         }
 
 
+pakkeSkiltOgOppropBussTiltak : Tiltak
 pakkeSkiltOgOppropBussTiltak =
     SimpleTiltak.createTiltak
         { stateMap =
@@ -115,6 +120,7 @@ pakkeSkiltOgOppropBussTiltak =
         }
 
 
+avviksinformasjonHoeyttalerTiltak : Tiltak
 avviksinformasjonHoeyttalerTiltak =
     SimpleTiltak.createTiltak
         { stateMap =
@@ -130,6 +136,7 @@ avviksinformasjonHoeyttalerTiltak =
         }
 
 
+belysningTiltak : Tiltak
 belysningTiltak =
     SimpleTiltak.createTiltak
         { stateMap =

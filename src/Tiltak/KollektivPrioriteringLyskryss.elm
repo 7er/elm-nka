@@ -1,9 +1,18 @@
 module Tiltak.KollektivPrioriteringLyskryss exposing (..)
 
+import Focus exposing (..)
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (SimpleField, Field)
 import BasicTiltak
-import TiltakStates exposing (KollektivPrioriteringLyskryssState)
+import TiltakStates
+    exposing
+        ( KollektivPrioriteringLyskryssState
+        , passengersPerYear
+        , installationCost
+        , yearlyMaintenance
+        , value
+        , formattedValueDefault
+        )
 import GeneralForutsetninger exposing (verdisettinger)
 
 
@@ -18,8 +27,9 @@ tidsbesparelsePerAvgangSeconds =
 
 
 yearlyPassasjerNytte : StateCalculationMethod
-yearlyPassasjerNytte this ({ kollektivPrioriteringLyskryss } as state) =
-    kollektivPrioriteringLyskryss.passengersPerYear
+yearlyPassasjerNytte this tiltakStates =
+    tiltakStates
+        |> Focus.get (specificState => passengersPerYear => value)
         |> Maybe.map
             (\passengersPerYear ->
                 (tidsbesparelsePerAvgangSeconds / 60)
@@ -37,9 +47,9 @@ yearlyTrafikantNytte this ({ kollektivPrioriteringLyskryss } as state) =
                 * (negate forsinkelsePerBilSeconds / 60)
                 * verdisettinger.reisetidBil
         )
-        kollektivPrioriteringLyskryss.antallBilerForsinketPerAvgang
-        kollektivPrioriteringLyskryss.antallPasserendeAvgangerPerYear
-        kollektivPrioriteringLyskryss.forsinkelsePerBilSeconds
+        kollektivPrioriteringLyskryss.antallBilerForsinketPerAvgang.value
+        kollektivPrioriteringLyskryss.antallPasserendeAvgangerPerYear.value
+        kollektivPrioriteringLyskryss.forsinkelsePerBilSeconds.value
 
 
 yearlyOperatoerNytte : StateCalculationMethod
@@ -50,7 +60,7 @@ yearlyOperatoerNytte this ({ kollektivPrioriteringLyskryss } as state) =
                 * (tidsbesparelsePerAvgangSeconds / 60)
                 * (verdisettinger).operatoerKostnad
     in
-        kollektivPrioriteringLyskryss.antallPasserendeAvgangerPerYear
+        kollektivPrioriteringLyskryss.antallPasserendeAvgangerPerYear.value
             |> Maybe.map calculation
 
 
@@ -92,15 +102,60 @@ tiltak =
 
 initialState : KollektivPrioriteringLyskryssState
 initialState =
-    { installationCost = Nothing
-    , yearlyMaintenance = Nothing
-    , passengersPerYear = Nothing
+    { installationCost = formattedValueDefault
+    , yearlyMaintenance = formattedValueDefault
+    , passengersPerYear = formattedValueDefault
     , bompengeAndel = 0
-    , antallBilerForsinketPerAvgang = Nothing
-    , forsinkelsePerBilSeconds = Nothing
-    , antallPasserendeAvgangerPerYear = Nothing
+    , antallBilerForsinketPerAvgang = formattedValueDefault
+    , forsinkelsePerBilSeconds = formattedValueDefault
+    , antallPasserendeAvgangerPerYear = formattedValueDefault
     , preferredToGraph = ""
     }
+
+
+specificState : Focus { b | kollektivPrioriteringLyskryss : a } a
+specificState =
+    Focus.create
+        .kollektivPrioriteringLyskryss
+        (\f tiltakStates ->
+            { tiltakStates
+                | kollektivPrioriteringLyskryss =
+                    f tiltakStates.kollektivPrioriteringLyskryss
+            }
+        )
+
+
+antallBilerForsinketPerAvgang : Focus { b | antallBilerForsinketPerAvgang : a } a
+antallBilerForsinketPerAvgang =
+    Focus.create
+        .antallBilerForsinketPerAvgang
+        (\f state ->
+            { state
+                | antallBilerForsinketPerAvgang = f state.antallBilerForsinketPerAvgang
+            }
+        )
+
+
+forsinkelsePerBilSeconds : Focus { b | forsinkelsePerBilSeconds : a } a
+forsinkelsePerBilSeconds =
+    Focus.create
+        .forsinkelsePerBilSeconds
+        (\f state ->
+            { state
+                | forsinkelsePerBilSeconds = f state.forsinkelsePerBilSeconds
+            }
+        )
+
+
+antallPasserendeAvgangerPerYear : Focus { b | antallPasserendeAvgangerPerYear : a } a
+antallPasserendeAvgangerPerYear =
+    Focus.create
+        .antallPasserendeAvgangerPerYear
+        (\f state ->
+            { state
+                | antallPasserendeAvgangerPerYear = f state.antallPasserendeAvgangerPerYear
+            }
+        )
 
 
 fieldDefinitions : List (SimpleField KollektivPrioriteringLyskryssState)
@@ -108,73 +163,43 @@ fieldDefinitions =
     [ { name = "installationCost"
       , title = "Installasjonskostnad"
       , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-      , setter =
-            (\value state ->
-                { state
-                    | installationCost = value
-                }
-            )
-      , accessor = .installationCost
+      , setter = Focus.set (installationCost => value)
+      , accessor = Focus.get (installationCost => value)
       , stepSize = 50000
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , setter =
-            (\value state ->
-                { state
-                    | yearlyMaintenance = value
-                }
-            )
-      , accessor = .yearlyMaintenance
+      , setter = Focus.set (yearlyMaintenance => value)
+      , accessor = Focus.get (yearlyMaintenance => value)
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer ombord per år"
       , placeholder = "Passasjerer ombord"
-      , setter =
-            (\value state ->
-                { state
-                    | passengersPerYear = value
-                }
-            )
-      , accessor = .passengersPerYear
+      , setter = Focus.set (passengersPerYear => value)
+      , accessor = Focus.get (passengersPerYear => value)
       , stepSize = 50
       }
     , { name = "antallBilerForsinketPerAvgang"
       , title = "Antall forsinkete biler per avgang"
       , placeholder = "Forsinkete biler på den kryssende veien"
-      , setter =
-            (\value state ->
-                { state
-                    | antallBilerForsinketPerAvgang = value
-                }
-            )
-      , accessor = .antallBilerForsinketPerAvgang
+      , setter = Focus.set (antallBilerForsinketPerAvgang => value)
+      , accessor = Focus.get (antallBilerForsinketPerAvgang => value)
       , stepSize = 1
       }
     , { name = "forsinkelsePerBilSeconds"
       , title = "Sekunder forsinkelse per bil"
       , placeholder = "Når de blir forsinket hvor mange sekunder"
-      , setter =
-            (\value state ->
-                { state
-                    | forsinkelsePerBilSeconds = value
-                }
-            )
-      , accessor = .forsinkelsePerBilSeconds
+      , setter = Focus.set (forsinkelsePerBilSeconds => value)
+      , accessor = Focus.get (forsinkelsePerBilSeconds => value)
       , stepSize = 1
       }
     , { name = "antallPasserendeAvgangerPerYear"
       , title = "Avganger som passererer krysset"
       , placeholder = "Antall passerende avganger per år"
-      , setter =
-            (\value state ->
-                { state
-                    | antallPasserendeAvgangerPerYear = value
-                }
-            )
-      , accessor = .antallPasserendeAvgangerPerYear
+      , setter = Focus.set (antallPasserendeAvgangerPerYear => value)
+      , accessor = Focus.get (antallPasserendeAvgangerPerYear => value)
       , stepSize = 1000
       }
     ]
@@ -183,16 +208,14 @@ fieldDefinitions =
 fields : List Field
 fields =
     let
-        stateMap func tiltakStates =
-            { tiltakStates
-                | kollektivPrioriteringLyskryss = func tiltakStates.kollektivPrioriteringLyskryss
-            }
+        stateMap =
+            Focus.update specificState
 
         updateTiltakStateHelper =
             TiltakStates.stateUpdateHelper stateMap
 
         thisValueHelper =
-            TiltakStates.valueHelper .kollektivPrioriteringLyskryss
+            TiltakStates.valueHelper (Focus.get specificState)
     in
         fieldDefinitions
             |> Field.transformToFields

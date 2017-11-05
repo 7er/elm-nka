@@ -1,15 +1,24 @@
 module Tiltak.Bussrenhold exposing (..)
 
+import Focus exposing (..)
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (Field, SimpleField)
-import TiltakStates exposing (TiltakStates, BussrenholdState)
+import TiltakStates
+    exposing
+        ( TiltakStates
+        , BussrenholdState
+        , value
+        , passengersPerYear
+        , formattedValueDefault
+        )
 import BasicTiltak
 import GeneralForutsetninger exposing (verdisettinger)
 
 
 yearlyPassasjerNytte : StateCalculationMethod
 yearlyPassasjerNytte this ({ bussrenhold } as state) =
-    bussrenhold.passengersPerYear
+    bussrenhold
+        |> Focus.get (passengersPerYear => value)
         |> Maybe.map
             (\passengersPerYear ->
                 0.5 * passengersPerYear * verdisettinger.bussrenhold
@@ -36,8 +45,8 @@ tiltak =
                             (\dailyCostPerBus numberOfBusesAffected ->
                                 dailyCostPerBus * numberOfBusesAffected * 360 * GeneralForutsetninger.afaktor
                             )
-                            bussrenhold.dailyCostPerBus
-                            bussrenhold.numberOfBusesAffected
+                            bussrenhold.dailyCostPerBus.value
+                            bussrenhold.numberOfBusesAffected.value
                             |> Maybe.map negate
                 , skyggepris =
                     \this ({ bussrenhold } as state) ->
@@ -51,53 +60,57 @@ tiltak =
 
 initialState : BussrenholdState
 initialState =
-    { dailyCostPerBus = Nothing
-    , numberOfBusesAffected = Nothing
+    { dailyCostPerBus = formattedValueDefault
+    , numberOfBusesAffected = formattedValueDefault
     , bompengeAndel = 0
-    , passengersPerYear = Nothing
+    , passengersPerYear = formattedValueDefault
     , preferredToGraph = ""
     }
 
 
 fieldDefinitions : List (SimpleField BussrenholdState)
 fieldDefinitions =
-    [ { name = "dailyCostPerBus"
-      , title = "Kostnad per buss per dag"
-      , placeholder = "kroner per buss per dag"
-      , setter =
-            (\value state ->
-                { state
-                    | dailyCostPerBus = value
-                }
-            )
-      , accessor = .dailyCostPerBus
-      , stepSize = 100
-      }
-    , { name = "numberOfBusesAffected"
-      , title = "Antall busser som tiltaker gjelder"
-      , placeholder = "Antallet i bussparken"
-      , setter =
-            (\value state ->
-                { state
-                    | numberOfBusesAffected = value
-                }
-            )
-      , accessor = .numberOfBusesAffected
-      , stepSize = 5000
-      }
-    , { name = "passengersPerYear"
-      , title = "Antall passasjerer per år på busser som omfattes av tiltaket"
-      , placeholder = "Årlige passasjerer ombord på busser med oppgradert renhold"
-      , setter =
-            (\value state ->
-                { state
-                    | passengersPerYear = value
-                }
-            )
-      , accessor = .passengersPerYear
-      , stepSize = 50
-      }
-    ]
+    let
+        dailyCostPerBus =
+            Focus.create
+                .dailyCostPerBus
+                (\f state ->
+                    { state
+                        | dailyCostPerBus = f state.dailyCostPerBus
+                    }
+                )
+
+        numberOfBusesAffected =
+            Focus.create
+                .numberOfBusesAffected
+                (\f state ->
+                    { state
+                        | numberOfBusesAffected = f state.numberOfBusesAffected
+                    }
+                )
+    in
+        [ { name = "dailyCostPerBus"
+          , title = "Kostnad per buss per dag"
+          , placeholder = "kroner per buss per dag"
+          , setter = Focus.set (dailyCostPerBus => value)
+          , accessor = Focus.get (dailyCostPerBus => value)
+          , stepSize = 100
+          }
+        , { name = "numberOfBusesAffected"
+          , title = "Antall busser som tiltaker gjelder"
+          , placeholder = "Antallet i bussparken"
+          , setter = Focus.set (numberOfBusesAffected => value)
+          , accessor = Focus.get (numberOfBusesAffected => value)
+          , stepSize = 5000
+          }
+        , { name = "passengersPerYear"
+          , title = "Antall passasjerer per år på busser som omfattes av tiltaket"
+          , placeholder = "Årlige passasjerer ombord på busser med oppgradert renhold"
+          , setter = Focus.set (passengersPerYear => value)
+          , accessor = Focus.get (passengersPerYear => value)
+          , stepSize = 50
+          }
+        ]
 
 
 fields : List Field

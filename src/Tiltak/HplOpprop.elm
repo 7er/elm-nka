@@ -1,6 +1,13 @@
 module Tiltak.HplOpprop exposing (..)
 
-import TiltakStates exposing (HplOppropState)
+import Focus exposing (..)
+import TiltakStates
+    exposing
+        ( HplOppropState
+        , value
+        , passengersPerYear
+        , formattedValueDefault
+        )
 import Field exposing (SimpleField)
 import BasicTiltak
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
@@ -16,7 +23,7 @@ type alias HplOpprop =
 
 
 initialState =
-    { passengersPerYear = Nothing
+    { passengersPerYear = formattedValueDefault
     , preferredToGraph = ""
     }
 
@@ -26,17 +33,19 @@ fieldDefinitions =
     [ { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
       , placeholder = "Påstigende passasjerer per år"
-      , setter =
-            (\value state ->
-                { state
-                    | passengersPerYear =
-                        value
-                }
-            )
-      , accessor = .passengersPerYear
+      , setter = Focus.set (passengersPerYear => value)
+      , accessor = Focus.get (passengersPerYear => value)
       , stepSize = 50
       }
     ]
+
+
+specificState =
+    Focus.create
+        .hplOpprop
+        (\f tiltakStates ->
+            { tiltakStates | hplOpprop = f tiltakStates.hplOpprop }
+        )
 
 
 tiltak : Tiltak
@@ -46,12 +55,8 @@ tiltak =
             BasicTiltak.basicTiltakRecord
 
         simpleTiltak =
-            { stateMap =
-                \func tiltakStates ->
-                    { tiltakStates
-                        | hplOpprop = func tiltakStates.hplOpprop
-                    }
-            , getter = .hplOpprop
+            { stateMap = Focus.update specificState
+            , getter = Focus.get specificState
             , nytteMultiplikator = verdisettinger.hplOpprop
             , title = "Opprop av neste holdeplass om bord"
             }
@@ -69,7 +74,8 @@ tiltak =
                         Just 0
                 , yearlyPassasjerNytte =
                     \_ state ->
-                        (simpleTiltak.getter state).passengersPerYear
+                        state
+                            |> Focus.get (specificState => passengersPerYear => value)
                             |> Maybe.map ((*) simpleTiltak.nytteMultiplikator)
                 , driftOgVedlihKost =
                     \_ state ->

@@ -15,6 +15,7 @@ import Views exposing (view)
 import Ports
 
 
+titleFromPage : Page -> String
 titleFromPage page =
     let
         appName =
