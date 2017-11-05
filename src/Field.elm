@@ -1,6 +1,7 @@
 module Field exposing (..)
 
-import TiltakStates exposing (TiltakStates, StateMap)
+import Focus exposing (Focus, (=>))
+import TiltakStates exposing (TiltakStates, StateMap, FormattedValue, Editable(..), state)
 
 
 type alias Field =
@@ -11,8 +12,9 @@ type alias Field =
     , updateValue : Float -> TiltakStates -> TiltakStates
     , stepSize : Float
     , value : TiltakStates -> Maybe Float
-
-    --    , isEditable : TiltakStates -> Bool
+    , isEditable : TiltakStates -> Bool
+    , beDisplayMode : TiltakStates -> TiltakStates
+    , beEditMode : TiltakStates -> TiltakStates
     }
 
 
@@ -26,6 +28,9 @@ type alias SimpleField stateType =
         -> stateType
     , accessor : stateType -> Maybe Float
     , stepSize : Float
+
+    -- focus for TiltakStates to fields value
+    , focus : Focus TiltakStates (FormattedValue Float)
     }
 
 
@@ -49,6 +54,20 @@ transformToFields stateMap updateTiltakStateHelper valueHelper fieldDefinitions 
             , title = simpleField.title
             , placeholder = simpleField.placeholder
             , stepSize = simpleField.stepSize
+            , isEditable =
+                \tiltakStates ->
+                    case Focus.get (simpleField.focus => state) tiltakStates of
+                        Edit ->
+                            True
+
+                        Display ->
+                            False
+            , beDisplayMode =
+                \tiltakStates ->
+                    Focus.set (simpleField.focus => state) Display tiltakStates
+            , beEditMode =
+                \tiltakStates ->
+                    Focus.set (simpleField.focus => state) Edit tiltakStates
             , updateTiltakState =
                 updateTiltakStateHelper
                     (\stringValue state ->

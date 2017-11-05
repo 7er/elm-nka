@@ -121,9 +121,6 @@ fieldDefinitions =
                     }
                 )
 
-        beleggForbiPassasjererPerBussValue =
-            beleggForbiPassasjererPerBuss => value
-
         aarligTidsbesparelseMinutter =
             Focus.create
                 .aarligTidsbesparelseMinutter
@@ -138,6 +135,7 @@ fieldDefinitions =
           , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
           , setter = Focus.set (installationCost => value)
           , accessor = Focus.get (installationCost => value)
+          , focus = specificState => installationCost
           , stepSize = 50000
           }
         , { name = "yearlyMaintenance"
@@ -145,6 +143,7 @@ fieldDefinitions =
           , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
           , setter = Focus.set (yearlyMaintenance => value)
           , accessor = Focus.get (yearlyMaintenance => value)
+          , focus = specificState => yearlyMaintenance
           , stepSize = 5000
           }
         , { name = "passengersPerYear"
@@ -152,13 +151,15 @@ fieldDefinitions =
           , placeholder = "På- og avstigende passasjerer per år"
           , setter = Focus.set (passengersPerYear => value)
           , accessor = Focus.get (passengersPerYear => value)
+          , focus = specificState => passengersPerYear
           , stepSize = 50
           }
         , { name = "beleggForbiPassasjererPerBuss"
           , title = "Gjennomsnittsbelegg forbi holdeplassen"
           , placeholder = "Passasjerer pr buss"
-          , setter = Focus.set beleggForbiPassasjererPerBussValue
-          , accessor = Focus.get beleggForbiPassasjererPerBussValue
+          , setter = Focus.set <| beleggForbiPassasjererPerBuss => value
+          , accessor = Focus.get <| beleggForbiPassasjererPerBuss => value
+          , focus = specificState => beleggForbiPassasjererPerBuss
           , stepSize = 5
           }
         , { name = "aarligTidsbesparelseMinutter"
@@ -166,6 +167,7 @@ fieldDefinitions =
           , placeholder = "Se forklarende tekst i rapport"
           , setter = Focus.set (aarligTidsbesparelseMinutter => value)
           , accessor = Focus.get (aarligTidsbesparelseMinutter => value)
+          , focus = specificState => aarligTidsbesparelseMinutter
           , stepSize = 1000
           }
         ]
@@ -173,20 +175,12 @@ fieldDefinitions =
 
 fields : List Field
 fields =
-    let
-        stateMap updater tiltakStates =
-            { tiltakStates
-                | opphoeyetHoldeplass = updater tiltakStates.opphoeyetHoldeplass
-            }
-
-        updateTiltakStateHelper =
-            TiltakStates.stateUpdateHelper stateMap
-
-        thisValueHelper =
-            TiltakStates.valueHelper .opphoeyetHoldeplass
-    in
-        fieldDefinitions
-            |> Field.transformToFields
-                stateMap
-                updateTiltakStateHelper
-                thisValueHelper
+    fieldDefinitions
+        |> Field.transformToFields
+            (Focus.update specificState)
+            (TiltakStates.stateUpdateHelper
+                (Focus.update specificState)
+            )
+            (TiltakStates.valueHelper
+                (Focus.get specificState)
+            )

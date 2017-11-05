@@ -116,6 +116,7 @@ initialState =
     }
 
 
+forsinkelsePerBilSeconds : Focus { b | forsinkelsePerBilSeconds : a } a
 forsinkelsePerBilSeconds =
     Focus.create
         .forsinkelsePerBilSeconds
@@ -126,6 +127,7 @@ forsinkelsePerBilSeconds =
         )
 
 
+antallBilerForkjoersrettPerYear : Focus { b | antallBilerForkjoersrettPerYear : a } a
 antallBilerForkjoersrettPerYear =
     Focus.create
         .antallBilerForkjoersrettPerYear
@@ -136,6 +138,7 @@ antallBilerForkjoersrettPerYear =
         )
 
 
+antallBilerForsinketPerYear : Focus { b | antallBilerForsinketPerYear : a } a
 antallBilerForsinketPerYear =
     Focus.create
         .antallBilerForsinketPerYear
@@ -146,6 +149,7 @@ antallBilerForsinketPerYear =
         )
 
 
+tidsgevinstPerBilSeconds : Focus { b | tidsgevinstPerBilSeconds : a } a
 tidsgevinstPerBilSeconds =
     Focus.create
         .tidsgevinstPerBilSeconds
@@ -156,6 +160,7 @@ tidsgevinstPerBilSeconds =
         )
 
 
+antallPasserendeAvgangerPerYear : Focus { b | antallPasserendeAvgangerPerYear : a } a
 antallPasserendeAvgangerPerYear =
     Focus.create
         .antallPasserendeAvgangerPerYear
@@ -173,6 +178,7 @@ fieldDefinitions =
       , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
       , setter = Focus.set (installationCost => value)
       , accessor = Focus.get (installationCost => value)
+      , focus = specificState => installationCost
       , stepSize = 50000
       }
     , { name = "yearlyMaintenance"
@@ -180,6 +186,7 @@ fieldDefinitions =
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
       , setter = Focus.set (yearlyMaintenance => value)
       , accessor = Focus.get (yearlyMaintenance => value)
+      , focus = specificState => yearlyMaintenance
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
@@ -187,6 +194,7 @@ fieldDefinitions =
       , placeholder = "Passasjerer ombord gjennom krysset"
       , setter = Focus.set (passengersPerYear => value)
       , accessor = Focus.get (passengersPerYear => value)
+      , focus = specificState => passengersPerYear
       , stepSize = 50
       }
     , { name = "antallBilerForsinketPerYear"
@@ -194,6 +202,7 @@ fieldDefinitions =
       , placeholder = "Passerer krysset fra vei som får vikeplikt"
       , setter = Focus.set (antallBilerForsinketPerYear => value)
       , accessor = Focus.get (antallBilerForsinketPerYear => value)
+      , focus = specificState => antallBilerForsinketPerYear
       , stepSize = 1000
       }
     , { name = "forsinkelsePerBilSeconds"
@@ -201,6 +210,7 @@ fieldDefinitions =
       , placeholder = "Når de blir forsinket hvor mange sekunder"
       , setter = Focus.set (forsinkelsePerBilSeconds => value)
       , accessor = Focus.get (forsinkelsePerBilSeconds => value)
+      , focus = specificState => forsinkelsePerBilSeconds
       , stepSize = 1
       }
     , { name = "antallBilerForkjoersrettPerYear"
@@ -208,6 +218,7 @@ fieldDefinitions =
       , placeholder = "Passerer krysset fra vei som får forkjørsrett"
       , setter = Focus.set (antallBilerForkjoersrettPerYear => value)
       , accessor = Focus.get (antallBilerForkjoersrettPerYear => value)
+      , focus = specificState => antallBilerForkjoersrettPerYear
       , stepSize = 1000
       }
     , { name = "tidsgevinstPerBilSeconds"
@@ -215,6 +226,7 @@ fieldDefinitions =
       , placeholder = "Per kjøretøy sekunder"
       , setter = Focus.set (tidsgevinstPerBilSeconds => value)
       , accessor = Focus.get (tidsgevinstPerBilSeconds => value)
+      , focus = specificState => tidsgevinstPerBilSeconds
       , stepSize = 1
       }
     , { name = "antallPasserendeAvgangerPerYear"
@@ -222,27 +234,35 @@ fieldDefinitions =
       , placeholder = "Prioterte avganger per år"
       , setter = Focus.set (antallPasserendeAvgangerPerYear => value)
       , accessor = Focus.get (antallPasserendeAvgangerPerYear => value)
+      , focus = specificState => antallPasserendeAvgangerPerYear
       , stepSize = 1000
       }
     ]
 
 
+specificState : Focus { b | kollektivPrioriteringSkilting : a } a
+specificState =
+    Focus.create
+        .kollektivPrioriteringSkilting
+        (\f tiltakStates ->
+            { tiltakStates
+                | kollektivPrioriteringSkilting =
+                    f tiltakStates.kollektivPrioriteringSkilting
+            }
+        )
+
+
 fields : List Field
 fields =
     let
-        stateMap func tiltakStates =
-            { tiltakStates
-                | kollektivPrioriteringSkilting = func tiltakStates.kollektivPrioriteringSkilting
-            }
-
         updateTiltakStateHelper =
-            TiltakStates.stateUpdateHelper stateMap
+            TiltakStates.stateUpdateHelper (Focus.update specificState)
 
         thisValueHelper =
-            TiltakStates.valueHelper .kollektivPrioriteringSkilting
+            TiltakStates.valueHelper (Focus.get specificState)
     in
         fieldDefinitions
             |> Field.transformToFields
-                stateMap
+                (Focus.update specificState)
                 updateTiltakStateHelper
                 thisValueHelper

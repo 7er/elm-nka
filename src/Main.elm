@@ -53,7 +53,7 @@ init location =
             }
     in
         -- if we had more than one cmd, use Cmd.batch : List Cmd -> Cmd
-        ( model, Cmd.none )
+        ( model, Ports.setTitle (titleFromPage model.page) )
 
 
 subscriptions : Model -> Sub Msg
@@ -84,6 +84,12 @@ update msg model =
 
         UpdateField tiltak field stringValue ->
             updateField model tiltak field stringValue
+
+        FieldBlur field ->
+            ( { model | tiltakStates = field.beDisplayMode model.tiltakStates }, Cmd.none )
+
+        FieldFocus field ->
+            ( { model | tiltakStates = field.beEditMode model.tiltakStates }, Cmd.none )
 
         UpdateBooleanField field booleanValue ->
             Debug.log (toString msg) ( model, Cmd.none )

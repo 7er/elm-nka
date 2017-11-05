@@ -12,3 +12,5 @@ type Msg
     | UpdateField Tiltak Field String
     | UpdateBooleanField Field Bool
     | ChartsChanged (List String)
+    | FieldBlur Field
+    | FieldFocus Field

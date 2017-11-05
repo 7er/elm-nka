@@ -113,6 +113,16 @@ initialState =
     }
 
 
+specificState =
+    Focus.create
+        .kantsteinstopp
+        (\f tiltakStates ->
+            { tiltakStates
+                | kantsteinstopp = f tiltakStates.kantsteinstopp
+            }
+        )
+
+
 fieldDefinitions : List (SimpleField KantsteinstoppState)
 fieldDefinitions =
     let
@@ -139,6 +149,7 @@ fieldDefinitions =
           , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
           , setter = Focus.set (installationCost => value)
           , accessor = Focus.get (installationCost => value)
+          , focus = specificState => installationCost
           , stepSize = 50000
           }
         , { name = "yearlyMaintenance"
@@ -146,6 +157,7 @@ fieldDefinitions =
           , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
           , setter = Focus.set (yearlyMaintenance => value)
           , accessor = Focus.get (yearlyMaintenance => value)
+          , focus = specificState => yearlyMaintenance
           , stepSize = 5000
           }
         , { name = "passengersPerYear"
@@ -153,6 +165,7 @@ fieldDefinitions =
           , placeholder = "Passasjerer per år"
           , setter = Focus.set (passengersPerYear => value)
           , accessor = Focus.get (passengersPerYear => value)
+          , focus = specificState => passengersPerYear
           , stepSize = 1000
           }
         , { name = "antallBilerForsinketPerAvgang"
@@ -160,6 +173,7 @@ fieldDefinitions =
           , placeholder = "Forsinkete biler per avgang"
           , setter = Focus.set (antallBilerForsinketPerAvgang => value)
           , accessor = Focus.get (antallBilerForsinketPerAvgang => value)
+          , focus = specificState => antallBilerForsinketPerAvgang
           , stepSize = 2
           }
         , { name = "antallBussavgangerPerYear"
@@ -167,6 +181,7 @@ fieldDefinitions =
           , placeholder = "Bussavganger per år"
           , setter = Focus.set (antallBussavgangerPerYear => value)
           , accessor = Focus.get (antallBussavgangerPerYear => value)
+          , focus = specificState => antallBussavgangerPerYear
           , stepSize = 1000
           }
         ]
@@ -175,19 +190,14 @@ fieldDefinitions =
 fields : List Field
 fields =
     let
-        stateMap updater tiltakStates =
-            { tiltakStates
-                | kantsteinstopp = updater tiltakStates.kantsteinstopp
-            }
-
         updateTiltakStateHelper =
-            TiltakStates.stateUpdateHelper stateMap
+            TiltakStates.stateUpdateHelper (Focus.update specificState)
 
         thisValueHelper =
-            TiltakStates.valueHelper .kantsteinstopp
+            TiltakStates.valueHelper (Focus.get specificState)
     in
         fieldDefinitions
             |> Field.transformToFields
-                stateMap
+                (Focus.update specificState)
                 updateTiltakStateHelper
                 thisValueHelper

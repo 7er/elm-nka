@@ -94,6 +94,7 @@ fieldDefinitions =
           , placeholder = "kroner per buss per dag"
           , setter = Focus.set (dailyCostPerBus => value)
           , accessor = Focus.get (dailyCostPerBus => value)
+          , focus = specificState => dailyCostPerBus
           , stepSize = 100
           }
         , { name = "numberOfBusesAffected"
@@ -101,6 +102,7 @@ fieldDefinitions =
           , placeholder = "Antallet i bussparken"
           , setter = Focus.set (numberOfBusesAffected => value)
           , accessor = Focus.get (numberOfBusesAffected => value)
+          , focus = specificState => numberOfBusesAffected
           , stepSize = 5000
           }
         , { name = "passengersPerYear"
@@ -108,27 +110,34 @@ fieldDefinitions =
           , placeholder = "Årlige passasjerer ombord på busser med oppgradert renhold"
           , setter = Focus.set (passengersPerYear => value)
           , accessor = Focus.get (passengersPerYear => value)
+          , focus = specificState => passengersPerYear
           , stepSize = 50
           }
         ]
 
 
-fields : List Field
-fields =
-    let
-        stateMap updater tiltakStates =
+specificState : Focus { b | bussrenhold : a } a
+specificState =
+    Focus.create
+        .bussrenhold
+        (\updater tiltakStates ->
             { tiltakStates
                 | bussrenhold = updater tiltakStates.bussrenhold
             }
+        )
 
+
+fields : List Field
+fields =
+    let
         updateTiltakStateHelper =
-            TiltakStates.stateUpdateHelper stateMap
+            TiltakStates.stateUpdateHelper (Focus.update specificState)
 
         thisValueHelper =
             TiltakStates.valueHelper .bussrenhold
     in
         fieldDefinitions
             |> Field.transformToFields
-                stateMap
+                (Focus.update specificState)
                 updateTiltakStateHelper
                 thisValueHelper

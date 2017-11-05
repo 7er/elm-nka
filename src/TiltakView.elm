@@ -2,6 +2,8 @@ module TiltakView exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html
+import Html.Events exposing (onBlur, onFocus)
 import Bootstrap.Form as Form
 import Bootstrap.Form.Checkbox as Checkbox
 import Bootstrap.Form.Input as Input
@@ -75,27 +77,43 @@ tiltakCard model tiltak =
 
 
 fieldView tiltak model ({ name, title, placeholder } as field) =
-    Form.group []
-        [ Form.label [ for name ] [ text title ]
-        , Input.number
-            [ Input.id name
-            , Input.placeholder placeholder
-            , Input.onInput <| UpdateField tiltak field
-            , field.value model.tiltakStates
-                {--
-                    (case field.isEditable model.tiltakStates of
+    let
+        isEditable =
+            field.isEditable model.tiltakStates
+
+        fieldValueString =
+            field.value model.tiltakStates
+                |> (case isEditable of
                         True ->
                             Maybe.map toString
 
                         False ->
                             Maybe.map NumberFormat.pretty
-                    )
--}
-                |> Maybe.map toString
+                   )
                 |> Maybe.withDefault ""
-                |> Input.value
+
+        inputElement =
+            (case isEditable of
+                False ->
+                    Input.text
+
+                True ->
+                    Input.number
+            )
+    in
+        Form.group []
+            [ Form.label [ for name ] [ text title ]
+            , inputElement
+                [ Input.id name
+                , Input.placeholder placeholder
+                , Input.attrs
+                    [ onBlur (FieldBlur field)
+                    , onFocus (FieldFocus field)
+                    ]
+                , Input.onInput <| UpdateField tiltak field
+                , Input.value fieldValueString
+                ]
             ]
-        ]
 
 
 tiltakForm : Tiltak -> Model -> Html Msg
@@ -115,6 +133,9 @@ tiltakForm tiltak model =
                                 , stepSize = 1
                                 , updateValue = \_ state -> state
                                 , value = \_ -> Nothing
+                                , isEditable = \_ -> False
+                                , beDisplayMode = \state -> state
+                                , beEditMode = \state -> state
                                 }
                         , Checkbox.checked False
                         ]

@@ -153,6 +153,7 @@ fieldDefinitions =
           , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
           , setter = Focus.set (installationCost => value)
           , accessor = Focus.get (installationCost => value)
+          , focus = specificState => installationCost
           , stepSize = 50000
           }
         , { name = "yearlyMaintenance"
@@ -160,6 +161,7 @@ fieldDefinitions =
           , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
           , setter = Focus.set (yearlyMaintenance => value)
           , accessor = Focus.get (yearlyMaintenance => value)
+          , focus = specificState => yearlyMaintenance
           , stepSize = 5000
           }
         , { name = "passengersPerYear"
@@ -167,6 +169,7 @@ fieldDefinitions =
           , placeholder = "Passasjerer per år"
           , setter = Focus.set (passengersPerYear => value)
           , accessor = Focus.get (passengersPerYear => value)
+          , focus = specificState => passengersPerYear
           , stepSize = 50
           }
         , { name = "passasjererPerBuss"
@@ -174,6 +177,7 @@ fieldDefinitions =
           , placeholder = "Passasjerer pr buss"
           , setter = Focus.set (passasjererPerBuss => value)
           , accessor = Focus.get (passasjererPerBuss => value)
+          , focus = specificState => passengersPerYear
           , stepSize = 5
           }
         , { name = "yearlyTidsbesparelseMinutter"
@@ -181,6 +185,7 @@ fieldDefinitions =
           , placeholder = "Se forklarende tekst i rapport"
           , setter = Focus.set (yearlyTidsbesparelseMinutter => value)
           , accessor = Focus.get (yearlyTidsbesparelseMinutter => value)
+          , focus = specificState => yearlyTidsbesparelseMinutter
           , stepSize = 1000
           }
         , { name = "passasjererTilpassedeHoldplasserPercent"
@@ -188,27 +193,34 @@ fieldDefinitions =
           , placeholder = "Prosent av passasjerene"
           , setter = Focus.set (passasjererTilpassedeHoldplasserPercent => value)
           , accessor = Focus.get (passasjererTilpassedeHoldplasserPercent => value)
+          , focus = specificState => passasjererTilpassedeHoldplasserPercent
           , stepSize = 1
           }
         ]
 
 
+specificState : Focus.Focus { b | laventrebuss : a } a
+specificState =
+    Focus.create
+        .laventrebuss
+        (\f tiltakStates ->
+            { tiltakStates
+                | laventrebuss = f tiltakStates.laventrebuss
+            }
+        )
+
+
 fields : List Field
 fields =
     let
-        stateMap updater tiltakStates =
-            { tiltakStates
-                | laventrebuss = updater tiltakStates.laventrebuss
-            }
-
         updateTiltakStateHelper =
-            TiltakStates.stateUpdateHelper stateMap
+            TiltakStates.stateUpdateHelper (Focus.update specificState)
 
         thisValueHelper =
-            TiltakStates.valueHelper .laventrebuss
+            TiltakStates.valueHelper (Focus.get specificState)
     in
         fieldDefinitions
             |> Field.transformToFields
-                stateMap
+                (Focus.update specificState)
                 updateTiltakStateHelper
                 thisValueHelper

@@ -14,6 +14,14 @@ type alias FormattedValue valueType =
     }
 
 
+state =
+    Focus.create
+        .state
+        (\f formattedValue ->
+            { formattedValue | state = f formattedValue.state }
+        )
+
+
 formattedValueDefault : FormattedValue a
 formattedValueDefault =
     { value = Nothing

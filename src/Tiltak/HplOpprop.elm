@@ -4,6 +4,7 @@ import Focus exposing (..)
 import TiltakStates
     exposing
         ( HplOppropState
+        , TiltakStates
         , value
         , passengersPerYear
         , formattedValueDefault
@@ -22,24 +23,27 @@ type alias HplOpprop =
     }
 
 
+initialState : HplOppropState
 initialState =
     { passengersPerYear = formattedValueDefault
     , preferredToGraph = ""
     }
 
 
-fieldDefinitions : List (SimpleField HplOppropState)
-fieldDefinitions =
+fieldDefinitions : Focus TiltakStates HplOppropState -> List (SimpleField HplOppropState)
+fieldDefinitions tiltakFocus =
     [ { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
       , placeholder = "Påstigende passasjerer per år"
       , setter = Focus.set (passengersPerYear => value)
       , accessor = Focus.get (passengersPerYear => value)
+      , focus = (tiltakFocus => passengersPerYear)
       , stepSize = 50
       }
     ]
 
 
+specificState : Focus { b | hplOpprop : a } a
 specificState =
     Focus.create
         .hplOpprop
@@ -55,10 +59,9 @@ tiltak =
             BasicTiltak.basicTiltakRecord
 
         simpleTiltak =
-            { stateMap = Focus.update specificState
-            , getter = Focus.get specificState
-            , nytteMultiplikator = verdisettinger.hplOpprop
+            { nytteMultiplikator = verdisettinger.hplOpprop
             , title = "Opprop av neste holdeplass om bord"
+            , focus = specificState
             }
     in
         Tiltak
@@ -66,9 +69,10 @@ tiltak =
                 | title = \_ -> simpleTiltak.title
                 , fields =
                     \_ ->
-                        Field.compileFields simpleTiltak.stateMap
-                            simpleTiltak.getter
-                            fieldDefinitions
+                        Field.compileFields
+                            (Focus.update simpleTiltak.focus)
+                            (Focus.get simpleTiltak.focus)
+                            (fieldDefinitions simpleTiltak.focus)
                 , skyggepris =
                     \this state ->
                         Just 0
