@@ -1,10 +1,22 @@
 module Tiltak.OpphoeyetHoldeplass exposing (..)
 
+import Focus exposing (Focus, (=>))
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (Field, SimpleField)
-import TiltakStates exposing (TiltakStates, OpphoyetHoldeplassState)
+import TiltakStates exposing (TiltakStates, OpphoeyetHoldeplassState)
 import BasicTiltak
 import GeneralForutsetninger
+
+
+specificState : Focus TiltakStates OpphoeyetHoldeplassState
+specificState =
+    Focus.create
+        .opphoeyetHoldeplass
+        (\f tiltakStates ->
+            { tiltakStates
+                | opphoeyetHoldeplass = f tiltakStates.opphoeyetHoldeplass
+            }
+        )
 
 
 yearlyPassasjerNytte : StateCalculationMethod
@@ -17,7 +29,7 @@ yearlyPassasjerNytte this ({ opphoeyetHoldeplass } as state) =
             passengersPerYear * verdisettinger.opphoyetHoldeplass
 
         first =
-            Maybe.map firstCalc opphoeyetHoldeplass.passengersPerYear
+            Maybe.map firstCalc opphoeyetHoldeplass.passengersPerYear.value
 
         secondCalc beleggForbiPassasjererPerBuss aarligTidsbesparelseMinutter =
             beleggForbiPassasjererPerBuss
@@ -27,8 +39,8 @@ yearlyPassasjerNytte this ({ opphoeyetHoldeplass } as state) =
         second =
             Maybe.map2
                 secondCalc
-                opphoeyetHoldeplass.beleggForbiPassasjererPerBuss
-                opphoeyetHoldeplass.aarligTidsbesparelseMinutter
+                opphoeyetHoldeplass.beleggForbiPassasjererPerBuss.value
+                opphoeyetHoldeplass.aarligTidsbesparelseMinutter.value
     in
         Maybe.map2 (+) first second
 
@@ -77,7 +89,7 @@ tiltak =
             }
 
 
-initialState : OpphoyetHoldeplassState
+initialState : OpphoeyetHoldeplassState
 initialState =
     { installationCost = Nothing
     , yearlyMaintenance = Nothing
@@ -89,7 +101,7 @@ initialState =
     }
 
 
-fieldDefinitions : List (SimpleField OpphoyetHoldeplassState)
+fieldDefinitions : List (SimpleField OpphoeyetHoldeplassState)
 fieldDefinitions =
     [ { name = "installationCost"
       , title = "Installasjonskostnad"

@@ -41,14 +41,8 @@ fieldDefinitions =
     , { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
       , placeholder = "Påstigende passasjerer per år"
-      , setter = Focus.set (TiltakStates.passengersPerYear =>
-            (\value state ->
-                { state
-                    | passengersPerYear =
-                        value
-                }
-            )
-      , accessor = .passengersPerYear
+      , setter = Focus.set (TiltakStates.passengersPerYear => TiltakStates.value)
+      , accessor = Focus.get (TiltakStates.passengersPerYear => TiltakStates.value)
       , stepSize = 50
       }
     ]

@@ -39,6 +39,15 @@ yearlyMaintenance =
         )
 
 
+passengersPerYear : Focus { specificState | passengersPerYear : a } a
+passengersPerYear =
+    Focus.create
+        .passengersPerYear
+        (\f specificState ->
+            { specificState | passengersPerYear = f specificState.passengersPerYear }
+        )
+
+
 type alias KollektivPrioriteringLyskryssState =
     { installationCost : FormattedValue Float
     , yearlyMaintenance : FormattedValue Float
@@ -65,7 +74,7 @@ type alias KollektivPrioriteringSkiltingState =
     }
 
 
-type alias OpphoyetHoldeplassState =
+type alias OpphoeyetHoldeplassState =
     { installationCost : FormattedValue Float
     , yearlyMaintenance : FormattedValue Float
     , bompengeAndel : Float
@@ -144,7 +153,7 @@ type alias TiltakStates =
     , avviksinformasjonHoeyttaler : SimpleCommonState
     , alarmsystemPaaHpl : SimpleCommonState
     , kollektivPrioriteringLyskryss : KollektivPrioriteringLyskryssState
-    , opphoeyetHoldeplass : OpphoyetHoldeplassState
+    , opphoeyetHoldeplass : OpphoeyetHoldeplassState
     , renholdPaaHpl : SuperSimpleCommonState
     , fjerningAvIsSnoePaaHpl : SuperSimpleCommonState
     , vektere : SuperSimpleCommonState
