@@ -7,6 +7,7 @@ import Tiltak exposing (TiltakAccessor, sendTo)
 import TiltakCharting
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass exposing (tiltak)
 import TiltakAndGroupData
+import TiltakStates exposing (formattedValue)
 
 
 suite : Test
@@ -18,12 +19,12 @@ suite =
         state =
             { initialState
                 | opphoeyetHoldeplass =
-                    { installationCost = Just 100
-                    , yearlyMaintenance = Just 200
+                    { installationCost = Just 100 |> formattedValue
+                    , yearlyMaintenance = Just 200 |> formattedValue
                     , bompengeAndel = 0.2
-                    , passengersPerYear = Just 10
-                    , beleggForbiPassasjererPerBuss = Just 20
-                    , aarligTidsbesparelseMinutter = Just 30
+                    , passengersPerYear = Just 10 |> formattedValue
+                    , beleggForbiPassasjererPerBuss = Just 20 |> formattedValue
+                    , aarligTidsbesparelseMinutter = Just 30 |> formattedValue
                     , preferredToGraph = ""
                     }
             }

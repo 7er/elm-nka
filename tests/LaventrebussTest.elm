@@ -1,11 +1,11 @@
 module LaventrebussTest exposing (..)
 
-import Expect exposing (Expectation)
 import Test exposing (Test, describe, test, only, skip)
 import TestSupport exposing (..)
 import Tiltak exposing (TiltakAccessor, sendTo)
 import Tiltak.Laventrebuss as Laventrebuss exposing (tiltak)
 import TiltakAndGroupData
+import TiltakStates exposing (formattedValue)
 
 
 suite : Test
@@ -17,13 +17,13 @@ suite =
         state =
             { initialState
                 | laventrebuss =
-                    { installationCost = Just 1
-                    , yearlyMaintenance = Just 2
+                    { installationCost = Just 1 |> formattedValue
+                    , yearlyMaintenance = Just 2 |> formattedValue
                     , bompengeAndel = 0
-                    , passengersPerYear = Just 3
-                    , passasjererPerBuss = Just 4
-                    , yearlyTidsbesparelseMinutter = Just 5
-                    , passasjererTilpassedeHoldplasserPercent = Just 0.06
+                    , passengersPerYear = Just 3 |> formattedValue
+                    , passasjererPerBuss = Just 4 |> formattedValue
+                    , yearlyTidsbesparelseMinutter = Just 5 |> formattedValue
+                    , passasjererTilpassedeHoldplasserPercent = Just 0.06 |> formattedValue
                     , preferredToGraph = ""
                     }
             }

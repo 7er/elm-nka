@@ -3,6 +3,7 @@ module TiltakChartingTest exposing (suite)
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test, only, skip)
 import Tiltak exposing (TiltakAccessor, sendTo)
+import TiltakStates exposing (formattedValue)
 import TiltakCharting
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass exposing (tiltak)
 import TiltakAndGroupData
@@ -18,12 +19,12 @@ suite =
             state =
                 { initialState
                     | opphoeyetHoldeplass =
-                        { installationCost = Just 100
-                        , yearlyMaintenance = Just 200
+                        { installationCost = Just 100 |> formattedValue
+                        , yearlyMaintenance = Just 200 |> formattedValue
                         , bompengeAndel = 0.2
-                        , passengersPerYear = Nothing
-                        , beleggForbiPassasjererPerBuss = Just 20
-                        , aarligTidsbesparelseMinutter = Just 30
+                        , passengersPerYear = Nothing |> formattedValue
+                        , beleggForbiPassasjererPerBuss = Just 20 |> formattedValue
+                        , aarligTidsbesparelseMinutter = Just 30 |> formattedValue
                         , preferredToGraph = "passengersPerYear"
                         }
                 }
@@ -69,7 +70,7 @@ suite =
                                 { state
                                     | opphoeyetHoldeplass =
                                         { opphoeyetHoldeplassFelt
-                                            | passengersPerYear = Just 10
+                                            | passengersPerYear = Just 10 |> formattedValue
                                         }
                                 }
                         in
@@ -85,7 +86,7 @@ suite =
                                 { state
                                     | opphoeyetHoldeplass =
                                         { opphoeyetHoldeplassFelt
-                                            | yearlyMaintenance = Nothing
+                                            | yearlyMaintenance = Nothing |> formattedValue
                                         }
                                 }
                         in

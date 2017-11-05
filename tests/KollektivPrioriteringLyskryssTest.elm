@@ -3,6 +3,7 @@ module KollektivPrioriteringLyskryssTest exposing (suite)
 import Test exposing (Test, describe, test)
 import TestSupport exposing (..)
 import Tiltak
+import TiltakStates exposing (formattedValue)
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import TiltakAndGroupData
 
@@ -17,13 +18,13 @@ suite =
             state =
                 { initialState
                     | kollektivPrioriteringLyskryss =
-                        { installationCost = Just 100
-                        , yearlyMaintenance = Just 200
-                        , passengersPerYear = Just 30
+                        { installationCost = Just 100 |> formattedValue
+                        , yearlyMaintenance = Just 200 |> formattedValue
+                        , passengersPerYear = Just 30 |> formattedValue
                         , bompengeAndel = 0
-                        , antallBilerForsinketPerAvgang = Just 3
-                        , antallPasserendeAvgangerPerYear = Just 1000
-                        , forsinkelsePerBilSeconds = Just 2
+                        , antallBilerForsinketPerAvgang = Just 3 |> formattedValue
+                        , antallPasserendeAvgangerPerYear = Just 1000 |> formattedValue
+                        , forsinkelsePerBilSeconds = Just 2 |> formattedValue
                         , preferredToGraph = ""
                         }
                 }

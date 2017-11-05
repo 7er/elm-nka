@@ -6,6 +6,7 @@ import Test exposing (Test, describe, test)
 import TestSupport exposing (..)
 import GeneralForutsetninger
 import Tiltak
+import TiltakStates exposing (formattedValue)
 import TiltakAndGroupData
 import Models exposing (Group(Holdeplasser))
 
@@ -19,9 +20,9 @@ suite =
         state =
             { initialState
                 | leskurMedSitteplass =
-                    { installationCost = Just 100
-                    , yearlyMaintenance = Just 200
-                    , passengersPerYear = Just 30
+                    { installationCost = Just 100 |> formattedValue
+                    , yearlyMaintenance = Just 200 |> formattedValue
+                    , passengersPerYear = Just 30 |> formattedValue
                     , bompengeAndel = 0.2
                     , preferredToGraph = ""
                     }

@@ -29,6 +29,12 @@ formattedValueDefault =
     }
 
 
+formattedValue value =
+    { value = value
+    , state = Display
+    }
+
+
 value : Focus { formattedValue | value : Maybe a } (Maybe a)
 value =
     Focus.create
