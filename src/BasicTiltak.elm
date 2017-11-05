@@ -2,7 +2,7 @@ module BasicTiltak exposing (..)
 
 import Regex
 import Tiltak exposing (..)
-import TiltakStates exposing (TiltakStates)
+import TiltakStates exposing (TiltakStates, FormattedValue)
 import GeneralForutsetninger
 
 
@@ -133,8 +133,8 @@ investeringsKostInklRestverdi record levetid =
         |> Maybe.map negate
 
 
-driftOgVedlihKost : { a | yearlyMaintenance : Maybe Float } -> Maybe Float
+driftOgVedlihKost : { a | yearlyMaintenance : FormattedValue Float } -> Maybe Float
 driftOgVedlihKost record =
-    record.yearlyMaintenance
+    record.yearlyMaintenance.value
         |> Maybe.map ((*) GeneralForutsetninger.afaktor)
         |> Maybe.map negate

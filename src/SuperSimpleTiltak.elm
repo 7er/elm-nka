@@ -1,6 +1,12 @@
 module SuperSimpleTiltak exposing (..)
 
-import TiltakStates exposing (SimpleCommonState, SuperSimpleCommonState)
+import Focus exposing (Focus, (=>))
+import TiltakStates
+    exposing
+        ( SimpleCommonState
+        , SuperSimpleCommonState
+        , formattedValueDefault
+        )
 import Field exposing (SimpleField)
 import BasicTiltak
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
@@ -16,8 +22,8 @@ type alias SuperSimpleTiltak =
 
 initialState : TiltakStates.SuperSimpleCommonState
 initialState =
-    { yearlyMaintenance = Nothing
-    , passengersPerYear = Nothing
+    { yearlyMaintenance = formattedValueDefault
+    , passengersPerYear = formattedValueDefault
     , bompengeAndel = 0
     , preferredToGraph = ""
     }
@@ -28,19 +34,14 @@ fieldDefinitions =
     [ { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , setter =
-            (\value state ->
-                { state
-                    | yearlyMaintenance = value
-                }
-            )
-      , accessor = .yearlyMaintenance
+      , setter = Focus.set (TiltakStates.yearlyMaintenance => TiltakStates.value)
+      , accessor = Focus.get (TiltakStates.yearlyMaintenance => TiltakStates.value)
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
       , placeholder = "Påstigende passasjerer per år"
-      , setter =
+      , setter = Focus.set (TiltakStates.passengersPerYear =>
             (\value state ->
                 { state
                     | passengersPerYear =
@@ -72,7 +73,7 @@ createTiltak simpleTiltak =
                         sendTo this .skyggeprisHelper state ((simpleTiltak.getter state).bompengeAndel)
                 , yearlyPassasjerNytte =
                     \_ state ->
-                        (simpleTiltak.getter state).passengersPerYear
+                        (simpleTiltak.getter state).passengersPerYear.value
                             |> Maybe.map ((*) simpleTiltak.nytteMultiplikator)
                 , driftOgVedlihKost =
                     \_ state ->

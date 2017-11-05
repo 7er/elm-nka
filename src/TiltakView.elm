@@ -73,39 +73,49 @@ tiltakCard model tiltak =
             }
 
 
+fieldView ({ name, title, placeholder } as field) =
+    Form.group []
+        [ Form.label [ for name ] [ text title ]
+        , Input.number
+            [ Input.id name
+            , Input.placeholder placeholder
+            , Input.onInput <| UpdateField tiltak field
+            , Input.value <|
+                Maybe.withDefault "" <|
+                    (case field.isEditable model.tiltakStates of
+                        Edit ->
+                            Maybe.map toString
+
+                        Display ->
+                            maybePrettyTwoDecimals
+                    )
+                    <|
+                        field.value model.tiltakStates
+            ]
+        ]
+
+
 tiltakForm : Tiltak -> Model -> Html Msg
 tiltakForm tiltak model =
-    let
-        fieldView ({ name, title, placeholder } as field) =
-            Form.group []
-                [ Form.label [ for name ] [ text title ]
-                , Input.number
-                    [ Input.id name
-                    , Input.placeholder placeholder
-                    , Input.onInput <| UpdateField tiltak field
-                    , Input.value <| Maybe.withDefault "" <| Maybe.map toString <| field.value model.tiltakStates
-                    ]
-                ]
-    in
-        Form.form []
-            ((sendTo tiltak .fields |> List.map fieldView)
-                ++ [ Form.group []
-                        [ Form.label [ for "experiment" ] [ text "Eksperiment" ]
-                        , Checkbox.checkbox
-                            [ Checkbox.attrs [ id "experiment" ]
-                            , Checkbox.onCheck <|
-                                UpdateBooleanField
-                                    { name = "eksperiment"
-                                    , title = "Flesk"
-                                    , placeholder = ""
-                                    , updateTiltakState = \_ state -> state
-                                    , stepSize = 1
-                                    , updateValue = \_ state -> state
-                                    , value = \_ -> Nothing
-                                    }
-                            , Checkbox.checked False
-                            ]
-                            "What is the experiment"
+    Form.form []
+        ((sendTo tiltak .fields |> List.map fieldView)
+            ++ [ Form.group []
+                    [ Form.label [ for "experiment" ] [ text "Eksperiment" ]
+                    , Checkbox.checkbox
+                        [ Checkbox.attrs [ id "experiment" ]
+                        , Checkbox.onCheck <|
+                            UpdateBooleanField
+                                { name = "eksperiment"
+                                , title = "Flesk"
+                                , placeholder = ""
+                                , updateTiltakState = \_ state -> state
+                                , stepSize = 1
+                                , updateValue = \_ state -> state
+                                , value = \_ -> Nothing
+                                }
+                        , Checkbox.checked False
                         ]
-                   ]
-            )
+                        "What is the experiment"
+                    ]
+               ]
+        )

@@ -1,94 +1,132 @@
 module TiltakStates exposing (..)
 
+import Focus exposing (Focus)
+
+
+type Editable
+    = Edit
+    | Display
+
+
+type alias FormattedValue valueType =
+    { value : Maybe valueType
+    , state : Editable
+    }
+
+
+formattedValueDefault : FormattedValue a
+formattedValueDefault =
+    { value = Nothing
+    , state = Display
+    }
+
+
+value : Focus { formattedValue | value : Maybe a } (Maybe a)
+value =
+    Focus.create
+        .value
+        (\f formattedValue ->
+            { formattedValue | value = f formattedValue.value }
+        )
+
+
+yearlyMaintenance : Focus { specificState | yearlyMaintenance : a } a
+yearlyMaintenance =
+    Focus.create
+        .yearlyMaintenance
+        (\f specificState ->
+            { specificState | yearlyMaintenance = f specificState.yearlyMaintenance }
+        )
+
 
 type alias KollektivPrioriteringLyskryssState =
-    { installationCost : Maybe Float
-    , yearlyMaintenance : Maybe Float
+    { installationCost : FormattedValue Float
+    , yearlyMaintenance : FormattedValue Float
     , bompengeAndel : Float
-    , passengersPerYear : Maybe Float
-    , antallBilerForsinketPerAvgang : Maybe Float
-    , forsinkelsePerBilSeconds : Maybe Float
-    , antallPasserendeAvgangerPerYear : Maybe Float
+    , passengersPerYear : FormattedValue Float
+    , antallBilerForsinketPerAvgang : FormattedValue Float
+    , forsinkelsePerBilSeconds : FormattedValue Float
+    , antallPasserendeAvgangerPerYear : FormattedValue Float
     , preferredToGraph : String
     }
 
 
 type alias KollektivPrioriteringSkiltingState =
-    { installationCost : Maybe Float
-    , yearlyMaintenance : Maybe Float
-    , passengersPerYear : Maybe Float
+    { installationCost : FormattedValue Float
+    , yearlyMaintenance : FormattedValue Float
+    , passengersPerYear : FormattedValue Float
     , bompengeAndel : Float
-    , antallBilerForsinketPerYear : Maybe Float
-    , forsinkelsePerBilSeconds : Maybe Float
-    , antallBilerForkjoersrettPerYear : Maybe Float
-    , tidsgevinstPerBilSeconds : Maybe Float
-    , antallPasserendeAvgangerPerYear : Maybe Float
+    , antallBilerForsinketPerYear : FormattedValue Float
+    , forsinkelsePerBilSeconds : FormattedValue Float
+    , antallBilerForkjoersrettPerYear : FormattedValue Float
+    , tidsgevinstPerBilSeconds : FormattedValue Float
+    , antallPasserendeAvgangerPerYear : FormattedValue Float
     , preferredToGraph : String
     }
 
 
 type alias OpphoyetHoldeplassState =
-    { installationCost : Maybe Float
-    , yearlyMaintenance : Maybe Float
+    { installationCost : FormattedValue Float
+    , yearlyMaintenance : FormattedValue Float
     , bompengeAndel : Float
-    , passengersPerYear : Maybe Float
-    , beleggForbiPassasjererPerBuss : Maybe Float
-    , aarligTidsbesparelseMinutter : Maybe Float
+    , passengersPerYear : FormattedValue Float
+    , beleggForbiPassasjererPerBuss : FormattedValue Float
+    , aarligTidsbesparelseMinutter : FormattedValue Float
     , preferredToGraph : String
     }
 
 
 type alias SimpleCommonState =
-    { installationCost : Maybe Float
-    , yearlyMaintenance : Maybe Float
-    , passengersPerYear : Maybe Float
+    { installationCost : FormattedValue Float
+    , yearlyMaintenance : FormattedValue Float
+    , passengersPerYear : FormattedValue Float
     , bompengeAndel : Float
     , preferredToGraph : String
     }
 
 
 type alias SuperSimpleCommonState =
-    { yearlyMaintenance : Maybe Float
-    , passengersPerYear : Maybe Float
+    { yearlyMaintenance : FormattedValue Float
+    , passengersPerYear : FormattedValue Float
     , bompengeAndel : Float
     , preferredToGraph : String
     }
 
 
 type alias HplOppropState =
-    { passengersPerYear : Maybe Float
+    { passengersPerYear : FormattedValue Float
     , preferredToGraph : String
     }
 
 
 type alias BussrenholdState =
-    { dailyCostPerBus : Maybe Float
-    , numberOfBusesAffected : Maybe Float
+    { dailyCostPerBus : FormattedValue Float
+    , numberOfBusesAffected : FormattedValue Float
     , bompengeAndel : Float
-    , passengersPerYear : Maybe Float
+    , passengersPerYear : FormattedValue Float
     , preferredToGraph : String
     }
 
 
 type alias LaventrebussState =
-    { installationCost : Maybe Float
-    , yearlyMaintenance : Maybe Float
+    { installationCost : FormattedValue Float
+    , yearlyMaintenance : FormattedValue Float
     , bompengeAndel : Float
-    , passengersPerYear : Maybe Float
-    , passasjererPerBuss : Maybe Float
-    , yearlyTidsbesparelseMinutter : Maybe Float
-    , passasjererTilpassedeHoldplasserPercent : Maybe Float -- bruk Percent type
+    , passengersPerYear : FormattedValue Float
+    , passasjererPerBuss : FormattedValue Float
+    , yearlyTidsbesparelseMinutter : FormattedValue Float
+    , passasjererTilpassedeHoldplasserPercent : FormattedValue Float -- bruk Percent type
     , preferredToGraph : String
     }
 
 
 type alias KantsteinstoppState =
-    { installationCost : Maybe Float
-    , yearlyMaintenance : Maybe Float
+    { installationCost : FormattedValue Float
+    , yearlyMaintenance : FormattedValue Float
     , bompengeAndel : Float
-    , passengersPerYear : Maybe Float
-    , antallBilerForsinketPerAvgang : Maybe Float
-    , antallBussavgangerPerYear : Maybe Float
+    , passengersPerYear : FormattedValue Float
+    , antallBilerForsinketPerAvgang : FormattedValue Float
+    , antallBussavgangerPerYear : FormattedValue Float
     , preferredToGraph : String
     }
 
