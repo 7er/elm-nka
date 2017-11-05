@@ -1,6 +1,6 @@
 module TiltakStates exposing (..)
 
-import Focus exposing (Focus)
+import Focus exposing (Focus, (=>))
 
 
 type Editable
@@ -39,6 +39,14 @@ yearlyMaintenance =
         )
 
 
+yearlyMaintenanceValue =
+    yearlyMaintenance => value
+
+
+passengersPerYearValue =
+    passengersPerYear => value
+
+
 passengersPerYear : Focus { specificState | passengersPerYear : a } a
 passengersPerYear =
     Focus.create
@@ -46,6 +54,19 @@ passengersPerYear =
         (\f specificState ->
             { specificState | passengersPerYear = f specificState.passengersPerYear }
         )
+
+
+installationCost : Focus { specificState | installationCost : a } a
+installationCost =
+    Focus.create
+        .installationCost
+        (\f specificState ->
+            { specificState | installationCost = f specificState.installationCost }
+        )
+
+
+installationCostValue =
+    installationCost => value
 
 
 type alias KollektivPrioriteringLyskryssState =

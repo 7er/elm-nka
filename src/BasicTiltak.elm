@@ -1,8 +1,15 @@
 module BasicTiltak exposing (..)
 
 import Regex
+import Focus exposing ((=>))
 import Tiltak exposing (..)
-import TiltakStates exposing (TiltakStates, FormattedValue)
+import TiltakStates
+    exposing
+        ( TiltakStates
+        , FormattedValue
+        , installationCost
+        , value
+        )
 import GeneralForutsetninger
 
 
@@ -123,12 +130,9 @@ basicTiltakRecord =
     }
 
 
-investeringsKostInklRestverdi :
-    { a | installationCost : Maybe Float }
-    -> Float
-    -> Maybe Float
 investeringsKostInklRestverdi record levetid =
-    record.installationCost
+    record
+        |> Focus.get (installationCost => value)
         |> Maybe.map ((*) <| GeneralForutsetninger.investeringsFaktor levetid)
         |> Maybe.map negate
 

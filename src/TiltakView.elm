@@ -12,6 +12,7 @@ import Msgs exposing (Msg(..))
 import Tiltak exposing (Tiltak, sendTo)
 import AnalyseView
 import TiltakCharting exposing (GraphState(..))
+import NumberFormat
 
 
 chart : Model -> Tiltak -> Html Msg
@@ -73,7 +74,7 @@ tiltakCard model tiltak =
             }
 
 
-fieldView ({ name, title, placeholder } as field) =
+fieldView tiltak model ({ name, title, placeholder } as field) =
     Form.group []
         [ Form.label [ for name ] [ text title ]
         , Input.number
@@ -83,11 +84,11 @@ fieldView ({ name, title, placeholder } as field) =
             , Input.value <|
                 Maybe.withDefault "" <|
                     (case field.isEditable model.tiltakStates of
-                        Edit ->
+                        True ->
                             Maybe.map toString
 
-                        Display ->
-                            maybePrettyTwoDecimals
+                        False ->
+                            Maybe.map NumberFormat.pretty
                     )
                     <|
                         field.value model.tiltakStates
@@ -98,7 +99,7 @@ fieldView ({ name, title, placeholder } as field) =
 tiltakForm : Tiltak -> Model -> Html Msg
 tiltakForm tiltak model =
     Form.form []
-        ((sendTo tiltak .fields |> List.map fieldView)
+        ((sendTo tiltak .fields |> List.map (fieldView tiltak model))
             ++ [ Form.group []
                     [ Form.label [ for "experiment" ] [ text "Eksperiment" ]
                     , Checkbox.checkbox

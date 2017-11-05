@@ -11,6 +11,7 @@ type alias Field =
     , updateValue : Float -> TiltakStates -> TiltakStates
     , stepSize : Float
     , value : TiltakStates -> Maybe Float
+    , isEditable : TiltakStates -> Bool
     }
 
 
