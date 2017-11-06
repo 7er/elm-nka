@@ -276,7 +276,8 @@ Dette er mer komplekst, har 2 sett med forutsetninger
 
         Kjoeremateriell ->
             [ Bussrenhold.tiltak
-            , Laventrebuss.tiltak
+
+            -- buggy percent, issue #36 , Laventrebuss.tiltak
             ]
 
         StrekningOgFramkommelighet ->
