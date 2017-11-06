@@ -218,6 +218,11 @@ appFooter =
                     ]
                     []
                 ]
-            , div [ class "colophon" ] [ text "Utvikling og design Syver Enstad & Thomas Flemming" ]
+            , div [ class "colophon" ]
+                [ text "Utvikling og design "
+                , a [ href "https://github.com/7er" ]
+                    [ text "Syver Enstad" ]
+                , text " & Thomas Flemming"
+                ]
             ]
         ]
