@@ -283,7 +283,8 @@ Dette er mer komplekst, har 2 sett med forutsetninger
         StrekningOgFramkommelighet ->
             [ Kantsteinstopp.tiltak
             , KollektivPrioriteringLyskryss.tiltak
-            , KollektivPrioriteringSkilting.tiltak
+
+            -- buggy kalkulasjoner, issue #30 , KollektivPrioriteringSkilting.tiltak
             ]
 
         Tilgjengelighet ->
