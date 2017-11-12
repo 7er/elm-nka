@@ -68,6 +68,7 @@ groupPanel group =
                     [ img
                         [ class "groupIcon"
                         , Assets.src (groupIcon group)
+                        , alt ""
                         ]
                         []
                     , div
@@ -79,6 +80,7 @@ groupPanel group =
                     , img
                         [ Assets.src Assets.caretRight
                         , class "caretRight"
+                        , alt ""
                         ]
                         []
                     ]
@@ -177,6 +179,7 @@ pageGroup group model =
                     [ img
                         [ class "groupIcon"
                         , Assets.src (groupIcon group)
+                        , alt ""
                         ]
                         []
                     ]
@@ -222,7 +225,9 @@ appFooter =
                 [ text "Utvikling og design "
                 , a [ href "https://github.com/7er" ]
                     [ text "Syver Enstad" ]
-                , text " & Thomas Flemming"
+                , text " & "
+                , a [ href "https://github.com/thomasfl" ]
+                    [ text "Thomas Flemming" ]
                 ]
             ]
         ]
