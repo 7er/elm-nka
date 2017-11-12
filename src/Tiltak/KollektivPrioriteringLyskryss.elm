@@ -213,18 +213,5 @@ fieldDefinitions =
 
 fields : List Field
 fields =
-    let
-        stateMap =
-            Focus.update specificState
-
-        updateTiltakStateHelper =
-            TiltakStates.stateUpdateHelper stateMap
-
-        thisValueHelper =
-            TiltakStates.valueHelper (Focus.get specificState)
-    in
-        fieldDefinitions
-            |> Field.transformToFields
-                stateMap
-                updateTiltakStateHelper
-                thisValueHelper
+    fieldDefinitions
+        |> Field.transformToFields

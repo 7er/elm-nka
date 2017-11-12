@@ -1,7 +1,7 @@
 module Field exposing (..)
 
 import Focus exposing (Focus, (=>))
-import TiltakStates exposing (TiltakStates, StateMap, FormattedValue, Editable(..), state)
+import TiltakStates exposing (TiltakStates, FormattedValue, Editable(..), state, value)
 
 
 type alias Field =
@@ -38,16 +38,8 @@ type alias FieldValue =
     String
 
 
-transformToFields :
-    StateMap specificState
-    ->
-        ((String -> specificState -> specificState)
-         -> (String -> TiltakStates -> TiltakStates)
-        )
-    -> ((specificState -> Maybe Float) -> (TiltakStates -> Maybe Float))
-    -> List (SimpleField specificState)
-    -> List Field
-transformToFields stateMap updateTiltakStateHelper valueHelper fieldDefinitions =
+transformToFields : List (SimpleField specificState) -> List Field
+transformToFields fieldDefinitions =
     let
         toRealField simpleField =
             { name = simpleField.name
@@ -69,45 +61,17 @@ transformToFields stateMap updateTiltakStateHelper valueHelper fieldDefinitions 
                 \tiltakStates ->
                     Focus.set (simpleField.focus => state) Edit tiltakStates
             , updateTiltakState =
-                updateTiltakStateHelper
-                    (\stringValue state ->
-                        let
-                            pipeline =
-                                String.toFloat stringValue
-                                    |> Result.toMaybe
-                                    |> simpleField.setter
-                        in
-                            pipeline state
-                    )
+                \stringValue tiltakStates ->
+                    let
+                        maybeValue =
+                            stringValue |> String.toFloat |> Result.toMaybe
+                    in
+                        Focus.set (simpleField.focus => value) maybeValue tiltakStates
             , updateValue =
-                \value tiltakStates ->
-                    tiltakStates
-                        |> stateMap
-                            (\specificState ->
-                                simpleField.setter (Just value) specificState
-                            )
-            , value = valueHelper simpleField.accessor
+                \val tiltakStates ->
+                    Focus.set (simpleField.focus => value) (Just val) tiltakStates
+            , value = Focus.get (simpleField.focus => value)
             }
     in
         fieldDefinitions
             |> List.map toRealField
-
-
-compileFields :
-    StateMap specificState
-    -> (TiltakStates -> specificState)
-    -> List (SimpleField specificState)
-    -> List Field
-compileFields stateMap stateGetter fieldDefinitions =
-    let
-        updateTiltakStateHelper =
-            TiltakStates.stateUpdateHelper stateMap
-
-        thisValueHelper =
-            TiltakStates.valueHelper stateGetter
-    in
-        fieldDefinitions
-            |> transformToFields
-                stateMap
-                updateTiltakStateHelper
-                thisValueHelper

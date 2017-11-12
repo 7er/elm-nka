@@ -190,31 +190,3 @@ type alias TiltakStates =
     , laventrebuss : LaventrebussState
     , kantsteinstopp : KantsteinstoppState
     }
-
-
-type alias Setter specificState =
-    String -> specificState -> specificState
-
-
-type alias StateMap specificState =
-    (specificState -> specificState) -> TiltakStates -> TiltakStates
-
-
-stateUpdateHelper :
-    StateMap specificState
-    -> Setter specificState
-    -> String
-    -> TiltakStates
-    -> TiltakStates
-stateUpdateHelper stateMap setter stringValue tiltakStates =
-    tiltakStates
-        |> stateMap (\specificState -> setter stringValue specificState)
-
-
-valueHelper :
-    (TiltakStates -> specificState)
-    -> (specificState -> Maybe a)
-    -> TiltakStates
-    -> Maybe a
-valueHelper getSpecificState func states =
-    getSpecificState states |> func

@@ -254,15 +254,5 @@ specificState =
 
 fields : List Field
 fields =
-    let
-        updateTiltakStateHelper =
-            TiltakStates.stateUpdateHelper (Focus.update specificState)
-
-        thisValueHelper =
-            TiltakStates.valueHelper (Focus.get specificState)
-    in
-        fieldDefinitions
-            |> Field.transformToFields
-                (Focus.update specificState)
-                updateTiltakStateHelper
-                thisValueHelper
+    fieldDefinitions
+        |> Field.transformToFields

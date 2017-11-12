@@ -64,9 +64,7 @@ createTiltak simpleTiltak =
                 | title = \_ -> simpleTiltak.title
                 , fields =
                     \_ ->
-                        Field.compileFields
-                            (Focus.update simpleTiltak.focus)
-                            (Focus.get simpleTiltak.focus)
+                        Field.transformToFields
                             (fieldDefinitions simpleTiltak.focus)
                 , skyggepris =
                     \this state ->

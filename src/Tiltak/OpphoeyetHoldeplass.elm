@@ -177,10 +177,3 @@ fields : List Field
 fields =
     fieldDefinitions
         |> Field.transformToFields
-            (Focus.update specificState)
-            (TiltakStates.stateUpdateHelper
-                (Focus.update specificState)
-            )
-            (TiltakStates.valueHelper
-                (Focus.get specificState)
-            )

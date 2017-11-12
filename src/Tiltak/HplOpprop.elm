@@ -15,14 +15,6 @@ import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
 import GeneralForutsetninger exposing (verdisettinger)
 
 
-type alias HplOpprop =
-    { getter : TiltakStates.TiltakStates -> HplOppropState
-    , nytteMultiplikator : Float
-    , stateMap : TiltakStates.StateMap HplOppropState
-    , title : String
-    }
-
-
 initialState : HplOppropState
 initialState =
     { passengersPerYear = formattedValueDefault
@@ -69,9 +61,7 @@ tiltak =
                 | title = \_ -> simpleTiltak.title
                 , fields =
                     \_ ->
-                        Field.compileFields
-                            (Focus.update simpleTiltak.focus)
-                            (Focus.get simpleTiltak.focus)
+                        Field.transformToFields
                             (fieldDefinitions simpleTiltak.focus)
                 , skyggepris =
                     \this state ->
