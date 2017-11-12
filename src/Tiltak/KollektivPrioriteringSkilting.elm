@@ -171,69 +171,53 @@ antallPasserendeAvgangerPerYear =
         )
 
 
-fieldDefinitions : List (SimpleField KollektivPrioriteringSkiltingState)
+fieldDefinitions : List SimpleField
 fieldDefinitions =
     [ { name = "installationCost"
       , title = "Installasjonskostnad"
       , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-      , setter = Focus.set (installationCost => value)
-      , accessor = Focus.get (installationCost => value)
       , focus = specificState => installationCost
       , stepSize = 50000
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , setter = Focus.set (yearlyMaintenance => value)
-      , accessor = Focus.get (yearlyMaintenance => value)
       , focus = specificState => yearlyMaintenance
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer ombord per år"
       , placeholder = "Passasjerer ombord gjennom krysset"
-      , setter = Focus.set (passengersPerYear => value)
-      , accessor = Focus.get (passengersPerYear => value)
       , focus = specificState => passengersPerYear
       , stepSize = 50
       }
     , { name = "antallBilerForsinketPerYear"
       , title = "Antall forsinkete biler per år"
       , placeholder = "Passerer krysset fra vei som får vikeplikt"
-      , setter = Focus.set (antallBilerForsinketPerYear => value)
-      , accessor = Focus.get (antallBilerForsinketPerYear => value)
       , focus = specificState => antallBilerForsinketPerYear
       , stepSize = 1000
       }
     , { name = "forsinkelsePerBilSeconds"
       , title = "Sekunder forsinkelse per kjøretøy"
       , placeholder = "Når de blir forsinket hvor mange sekunder"
-      , setter = Focus.set (forsinkelsePerBilSeconds => value)
-      , accessor = Focus.get (forsinkelsePerBilSeconds => value)
       , focus = specificState => forsinkelsePerBilSeconds
       , stepSize = 1
       }
     , { name = "antallBilerForkjoersrettPerYear"
       , title = "Antall biler som får forkjørsrett per år"
       , placeholder = "Passerer krysset fra vei som får forkjørsrett"
-      , setter = Focus.set (antallBilerForkjoersrettPerYear => value)
-      , accessor = Focus.get (antallBilerForkjoersrettPerYear => value)
       , focus = specificState => antallBilerForkjoersrettPerYear
       , stepSize = 1000
       }
     , { name = "tidsgevinstPerBilSeconds"
       , title = "Sekunder tidsgevinst per kjøretøy"
       , placeholder = "Per kjøretøy sekunder"
-      , setter = Focus.set (tidsgevinstPerBilSeconds => value)
-      , accessor = Focus.get (tidsgevinstPerBilSeconds => value)
       , focus = specificState => tidsgevinstPerBilSeconds
       , stepSize = 1
       }
     , { name = "antallPasserendeAvgangerPerYear"
       , title = "Avganger som passererer krysset med prioritering"
       , placeholder = "Prioterte avganger per år"
-      , setter = Focus.set (antallPasserendeAvgangerPerYear => value)
-      , accessor = Focus.get (antallPasserendeAvgangerPerYear => value)
       , focus = specificState => antallPasserendeAvgangerPerYear
       , stepSize = 1000
       }

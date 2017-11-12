@@ -68,7 +68,7 @@ initialState =
     }
 
 
-fieldDefinitions : List (SimpleField BussrenholdState)
+fieldDefinitions : List SimpleField
 fieldDefinitions =
     let
         dailyCostPerBus =
@@ -92,24 +92,18 @@ fieldDefinitions =
         [ { name = "dailyCostPerBus"
           , title = "Kostnad per buss per dag"
           , placeholder = "kroner per buss per dag"
-          , setter = Focus.set (dailyCostPerBus => value)
-          , accessor = Focus.get (dailyCostPerBus => value)
           , focus = specificState => dailyCostPerBus
           , stepSize = 100
           }
         , { name = "numberOfBusesAffected"
           , title = "Antall busser som tiltaker gjelder"
           , placeholder = "Antallet i bussparken"
-          , setter = Focus.set (numberOfBusesAffected => value)
-          , accessor = Focus.get (numberOfBusesAffected => value)
           , focus = specificState => numberOfBusesAffected
           , stepSize = 5000
           }
         , { name = "passengersPerYear"
           , title = "Antall passasjerer per år på busser som omfattes av tiltaket"
           , placeholder = "Årlige passasjerer ombord på busser med oppgradert renhold"
-          , setter = Focus.set (passengersPerYear => value)
-          , accessor = Focus.get (passengersPerYear => value)
           , focus = specificState => passengersPerYear
           , stepSize = 50
           }

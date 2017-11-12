@@ -32,21 +32,17 @@ initialState =
     }
 
 
-fieldDefinitions : Focus TiltakStates SuperSimpleCommonState -> List (SimpleField SuperSimpleCommonState)
+fieldDefinitions : Focus TiltakStates SuperSimpleCommonState -> List SimpleField
 fieldDefinitions tiltakFocus =
     [ { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , setter = Focus.set (yearlyMaintenance => value)
-      , accessor = Focus.get (yearlyMaintenance => value)
       , focus = (tiltakFocus => yearlyMaintenance)
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
       , placeholder = "Påstigende passasjerer per år"
-      , setter = Focus.set (passengersPerYear => value)
-      , accessor = Focus.get (passengersPerYear => value)
       , focus = (tiltakFocus => passengersPerYear)
       , stepSize = 50
       }

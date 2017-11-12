@@ -120,26 +120,28 @@ tiltakForm : Tiltak -> Model -> Html Msg
 tiltakForm tiltak model =
     Form.form []
         ((sendTo tiltak .fields |> List.map (fieldView tiltak model))
-            ++ [ Form.group []
-                    [ Form.label [ for "experiment" ] [ text "Eksperiment" ]
-                    , Checkbox.checkbox
-                        [ Checkbox.attrs [ id "experiment" ]
-                        , Checkbox.onCheck <|
-                            UpdateBooleanField
-                                { name = "eksperiment"
-                                , title = "Flesk"
-                                , placeholder = ""
-                                , updateTiltakState = \_ state -> state
-                                , stepSize = 1
-                                , updateValue = \_ state -> state
-                                , value = \_ -> Nothing
-                                , isEditable = \_ -> False
-                                , beDisplayMode = \state -> state
-                                , beEditMode = \state -> state
-                                }
-                        , Checkbox.checked False
-                        ]
-                        "What is the experiment"
-                    ]
-               ]
+         {- ++ [ Form.group []
+                 [ Form.label [ for "experiment" ] [ text "Eksperiment" ]
+                 , Checkbox.checkbox
+                     [ Checkbox.attrs [ id "experiment" ]
+                     , Checkbox.onCheck <|
+                         UpdateBooleanField
+                             { name = "eksperiment"
+                             , title = "Flesk"
+                             , placeholder = ""
+                             , updateTiltakState = \_ state -> state
+                             , stepSize = 1
+                             , updateValue = \_ state -> state
+                             , value = \_ -> Nothing
+                             , isEditable = \_ -> False
+                             , beDisplayMode = \state -> state
+                             , beEditMode = \state -> state
+                             , focus = Focus.create .hplOpprop (\f tiltakStates -> { tiltakStates | hplOpprop = f tiltakStates.hplOpprop })
+                             }
+                     , Checkbox.checked False
+                     ]
+                     "What is the experiment"
+                 ]
+            ]
+         -}
         )

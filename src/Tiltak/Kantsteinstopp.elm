@@ -123,7 +123,7 @@ specificState =
         )
 
 
-fieldDefinitions : List (SimpleField KantsteinstoppState)
+fieldDefinitions : List SimpleField
 fieldDefinitions =
     let
         antallBilerForsinketPerAvgang =
@@ -147,40 +147,30 @@ fieldDefinitions =
         [ { name = "installationCost"
           , title = "Installasjonskostnad"
           , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-          , setter = Focus.set (installationCost => value)
-          , accessor = Focus.get (installationCost => value)
           , focus = specificState => installationCost
           , stepSize = 50000
           }
         , { name = "yearlyMaintenance"
           , title = "Årlige drifts- og vedlikeholdskostnader"
           , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-          , setter = Focus.set (yearlyMaintenance => value)
-          , accessor = Focus.get (yearlyMaintenance => value)
           , focus = specificState => yearlyMaintenance
           , stepSize = 5000
           }
         , { name = "passengersPerYear"
           , title = "Antall passasjerer om bord og på holdeplass per år"
           , placeholder = "Passasjerer per år"
-          , setter = Focus.set (passengersPerYear => value)
-          , accessor = Focus.get (passengersPerYear => value)
           , focus = specificState => passengersPerYear
           , stepSize = 1000
           }
         , { name = "antallBilerForsinketPerAvgang"
           , title = "Antall biler som forsinkes per avgang"
           , placeholder = "Forsinkete biler per avgang"
-          , setter = Focus.set (antallBilerForsinketPerAvgang => value)
-          , accessor = Focus.get (antallBilerForsinketPerAvgang => value)
           , focus = specificState => antallBilerForsinketPerAvgang
           , stepSize = 2
           }
         , { name = "antallBussavgangerPerYear"
           , title = "Antall bussavganger som bruker holdeplassen per år"
           , placeholder = "Bussavganger per år"
-          , setter = Focus.set (antallBussavgangerPerYear => value)
-          , accessor = Focus.get (antallBussavgangerPerYear => value)
           , focus = specificState => antallBussavgangerPerYear
           , stepSize = 1000
           }

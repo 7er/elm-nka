@@ -15,18 +15,14 @@ type alias Field =
     , isEditable : TiltakStates -> Bool
     , beDisplayMode : TiltakStates -> TiltakStates
     , beEditMode : TiltakStates -> TiltakStates
+    , focus : Focus TiltakStates (FormattedValue Float)
     }
 
 
-type alias SimpleField stateType =
+type alias SimpleField =
     { name : String
     , title : String
     , placeholder : String
-    , setter :
-        Maybe Float
-        -> stateType
-        -> stateType
-    , accessor : stateType -> Maybe Float
     , stepSize : Float
 
     -- focus for TiltakStates to fields value
@@ -38,7 +34,7 @@ type alias FieldValue =
     String
 
 
-transformToFields : List (SimpleField specificState) -> List Field
+transformToFields : List SimpleField -> List Field
 transformToFields fieldDefinitions =
     let
         toRealField simpleField =
@@ -46,6 +42,7 @@ transformToFields fieldDefinitions =
             , title = simpleField.title
             , placeholder = simpleField.placeholder
             , stepSize = simpleField.stepSize
+            , focus = simpleField.focus
             , isEditable =
                 \tiltakStates ->
                     case Focus.get (simpleField.focus => state) tiltakStates of

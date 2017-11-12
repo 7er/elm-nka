@@ -11,7 +11,7 @@ import TiltakStates
         )
 import Field exposing (SimpleField)
 import BasicTiltak
-import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
+import Tiltak exposing (Tiltak(..))
 import GeneralForutsetninger exposing (verdisettinger)
 
 
@@ -22,13 +22,11 @@ initialState =
     }
 
 
-fieldDefinitions : Focus TiltakStates HplOppropState -> List (SimpleField HplOppropState)
+fieldDefinitions : Focus TiltakStates HplOppropState -> List SimpleField
 fieldDefinitions tiltakFocus =
     [ { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
       , placeholder = "Påstigende passasjerer per år"
-      , setter = Focus.set (passengersPerYear => value)
-      , accessor = Focus.get (passengersPerYear => value)
       , focus = (tiltakFocus => passengersPerYear)
       , stepSize = 50
       }

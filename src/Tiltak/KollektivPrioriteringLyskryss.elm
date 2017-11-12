@@ -158,53 +158,41 @@ antallPasserendeAvgangerPerYear =
         )
 
 
-fieldDefinitions : List (SimpleField KollektivPrioriteringLyskryssState)
+fieldDefinitions : List SimpleField
 fieldDefinitions =
     [ { name = "installationCost"
       , title = "Installasjonskostnad"
       , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-      , setter = Focus.set (installationCost => value)
-      , accessor = Focus.get (installationCost => value)
       , focus = specificState => installationCost
       , stepSize = 50000
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , setter = Focus.set (yearlyMaintenance => value)
-      , accessor = Focus.get (yearlyMaintenance => value)
       , focus = specificState => yearlyMaintenance
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer ombord per år"
       , placeholder = "Passasjerer ombord"
-      , setter = Focus.set (passengersPerYear => value)
-      , accessor = Focus.get (passengersPerYear => value)
       , focus = specificState => passengersPerYear
       , stepSize = 50
       }
     , { name = "antallBilerForsinketPerAvgang"
       , title = "Antall forsinkete biler per avgang"
       , placeholder = "Forsinkete biler på den kryssende veien"
-      , setter = Focus.set (antallBilerForsinketPerAvgang => value)
-      , accessor = Focus.get (antallBilerForsinketPerAvgang => value)
       , focus = specificState => antallBilerForsinketPerAvgang
       , stepSize = 1
       }
     , { name = "forsinkelsePerBilSeconds"
       , title = "Sekunder forsinkelse per bil"
       , placeholder = "Når de blir forsinket hvor mange sekunder"
-      , setter = Focus.set (forsinkelsePerBilSeconds => value)
-      , accessor = Focus.get (forsinkelsePerBilSeconds => value)
       , focus = specificState => forsinkelsePerBilSeconds
       , stepSize = 1
       }
     , { name = "antallPasserendeAvgangerPerYear"
       , title = "Avganger som passererer krysset"
       , placeholder = "Antall passerende avganger per år"
-      , setter = Focus.set (antallPasserendeAvgangerPerYear => value)
-      , accessor = Focus.get (antallPasserendeAvgangerPerYear => value)
       , focus = specificState => antallPasserendeAvgangerPerYear
       , stepSize = 1000
       }
