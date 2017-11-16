@@ -1,9 +1,10 @@
 module TiltakCharting exposing (..)
 
+import Focus exposing ((=>))
 import Charting
 import Tiltak exposing (Tiltak, sendTo)
 import Field exposing (Field)
-import TiltakStates exposing (TiltakStates)
+import TiltakStates exposing (TiltakStates, value)
 
 
 type GraphState
@@ -66,24 +67,20 @@ graphDataForField :
     -> List ( Float, Float )
 graphDataForField tiltak state field =
     let
+        stateFrom x =
+            Focus.set (field.focus => value) (Just x) state
+
         generateData x =
-            let
-                newState =
-                    field.updateValue x state
-            in
-                sendTo tiltak .nettoNytte newState |> Maybe.map (\y -> ( x, y ))
+            sendTo tiltak .nettoNytte (stateFrom x)
+                |> Maybe.map (\y -> ( x, y ))
 
         sampleFunc x =
-            let
-                newState =
-                    field.updateValue x state
-            in
-                case sendTo tiltak .nettoNytte newState of
-                    Just value ->
-                        value
+            case sendTo tiltak .nettoNytte (stateFrom x) of
+                Just value ->
+                    value
 
-                    Nothing ->
-                        Debug.crash "nettoNytte gave Nothing"
+                Nothing ->
+                    Debug.crash "nettoNytte gave Nothing"
     in
         Charting.samples field.stepSize sampleFunc
             |> List.map generateData

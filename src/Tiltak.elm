@@ -41,6 +41,10 @@ type alias StateCalculationMethod =
 -}
 
 
+type alias BompengeAndelField =
+    {}
+
+
 type alias TiltakRecord =
     { title : Tiltak -> String
     , fields : Tiltak -> List Field
@@ -59,6 +63,7 @@ type alias TiltakRecord =
     , investeringsKostInklRestverdi : StateCalculationMethod
     , graphId : Tiltak -> String
     , domId : Tiltak -> String
+    , maybeBompengeAndelField : Maybe BompengeAndelField
     }
 
 
@@ -69,6 +74,10 @@ type alias TiltakAccessor a =
 sendTo : Tiltak -> TiltakAccessor a -> a
 sendTo ((Tiltak object) as this) recordAccessor =
     recordAccessor object this
+
+
+getAttr (Tiltak object) accessor =
+    accessor object
 
 
 bindTiltak : Tiltak -> a -> (TiltakAccessor (a -> b) -> b)

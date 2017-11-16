@@ -3,13 +3,14 @@ module Main exposing (main)
 import Navigation exposing (Location)
 import Bootstrap.Accordion as Accordion
 import UrlParser exposing ((</>))
+import Focus exposing ((=>))
 import Models exposing (..)
 import Msgs exposing (Msg(..))
 import Group
 import Tiltak exposing (Tiltak, sendTo)
 import Field exposing (Field)
 import TiltakCharting exposing (GraphState(..))
-import TiltakStates exposing (TiltakStates)
+import TiltakStates exposing (TiltakStates, value)
 import TiltakAndGroupData
 import Views exposing (view)
 import Ports
@@ -91,8 +92,8 @@ update msg model =
         FieldFocus field ->
             ( { model | tiltakStates = field.beEditMode model.tiltakStates }, Cmd.none )
 
-        UpdateBooleanField field booleanValue ->
-            Debug.log (toString msg) ( model, Cmd.none )
+        UpdateBompengeAndel tiltak boolean ->
+            Debug.log ("boolean was " ++ toString (boolean)) ( model, Cmd.none )
 
         ChartsChanged chartIds ->
             ( { model | chartIds = chartIds }, Cmd.none )
@@ -184,8 +185,11 @@ updateField model tiltak field stringValue =
         newGraphState =
             TiltakCharting.graphState tiltak newTiltakStates
 
+        maybeValue =
+            stringValue |> String.toFloat |> Result.toMaybe
+
         newTiltakStates =
-            field.updateTiltakState stringValue model.tiltakStates
+            Focus.set (field.focus => value) maybeValue model.tiltakStates
     in
         ( { model
             | tiltakStates = newTiltakStates

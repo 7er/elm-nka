@@ -127,6 +127,7 @@ basicTiltakRecord =
     , investeringsKostInklRestverdi = \_ _ -> Nothing
     , graphId = \this -> sendTo this .domId |> (++) "c3graph"
     , domId = \this -> sendTo this .title |> toDomId
+    , maybeBompengeAndelField = Just {}
     }
 
 

@@ -8,8 +8,8 @@ type alias Field =
     { name : String
     , title : String
     , placeholder : String
-    , updateTiltakState : String -> TiltakStates -> TiltakStates
-    , updateValue : Float -> TiltakStates -> TiltakStates
+
+    --    , updateValue : Float -> TiltakStates -> TiltakStates
     , stepSize : Float
     , value : TiltakStates -> Maybe Float
     , isEditable : TiltakStates -> Bool
@@ -57,16 +57,6 @@ transformToFields fieldDefinitions =
             , beEditMode =
                 \tiltakStates ->
                     Focus.set (simpleField.focus => state) Edit tiltakStates
-            , updateTiltakState =
-                \stringValue tiltakStates ->
-                    let
-                        maybeValue =
-                            stringValue |> String.toFloat |> Result.toMaybe
-                    in
-                        Focus.set (simpleField.focus => value) maybeValue tiltakStates
-            , updateValue =
-                \val tiltakStates ->
-                    Focus.set (simpleField.focus => value) (Just val) tiltakStates
             , value = Focus.get (simpleField.focus => value)
             }
     in

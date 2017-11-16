@@ -10,7 +10,7 @@ type Msg
     = UrlChange Location
     | AccordionMsg Accordion.State
     | UpdateField Tiltak Field String
-    | UpdateBooleanField Field Bool
+    | UpdateBompengeAndel Tiltak Bool
     | ChartsChanged (List String)
     | FieldBlur Field
     | FieldFocus Field

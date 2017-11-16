@@ -15,6 +15,7 @@ import Tiltak exposing (Tiltak, sendTo)
 import AnalyseView
 import TiltakCharting exposing (GraphState(..))
 import NumberFormat
+import Field exposing (Field)
 
 
 chart : Model -> Tiltak -> Html Msg
@@ -76,6 +77,11 @@ tiltakCard model tiltak =
             }
 
 
+fieldView :
+    Tiltak
+    -> Model
+    -> Field
+    -> Html Msg
 fieldView tiltak model ({ name, title, placeholder } as field) =
     let
         isEditable =
@@ -118,30 +124,28 @@ fieldView tiltak model ({ name, title, placeholder } as field) =
 
 tiltakForm : Tiltak -> Model -> Html Msg
 tiltakForm tiltak model =
-    Form.form []
-        ((sendTo tiltak .fields |> List.map (fieldView tiltak model))
-         {- ++ [ Form.group []
-                 [ Form.label [ for "experiment" ] [ text "Eksperiment" ]
-                 , Checkbox.checkbox
-                     [ Checkbox.attrs [ id "experiment" ]
-                     , Checkbox.onCheck <|
-                         UpdateBooleanField
-                             { name = "eksperiment"
-                             , title = "Flesk"
-                             , placeholder = ""
-                             , updateTiltakState = \_ state -> state
-                             , stepSize = 1
-                             , updateValue = \_ state -> state
-                             , value = \_ -> Nothing
-                             , isEditable = \_ -> False
-                             , beDisplayMode = \state -> state
-                             , beEditMode = \state -> state
-                             , focus = Focus.create .hplOpprop (\f tiltakStates -> { tiltakStates | hplOpprop = f tiltakStates.hplOpprop })
-                             }
-                     , Checkbox.checked False
-                     ]
-                     "What is the experiment"
-                 ]
-            ]
-         -}
-        )
+    let
+        maybeBompengeField =
+            Tiltak.getAttr tiltak .maybeBompengeAndelField
+
+        bompengeFieldOrEmpty =
+            case maybeBompengeField of
+                Just bompengeField ->
+                    [ Form.group []
+                        [ Form.label [ for "bompenger" ] [ text "Er tiltaket dekket av bompenger" ]
+                        , Checkbox.checkbox
+                            [ Checkbox.attrs [ id "bompenger" ]
+                            , Checkbox.onCheck (UpdateBompengeAndel tiltak)
+                            , Checkbox.checked False
+                            ]
+                            "The checkbox for bompenger"
+                        ]
+                    ]
+
+                Nothing ->
+                    []
+    in
+        Form.form []
+            ((sendTo tiltak .fields |> List.map (fieldView tiltak model))
+                ++ bompengeFieldOrEmpty
+            )
