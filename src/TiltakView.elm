@@ -132,13 +132,14 @@ tiltakForm tiltak model =
             case maybeBompengeField of
                 Just bompengeField ->
                     [ Form.group []
-                        [ Form.label [ for "bompenger" ] [ text "Er tiltaket dekket av bompenger" ]
-                        , Checkbox.checkbox
+                        [ Form.label [ for "bompenger" ]
+                            [ text "Bompengefinansiering av kostnadene" ]
+                        , Checkbox.custom
                             [ Checkbox.attrs [ id "bompenger" ]
                             , Checkbox.onCheck (UpdateBompengeAndel tiltak)
                             , Checkbox.checked False
                             ]
-                            "The checkbox for bompenger"
+                            "Tiltaket er finansiert med bompenger"
                         ]
                     ]
 
