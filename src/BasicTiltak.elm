@@ -3,10 +3,10 @@ module BasicTiltak exposing (..)
 import Regex
 import Focus exposing ((=>))
 import Tiltak exposing (..)
-import TiltakStates
+import TiltakStates exposing (TiltakStates)
+import FormattedValue
     exposing
-        ( TiltakStates
-        , FormattedValue
+        ( FormattedValue
         , installationCost
         , value
         , bompengeAndel
@@ -109,9 +109,6 @@ skyggeprisHelper this state bompengeAndel =
             |> Maybe.map calculation
 
 
-basicTiltakRecord :
-    Focus.Focus TiltakStates { b | bompengeAndel : Float }
-    -> TiltakRecord
 basicTiltakRecord specificStateFocus =
     { title = \_ -> "Basic tiltak"
     , fields = \_ -> []

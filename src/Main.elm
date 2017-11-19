@@ -8,9 +8,8 @@ import Models exposing (..)
 import Msgs exposing (Msg(..))
 import Group
 import Tiltak exposing (Tiltak, sendTo)
-import Field exposing (Field)
 import TiltakCharting exposing (GraphState(..))
-import TiltakStates exposing (TiltakStates, value)
+import FormattedValue exposing (value)
 import TiltakAndGroupData
 import Views exposing (view)
 import Ports
@@ -151,7 +150,6 @@ pageFromLocation location =
     decode location |> Maybe.withDefault NotFound
 
 
-computeGraphCmd : Tiltak -> TiltakStates -> ( GraphState, GraphState ) -> Cmd Msg
 computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
     let
         graphId =

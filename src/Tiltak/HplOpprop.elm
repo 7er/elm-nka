@@ -1,11 +1,10 @@
 module Tiltak.HplOpprop exposing (..)
 
 import Focus exposing (..)
-import TiltakStates
+import SpecificStates exposing (HplOppropState)
+import FormattedValue
     exposing
-        ( HplOppropState
-        , TiltakStates
-        , value
+        ( value
         , passengersPerYear
         , formattedValueDefault
         )
@@ -23,7 +22,6 @@ initialState =
     }
 
 
-fieldDefinitions : Focus TiltakStates HplOppropState -> List SimpleField
 fieldDefinitions tiltakFocus =
     [ { name = "passengersPerYear"
       , title = "Antall passasjerer per år"

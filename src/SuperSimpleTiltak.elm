@@ -1,12 +1,15 @@
 module SuperSimpleTiltak exposing (..)
 
 import Focus exposing (Focus, (=>))
-import TiltakStates
+import TiltakStates exposing (TiltakStates)
+import SpecificStates
     exposing
         ( SimpleCommonState
         , SuperSimpleCommonState
-        , TiltakStates
-        , formattedValueDefault
+        )
+import FormattedValue
+    exposing
+        ( formattedValueDefault
         , passengersPerYear
         , yearlyMaintenance
         , value
@@ -16,14 +19,14 @@ import BasicTiltak
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, bindTiltak, sendTo)
 
 
-type alias SuperSimpleTiltak =
+type alias SuperSimpleTiltak a =
     { nytteMultiplikator : Float
-    , focus : Focus TiltakStates SuperSimpleCommonState
+    , focus : Focus a SuperSimpleCommonState
     , title : String
     }
 
 
-initialState : TiltakStates.SuperSimpleCommonState
+initialState : SuperSimpleCommonState
 initialState =
     { yearlyMaintenance = formattedValueDefault
     , passengersPerYear = formattedValueDefault
@@ -49,7 +52,6 @@ fieldDefinitions tiltakFocus =
     ]
 
 
-createTiltak : SuperSimpleTiltak -> Tiltak
 createTiltak simpleTiltak =
     let
         basicTiltakRecord =

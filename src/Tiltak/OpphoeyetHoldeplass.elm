@@ -3,11 +3,10 @@ module Tiltak.OpphoeyetHoldeplass exposing (..)
 import Focus exposing (Focus, (=>))
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (Field, SimpleField)
-import TiltakStates
+import SpecificStates exposing (OpphoeyetHoldeplassState)
+import FormattedValue
     exposing
-        ( TiltakStates
-        , OpphoeyetHoldeplassState
-        , formattedValueDefault
+        ( formattedValueDefault
         , installationCost
         , yearlyMaintenance
         , passengersPerYear
@@ -17,7 +16,12 @@ import BasicTiltak
 import GeneralForutsetninger
 
 
-specificState : Focus TiltakStates OpphoeyetHoldeplassState
+specificState :
+    Focus
+        { tiltakStates
+            | opphoeyetHoldeplass : OpphoeyetHoldeplassState
+        }
+        OpphoeyetHoldeplassState
 specificState =
     Focus.create
         .opphoeyetHoldeplass

@@ -3,11 +3,10 @@ module Tiltak.Kantsteinstopp exposing (..)
 import Focus exposing ((=>))
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (Field, SimpleField)
-import TiltakStates
+import SpecificStates exposing (KantsteinstoppState)
+import FormattedValue
     exposing
-        ( TiltakStates
-        , KantsteinstoppState
-        , installationCost
+        ( installationCost
         , value
         , yearlyMaintenance
         , passengersPerYear

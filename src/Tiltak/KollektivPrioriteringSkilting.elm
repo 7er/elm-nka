@@ -4,10 +4,10 @@ import Focus exposing (..)
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (SimpleField, Field)
 import BasicTiltak
-import TiltakStates
+import SpecificStates exposing (KollektivPrioriteringSkiltingState)
+import FormattedValue
     exposing
-        ( KollektivPrioriteringSkiltingState
-        , formattedValueDefault
+        ( formattedValueDefault
         , installationCost
         , value
         , yearlyMaintenance

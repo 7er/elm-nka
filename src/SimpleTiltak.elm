@@ -1,11 +1,11 @@
 module SimpleTiltak exposing (..)
 
 import Focus exposing (..)
-import TiltakStates
+import TiltakStates exposing (TiltakStates)
+import SpecificStates exposing (SimpleCommonState)
+import FormattedValue
     exposing
-        ( SimpleCommonState
-        , TiltakStates
-        , formattedValueDefault
+        ( formattedValueDefault
         , installationCost
         , value
         , yearlyMaintenance
@@ -25,7 +25,7 @@ type alias SimpleTiltak =
     }
 
 
-initialState : TiltakStates.SimpleCommonState
+initialState : SimpleCommonState
 initialState =
     { installationCost = formattedValueDefault
     , yearlyMaintenance = formattedValueDefault

@@ -1,22 +1,17 @@
 module Field exposing (..)
 
 import Focus exposing (Focus, (=>))
-import TiltakStates exposing (TiltakStates, FormattedValue, Editable(..), state, value)
+
+
+-- import TiltakStates exposing (TiltakStates)
+
+import FormattedValue exposing (FormattedValue, Editable(..), state, value)
+import TiltakStates exposing (TiltakStates)
+import Models
 
 
 type alias Field =
-    { name : String
-    , title : String
-    , placeholder : String
-
-    --    , updateValue : Float -> TiltakStates -> TiltakStates
-    , stepSize : Float
-    , value : TiltakStates -> Maybe Float
-    , isEditable : TiltakStates -> Bool
-    , beDisplayMode : TiltakStates -> TiltakStates
-    , beEditMode : TiltakStates -> TiltakStates
-    , focus : Focus TiltakStates (FormattedValue Float)
-    }
+    Models.Field
 
 
 type alias SimpleField =

@@ -3,11 +3,10 @@ module Tiltak.Laventrebuss exposing (..)
 import Focus exposing ((=>))
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (Field, SimpleField)
-import TiltakStates
+import SpecificStates exposing (LaventrebussState)
+import FormattedValue
     exposing
-        ( TiltakStates
-        , LaventrebussState
-        , formattedValueDefault
+        ( formattedValueDefault
         , installationCost
         , yearlyMaintenance
         , value

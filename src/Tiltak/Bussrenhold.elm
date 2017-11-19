@@ -3,11 +3,10 @@ module Tiltak.Bussrenhold exposing (..)
 import Focus exposing (..)
 import Tiltak exposing (Tiltak(..), StateCalculationMethod, sendTo)
 import Field exposing (Field, SimpleField)
-import TiltakStates
+import SpecificStates exposing (BussrenholdState)
+import FormattedValue
     exposing
-        ( TiltakStates
-        , BussrenholdState
-        , value
+        ( value
         , passengersPerYear
         , formattedValueDefault
         )

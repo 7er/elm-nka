@@ -3,8 +3,7 @@ module TiltakCharting exposing (..)
 import Focus exposing ((=>))
 import Charting
 import Tiltak exposing (Tiltak, sendTo)
-import Field exposing (Field)
-import TiltakStates exposing (TiltakStates, value)
+import FormattedValue exposing (value)
 
 
 type GraphState
@@ -12,10 +11,6 @@ type GraphState
     | GraphOn
 
 
-chartRecord :
-    Tiltak
-    -> TiltakStates
-    -> { data : List ( Float, Float ), domId : String, variableTitle : String }
 chartRecord tiltak tiltakStates =
     { domId = sendTo tiltak .graphId
     , data = graphData tiltak tiltakStates
@@ -26,7 +21,6 @@ chartRecord tiltak tiltakStates =
     }
 
 
-maybeFieldToGraph : Tiltak -> TiltakStates -> Maybe Field
 maybeFieldToGraph tiltak state =
     let
         filterFunc field =
@@ -53,18 +47,12 @@ maybeFieldToGraph tiltak state =
                 Nothing
 
 
-graphState : Tiltak -> TiltakStates -> GraphState
 graphState tiltak state =
     maybeFieldToGraph tiltak state
         |> Maybe.map (always GraphOn)
         |> Maybe.withDefault GraphOff
 
 
-graphDataForField :
-    Tiltak
-    -> TiltakStates
-    -> Field
-    -> List ( Float, Float )
 graphDataForField tiltak state field =
     let
         stateFrom x =
@@ -87,7 +75,6 @@ graphDataForField tiltak state field =
             |> List.filterMap identity
 
 
-graphData : Tiltak -> TiltakStates -> List ( Float, Float )
 graphData tiltak state =
     let
         maybeField =
