@@ -5,7 +5,7 @@ import TestSupport exposing (..)
 import Tiltak exposing (TiltakAccessor, sendTo)
 import Tiltak.Laventrebuss as Laventrebuss exposing (tiltak)
 import TiltakAndGroupData
-import TiltakStates exposing (formattedValue)
+import FormattedValue exposing (formattedValue)
 
 
 suite : Test

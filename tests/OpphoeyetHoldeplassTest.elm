@@ -7,7 +7,7 @@ import Tiltak exposing (TiltakAccessor, sendTo)
 import TiltakCharting
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass exposing (tiltak)
 import TiltakAndGroupData
-import TiltakStates exposing (formattedValue)
+import FormattedValue exposing (formattedValue)
 
 
 suite : Test

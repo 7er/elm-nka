@@ -5,7 +5,7 @@ import Test exposing (Test, describe, test)
 import TestSupport exposing (..)
 import GeneralForutsetninger
 import Tiltak
-import TiltakStates exposing (formattedValue)
+import FormattedValue exposing (formattedValue)
 import TiltakAndGroupData
 import Models exposing (Group(Holdeplasser))
 

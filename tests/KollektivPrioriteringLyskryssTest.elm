@@ -3,7 +3,7 @@ module KollektivPrioriteringLyskryssTest exposing (suite)
 import Test exposing (Test, describe, test)
 import TestSupport exposing (..)
 import Tiltak
-import TiltakStates exposing (formattedValue)
+import FormattedValue exposing (formattedValue)
 import Tiltak.KollektivPrioriteringLyskryss as KollektivPrioriteringLyskryss
 import TiltakAndGroupData
 

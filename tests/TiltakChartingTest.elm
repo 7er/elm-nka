@@ -3,7 +3,7 @@ module TiltakChartingTest exposing (suite)
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test, only, skip)
 import Tiltak exposing (TiltakAccessor, sendTo)
-import TiltakStates exposing (formattedValue)
+import FormattedValue exposing (formattedValue)
 import TiltakCharting
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass exposing (tiltak)
 import TiltakAndGroupData
