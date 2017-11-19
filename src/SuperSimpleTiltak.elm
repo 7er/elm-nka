@@ -53,7 +53,7 @@ createTiltak : SuperSimpleTiltak -> Tiltak
 createTiltak simpleTiltak =
     let
         basicTiltakRecord =
-            BasicTiltak.basicTiltakRecord
+            BasicTiltak.basicTiltakRecord simpleTiltak.focus
     in
         Tiltak
             { basicTiltakRecord

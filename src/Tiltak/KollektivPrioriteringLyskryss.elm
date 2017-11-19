@@ -29,7 +29,7 @@ tidsbesparelsePerAvgangSeconds =
 yearlyPassasjerNytte : StateCalculationMethod
 yearlyPassasjerNytte this tiltakStates =
     tiltakStates
-        |> Focus.get (specificState => passengersPerYear => value)
+        |> Focus.get (specificStateFocus => passengersPerYear => value)
         |> Maybe.map
             (\passengersPerYear ->
                 (tidsbesparelsePerAvgangSeconds / 60)
@@ -85,7 +85,7 @@ tiltak : Tiltak
 tiltak =
     let
         basicTiltakRecord =
-            BasicTiltak.basicTiltakRecord
+            BasicTiltak.basicTiltakRecord specificStateFocus
     in
         Tiltak
             { basicTiltakRecord
@@ -113,8 +113,8 @@ initialState =
     }
 
 
-specificState : Focus { b | kollektivPrioriteringLyskryss : a } a
-specificState =
+specificStateFocus : Focus { b | kollektivPrioriteringLyskryss : a } a
+specificStateFocus =
     Focus.create
         .kollektivPrioriteringLyskryss
         (\f tiltakStates ->
@@ -163,37 +163,37 @@ fieldDefinitions =
     [ { name = "installationCost"
       , title = "Installasjonskostnad"
       , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-      , focus = specificState => installationCost
+      , focus = specificStateFocus => installationCost
       , stepSize = 50000
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , focus = specificState => yearlyMaintenance
+      , focus = specificStateFocus => yearlyMaintenance
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer ombord per år"
       , placeholder = "Passasjerer ombord"
-      , focus = specificState => passengersPerYear
+      , focus = specificStateFocus => passengersPerYear
       , stepSize = 50
       }
     , { name = "antallBilerForsinketPerAvgang"
       , title = "Antall forsinkete biler per avgang"
       , placeholder = "Forsinkete biler på den kryssende veien"
-      , focus = specificState => antallBilerForsinketPerAvgang
+      , focus = specificStateFocus => antallBilerForsinketPerAvgang
       , stepSize = 1
       }
     , { name = "forsinkelsePerBilSeconds"
       , title = "Sekunder forsinkelse per bil"
       , placeholder = "Når de blir forsinket hvor mange sekunder"
-      , focus = specificState => forsinkelsePerBilSeconds
+      , focus = specificStateFocus => forsinkelsePerBilSeconds
       , stepSize = 1
       }
     , { name = "antallPasserendeAvgangerPerYear"
       , title = "Avganger som passererer krysset"
       , placeholder = "Antall passerende avganger per år"
-      , focus = specificState => antallPasserendeAvgangerPerYear
+      , focus = specificStateFocus => antallPasserendeAvgangerPerYear
       , stepSize = 1000
       }
     ]

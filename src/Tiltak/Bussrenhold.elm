@@ -29,7 +29,7 @@ tiltak : Tiltak
 tiltak =
     let
         basicTiltakRecord =
-            BasicTiltak.basicTiltakRecord
+            BasicTiltak.basicTiltakRecord specificStateFocus
     in
         Tiltak
             { basicTiltakRecord
@@ -92,26 +92,26 @@ fieldDefinitions =
         [ { name = "dailyCostPerBus"
           , title = "Kostnad per buss per dag"
           , placeholder = "kroner per buss per dag"
-          , focus = specificState => dailyCostPerBus
+          , focus = specificStateFocus => dailyCostPerBus
           , stepSize = 100
           }
         , { name = "numberOfBusesAffected"
           , title = "Antall busser som tiltaker gjelder"
           , placeholder = "Antallet i bussparken"
-          , focus = specificState => numberOfBusesAffected
+          , focus = specificStateFocus => numberOfBusesAffected
           , stepSize = 5000
           }
         , { name = "passengersPerYear"
           , title = "Antall passasjerer per år på busser som omfattes av tiltaket"
           , placeholder = "Årlige passasjerer ombord på busser med oppgradert renhold"
-          , focus = specificState => passengersPerYear
+          , focus = specificStateFocus => passengersPerYear
           , stepSize = 50
           }
         ]
 
 
-specificState : Focus { b | bussrenhold : a } a
-specificState =
+specificStateFocus : Focus { b | bussrenhold : a } a
+specificStateFocus =
     Focus.create
         .bussrenhold
         (\updater tiltakStates ->

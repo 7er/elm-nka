@@ -125,28 +125,19 @@ fieldView tiltak model ({ name, title, placeholder } as field) =
 tiltakForm : Tiltak -> Model -> Html Msg
 tiltakForm tiltak model =
     let
-        maybeBompengeField =
-            Tiltak.getAttr tiltak .maybeBompengeAndelField
-
-        bompengeFieldOrEmpty =
-            case maybeBompengeField of
-                Just bompengeField ->
-                    [ Form.group []
-                        [ Form.label [ for "bompenger" ]
-                            [ text "Bompengefinansiering av kostnadene" ]
-                        , Checkbox.custom
-                            [ Checkbox.attrs [ id "bompenger" ]
-                            , Checkbox.onCheck (UpdateBompengeAndel tiltak)
-                            , Checkbox.checked False
-                            ]
-                            "Tiltaket er finansiert med bompenger"
-                        ]
+        bompengeAndelView =
+            Form.group []
+                [ Form.label [ for "bompenger" ]
+                    [ text "Bompengefinansiering av kostnadene" ]
+                , Checkbox.custom
+                    [ Checkbox.attrs [ id "bompenger" ]
+                    , Checkbox.onCheck <| UpdateBompengeAndel tiltak
+                    , Checkbox.checked <| Tiltak.bompengeAndelBool tiltak model.tiltakStates
                     ]
-
-                Nothing ->
-                    []
+                    "Tiltaket er finansiert med bompenger"
+                ]
     in
         Form.form []
             ((sendTo tiltak .fields |> List.map (fieldView tiltak model))
-                ++ bompengeFieldOrEmpty
+                ++ [ bompengeAndelView ]
             )

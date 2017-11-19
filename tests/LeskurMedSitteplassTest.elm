@@ -1,7 +1,6 @@
 module LeskurMedSitteplassTest exposing (..)
 
--- import Expect exposing (Expectation)
-
+import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
 import TestSupport exposing (..)
 import GeneralForutsetninger
@@ -87,5 +86,22 @@ suite =
                     "nettoNytte"
                     .nettoNytte
                     (closeTo -580.44 2)
+                ]
+            , describe
+                "bompengeAndel"
+                [ test "updateBompengeAndel True" <|
+                    \() ->
+                        let
+                            newState =
+                                Tiltak.updateBompengeAndel tiltak True state
+                        in
+                            newState.leskurMedSitteplass.bompengeAndel |> Expect.equal 1
+                , test "updateBompengeAndel False" <|
+                    \() ->
+                        let
+                            newState =
+                                Tiltak.updateBompengeAndel tiltak False state
+                        in
+                            newState.leskurMedSitteplass.bompengeAndel |> Expect.equal 0
                 ]
             ]

@@ -93,7 +93,12 @@ update msg model =
             ( { model | tiltakStates = field.beEditMode model.tiltakStates }, Cmd.none )
 
         UpdateBompengeAndel tiltak boolean ->
-            Debug.log ("boolean was " ++ toString (boolean)) ( model, Cmd.none )
+            ( { model
+                | tiltakStates =
+                    Tiltak.updateBompengeAndel tiltak boolean model.tiltakStates
+              }
+            , Cmd.none
+            )
 
         ChartsChanged chartIds ->
             ( { model | chartIds = chartIds }, Cmd.none )

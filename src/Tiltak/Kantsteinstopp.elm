@@ -74,7 +74,7 @@ tiltak : Tiltak
 tiltak =
     let
         basicTiltakRecord =
-            BasicTiltak.basicTiltakRecord
+            BasicTiltak.basicTiltakRecord specificStateFocus
     in
         Tiltak
             { basicTiltakRecord
@@ -113,7 +113,8 @@ initialState =
     }
 
 
-specificState =
+specificStateFocus : Focus.Focus { b | kantsteinstopp : a } a
+specificStateFocus =
     Focus.create
         .kantsteinstopp
         (\f tiltakStates ->
@@ -147,31 +148,31 @@ fieldDefinitions =
         [ { name = "installationCost"
           , title = "Installasjonskostnad"
           , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-          , focus = specificState => installationCost
+          , focus = specificStateFocus => installationCost
           , stepSize = 50000
           }
         , { name = "yearlyMaintenance"
           , title = "Årlige drifts- og vedlikeholdskostnader"
           , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-          , focus = specificState => yearlyMaintenance
+          , focus = specificStateFocus => yearlyMaintenance
           , stepSize = 5000
           }
         , { name = "passengersPerYear"
           , title = "Antall passasjerer om bord og på holdeplass per år"
           , placeholder = "Passasjerer per år"
-          , focus = specificState => passengersPerYear
+          , focus = specificStateFocus => passengersPerYear
           , stepSize = 1000
           }
         , { name = "antallBilerForsinketPerAvgang"
           , title = "Antall biler som forsinkes per avgang"
           , placeholder = "Forsinkete biler per avgang"
-          , focus = specificState => antallBilerForsinketPerAvgang
+          , focus = specificStateFocus => antallBilerForsinketPerAvgang
           , stepSize = 2
           }
         , { name = "antallBussavgangerPerYear"
           , title = "Antall bussavganger som bruker holdeplassen per år"
           , placeholder = "Bussavganger per år"
-          , focus = specificState => antallBussavgangerPerYear
+          , focus = specificStateFocus => antallBussavgangerPerYear
           , stepSize = 1000
           }
         ]

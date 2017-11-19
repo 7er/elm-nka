@@ -71,6 +71,14 @@ installationCost =
         )
 
 
+bompengeAndel =
+    Focus.create
+        .bompengeAndel
+        (\f specificState ->
+            { specificState | bompengeAndel = f specificState.bompengeAndel }
+        )
+
+
 installationCostValue =
     installationCost => value
 
@@ -132,6 +140,7 @@ type alias SuperSimpleCommonState =
 type alias HplOppropState =
     { passengersPerYear : FormattedValue Float
     , preferredToGraph : String
+    , bompengeAndel : Float -- spuriøs, ingen kostnader her
     }
 
 

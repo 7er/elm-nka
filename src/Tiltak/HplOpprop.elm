@@ -19,6 +19,7 @@ initialState : HplOppropState
 initialState =
     { passengersPerYear = formattedValueDefault
     , preferredToGraph = ""
+    , bompengeAndel = 0 -- dette er tull HplOpprop har ikke bompenge andel
     }
 
 
@@ -46,7 +47,7 @@ tiltak : Tiltak
 tiltak =
     let
         basicTiltakRecord =
-            BasicTiltak.basicTiltakRecord
+            BasicTiltak.basicTiltakRecord specificState
 
         simpleTiltak =
             { nytteMultiplikator = verdisettinger.hplOpprop

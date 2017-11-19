@@ -72,7 +72,7 @@ tiltak : Tiltak
 tiltak =
     let
         basicTiltakRecord =
-            BasicTiltak.basicTiltakRecord
+            BasicTiltak.basicTiltakRecord specificState
     in
         Tiltak
             { basicTiltakRecord

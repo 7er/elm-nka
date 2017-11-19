@@ -9,6 +9,7 @@ import TiltakStates
         , FormattedValue
         , installationCost
         , value
+        , bompengeAndel
         )
 import GeneralForutsetninger
 
@@ -108,8 +109,10 @@ skyggeprisHelper this state bompengeAndel =
             |> Maybe.map calculation
 
 
-basicTiltakRecord : TiltakRecord
-basicTiltakRecord =
+basicTiltakRecord :
+    Focus.Focus TiltakStates { b | bompengeAndel : Float }
+    -> TiltakRecord
+basicTiltakRecord specificStateFocus =
     { title = \_ -> "Basic tiltak"
     , fields = \_ -> []
     , passasjerNytte = passasjerNytte
@@ -127,19 +130,25 @@ basicTiltakRecord =
     , investeringsKostInklRestverdi = \_ _ -> Nothing
     , graphId = \this -> sendTo this .domId |> (++) "c3graph"
     , domId = \this -> sendTo this .title |> toDomId
-    , maybeBompengeAndelField = Just {}
+    , bompengeAndelField = { focus = (specificStateFocus => bompengeAndel) }
     }
 
 
-investeringsKostInklRestverdi record levetid =
-    record
+investeringsKostInklRestverdi :
+    { specificState
+        | installationCost : FormattedValue Float
+    }
+    -> Float
+    -> Maybe Float
+investeringsKostInklRestverdi specificState levetid =
+    specificState
         |> Focus.get (installationCost => value)
         |> Maybe.map ((*) <| GeneralForutsetninger.investeringsFaktor levetid)
         |> Maybe.map negate
 
 
-driftOgVedlihKost : { a | yearlyMaintenance : FormattedValue Float } -> Maybe Float
-driftOgVedlihKost record =
-    record.yearlyMaintenance.value
+driftOgVedlihKost : { specificState | yearlyMaintenance : FormattedValue Float } -> Maybe Float
+driftOgVedlihKost specificState =
+    specificState.yearlyMaintenance.value
         |> Maybe.map ((*) GeneralForutsetninger.afaktor)
         |> Maybe.map negate

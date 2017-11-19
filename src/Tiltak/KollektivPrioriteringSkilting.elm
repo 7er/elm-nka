@@ -86,7 +86,7 @@ tiltak : Tiltak
 tiltak =
     let
         basicTiltakRecord =
-            BasicTiltak.basicTiltakRecord
+            BasicTiltak.basicTiltakRecord specificStateFocus
     in
         Tiltak
             { basicTiltakRecord
@@ -176,56 +176,56 @@ fieldDefinitions =
     [ { name = "installationCost"
       , title = "Installasjonskostnad"
       , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
-      , focus = specificState => installationCost
+      , focus = specificStateFocus => installationCost
       , stepSize = 50000
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
       , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
-      , focus = specificState => yearlyMaintenance
+      , focus = specificStateFocus => yearlyMaintenance
       , stepSize = 5000
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer ombord per år"
       , placeholder = "Passasjerer ombord gjennom krysset"
-      , focus = specificState => passengersPerYear
+      , focus = specificStateFocus => passengersPerYear
       , stepSize = 50
       }
     , { name = "antallBilerForsinketPerYear"
       , title = "Antall forsinkete biler per år"
       , placeholder = "Passerer krysset fra vei som får vikeplikt"
-      , focus = specificState => antallBilerForsinketPerYear
+      , focus = specificStateFocus => antallBilerForsinketPerYear
       , stepSize = 1000
       }
     , { name = "forsinkelsePerBilSeconds"
       , title = "Sekunder forsinkelse per kjøretøy"
       , placeholder = "Når de blir forsinket hvor mange sekunder"
-      , focus = specificState => forsinkelsePerBilSeconds
+      , focus = specificStateFocus => forsinkelsePerBilSeconds
       , stepSize = 1
       }
     , { name = "antallBilerForkjoersrettPerYear"
       , title = "Antall biler som får forkjørsrett per år"
       , placeholder = "Passerer krysset fra vei som får forkjørsrett"
-      , focus = specificState => antallBilerForkjoersrettPerYear
+      , focus = specificStateFocus => antallBilerForkjoersrettPerYear
       , stepSize = 1000
       }
     , { name = "tidsgevinstPerBilSeconds"
       , title = "Sekunder tidsgevinst per kjøretøy"
       , placeholder = "Per kjøretøy sekunder"
-      , focus = specificState => tidsgevinstPerBilSeconds
+      , focus = specificStateFocus => tidsgevinstPerBilSeconds
       , stepSize = 1
       }
     , { name = "antallPasserendeAvgangerPerYear"
       , title = "Avganger som passererer krysset med prioritering"
       , placeholder = "Prioterte avganger per år"
-      , focus = specificState => antallPasserendeAvgangerPerYear
+      , focus = specificStateFocus => antallPasserendeAvgangerPerYear
       , stepSize = 1000
       }
     ]
 
 
-specificState : Focus { b | kollektivPrioriteringSkilting : a } a
-specificState =
+specificStateFocus : Focus { b | kollektivPrioriteringSkilting : a } a
+specificStateFocus =
     Focus.create
         .kollektivPrioriteringSkilting
         (\f tiltakStates ->

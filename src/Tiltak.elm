@@ -1,5 +1,6 @@
 module Tiltak exposing (..)
 
+import Focus exposing (Focus)
 import TiltakStates exposing (TiltakStates)
 import Field exposing (Field)
 
@@ -42,7 +43,7 @@ type alias StateCalculationMethod =
 
 
 type alias BompengeAndelField =
-    {}
+    { focus : Focus TiltakStates Float }
 
 
 type alias TiltakRecord =
@@ -63,7 +64,7 @@ type alias TiltakRecord =
     , investeringsKostInklRestverdi : StateCalculationMethod
     , graphId : Tiltak -> String
     , domId : Tiltak -> String
-    , maybeBompengeAndelField : Maybe BompengeAndelField
+    , bompengeAndelField : BompengeAndelField
     }
 
 
@@ -76,6 +77,7 @@ sendTo ((Tiltak object) as this) recordAccessor =
     recordAccessor object this
 
 
+getAttr : Tiltak -> (TiltakRecord -> a) -> a
 getAttr (Tiltak object) accessor =
     accessor object
 
@@ -108,3 +110,37 @@ analyse tiltak tiltakStates =
                 (f .nettoNytte)
                 (f .kostUtenSkyggepris)
         }
+
+
+updateBompengeAndel : Tiltak -> Bool -> TiltakStates -> TiltakStates
+updateBompengeAndel tiltak boolValue tiltakStates =
+    let
+        field =
+            getAttr tiltak .bompengeAndelField
+
+        value =
+            case boolValue of
+                True ->
+                    1
+
+                False ->
+                    0
+    in
+        Focus.set field.focus value tiltakStates
+
+
+bompengeAndelBool : Tiltak -> TiltakStates -> Bool
+bompengeAndelBool tiltak tiltakStates =
+    let
+        field =
+            getAttr tiltak .bompengeAndelField
+    in
+        case Focus.get field.focus tiltakStates of
+            1 ->
+                True
+
+            0 ->
+                False
+
+            _ ->
+                Debug.log "Ouch" False
