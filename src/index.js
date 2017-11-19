@@ -84,6 +84,10 @@ function updateChart(chart, realData, variableTitle) {
 app.ports.updateC3.subscribe(function (object) {
   console.log('update', object);
   var chart = charts[object.domId];
+  if (!chart) {
+    console.log('the chart', object.domId, 'is gone');
+    return;
+  }
   updateChart(chart, object.data, object.variableTitle);  
 });
 
