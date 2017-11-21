@@ -47,6 +47,39 @@ maybeFieldToGraph tiltak state =
                 Nothing
 
 
+possibleFieldNamesToGraph tiltak state =
+    let
+        filterFunc field =
+            case field.value state of
+                Just _ ->
+                    False
+
+                Nothing ->
+                    True
+
+        nothingFields =
+            sendTo tiltak .fields
+                |> List.filter filterFunc
+
+        maybeFieldToGraphName =
+            maybeFieldToGraph tiltak state
+                |> Maybe.map .name
+    in
+        case nothingFields of
+            [] ->
+                sendTo tiltak .fields
+                    |> List.map .name
+                    |> case maybeFieldToGraphName of
+                        Just fieldName ->
+                            List.filter (\name -> name /= fieldName)
+
+                        Nothing ->
+                            identity
+
+            _ ->
+                []
+
+
 graphState tiltak state =
     maybeFieldToGraph tiltak state
         |> Maybe.map (always GraphOn)

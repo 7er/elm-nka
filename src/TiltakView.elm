@@ -24,6 +24,44 @@ chart tiltakStates tiltak =
         graphId =
             sendTo tiltak .graphId
 
+        fieldToGraphName =
+            TiltakCharting.maybeFieldToGraph
+                tiltak
+                tiltakStates
+                |> Maybe.map .title
+                |> Maybe.withDefault "WAT!!!!"
+
+        alternateFieldNames =
+            TiltakCharting.possibleFieldNamesToGraph tiltak tiltakStates
+
+        alternateFieldsToGraph =
+            case alternateFieldNames of
+                [] ->
+                    []
+
+                _ as list ->
+                    [ text "Vis heller: " ]
+                        ++ (List.map
+                                (\fieldName ->
+                                    a [ href fieldName ] [ text fieldName ]
+                                )
+                                list
+                           )
+
+        variableToGraphView =
+            case (TiltakCharting.graphState tiltak tiltakStates) of
+                GraphOn ->
+                    [ div []
+                        [ text <| """Grafen viser hvordan tiltakets
+nettonåverdi varierer med """ ++ fieldToGraphName
+                        ]
+                    , div []
+                        alternateFieldsToGraph
+                    ]
+
+                GraphOff ->
+                    []
+
         graphNodeContent =
             case (TiltakCharting.graphState tiltak tiltakStates) of
                 GraphOn ->
@@ -34,15 +72,7 @@ chart tiltakStates tiltak =
     in
         div []
             [ div [ id graphId ] graphNodeContent
-            , div []
-                [ div [] [ text """Grafen viser hvordan tiltakets nettonåverdi
-                                 varierer med <forutsetnings navn her>""" ]
-                , div []
-                    [ text "Vis heller: "
-                    , a [] [ text "<Annen forutsetning>" ]
-                    , a [] [ text "<Tredje forutseting>" ]
-                    ]
-                ]
+            , div [] variableToGraphView
             ]
 
 
@@ -62,12 +92,17 @@ tiltakCard tiltakStates tiltak =
             , blocks =
                 [ Accordion.block
                     []
-                    [ Card.custom <| div [] ([ tiltakForm tiltak tiltakStates ] ++ analyse) ]
+                    [ Card.custom <|
+                        div []
+                            ([ tiltakForm tiltak tiltakStates ]
+                                ++ analyse
+                            )
+                    ]
                 , Accordion.block
                     [ Card.blockAttrs
                         [ style
                             [ ( "backgroundColor", "lightGrey" )
-                            , ( "height", "400px" )
+                            , ( "height", "500px" )
                             ]
                         ]
                     ]
