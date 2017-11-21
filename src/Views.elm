@@ -163,7 +163,7 @@ pageGroup group model =
     let
         allCards =
             TiltakAndGroupData.tiltakForGroup group
-                |> List.map (TiltakView.tiltakCard model)
+                |> List.map (TiltakView.tiltakCard model.tiltakStates)
 
         pageHeader =
             header [ class "groupHeader" ]

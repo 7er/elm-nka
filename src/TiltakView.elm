@@ -9,7 +9,7 @@ import Bootstrap.Form.Checkbox as Checkbox
 import Bootstrap.Form.Input as Input
 import Bootstrap.Accordion as Accordion
 import Bootstrap.Card as Card
-import Models exposing (Model)
+import TiltakStates exposing (TiltakStates)
 import Msgs exposing (Msg(..))
 import Tiltak exposing (Tiltak, sendTo)
 import AnalyseView
@@ -18,14 +18,14 @@ import NumberFormat
 import Field exposing (Field)
 
 
-chart : Model -> Tiltak -> Html Msg
-chart model tiltak =
+chart : TiltakStates -> Tiltak -> Html Msg
+chart tiltakStates tiltak =
     let
         graphId =
             sendTo tiltak .graphId
 
         graphNodeContent =
-            case (TiltakCharting.graphState tiltak model.tiltakStates) of
+            case (TiltakCharting.graphState tiltak tiltakStates) of
                 GraphOn ->
                     []
 
@@ -46,11 +46,11 @@ chart model tiltak =
             ]
 
 
-tiltakCard : Model -> Tiltak -> Accordion.Card Msg
-tiltakCard model tiltak =
+tiltakCard : TiltakStates -> Tiltak -> Accordion.Card Msg
+tiltakCard tiltakStates tiltak =
     let
         analyse =
-            AnalyseView.view <| Tiltak.analyse tiltak model.tiltakStates
+            AnalyseView.view <| Tiltak.analyse tiltak tiltakStates
 
         title =
             sendTo tiltak .title
@@ -62,7 +62,7 @@ tiltakCard model tiltak =
             , blocks =
                 [ Accordion.block
                     []
-                    [ Card.custom <| div [] ([ tiltakForm tiltak model ] ++ analyse) ]
+                    [ Card.custom <| div [] ([ tiltakForm tiltak tiltakStates ] ++ analyse) ]
                 , Accordion.block
                     [ Card.blockAttrs
                         [ style
@@ -71,7 +71,7 @@ tiltakCard model tiltak =
                             ]
                         ]
                     ]
-                    [ Card.custom <| chart model tiltak
+                    [ Card.custom <| chart tiltakStates tiltak
                     ]
                 ]
             }
@@ -79,16 +79,16 @@ tiltakCard model tiltak =
 
 fieldView :
     Tiltak
-    -> Model
+    -> TiltakStates
     -> Field
     -> Html Msg
-fieldView tiltak model ({ name, title, placeholder } as field) =
+fieldView tiltak tiltakStates ({ name, title, placeholder } as field) =
     let
         isEditable =
-            field.isEditable model.tiltakStates
+            field.isEditable tiltakStates
 
         fieldValueString =
-            field.value model.tiltakStates
+            field.value tiltakStates
                 |> (case isEditable of
                         True ->
                             Maybe.map toString
@@ -122,8 +122,8 @@ fieldView tiltak model ({ name, title, placeholder } as field) =
             ]
 
 
-tiltakForm : Tiltak -> Model -> Html Msg
-tiltakForm tiltak model =
+tiltakForm : Tiltak -> TiltakStates -> Html Msg
+tiltakForm tiltak tiltakStates =
     let
         bompengeAndelView =
             Form.group []
@@ -132,12 +132,12 @@ tiltakForm tiltak model =
                 , Checkbox.custom
                     [ Checkbox.attrs [ id "bompenger" ]
                     , Checkbox.onCheck <| UpdateBompengeAndel tiltak
-                    , Checkbox.checked <| Tiltak.bompengeAndelBool tiltak model.tiltakStates
+                    , Checkbox.checked <| Tiltak.bompengeAndelBool tiltak tiltakStates
                     ]
                     "Tiltaket er finansiert med bompenger"
                 ]
     in
         Form.form []
-            ((sendTo tiltak .fields |> List.map (fieldView tiltak model))
+            ((sendTo tiltak .fields |> List.map (fieldView tiltak tiltakStates))
                 ++ [ bompengeAndelView ]
             )
