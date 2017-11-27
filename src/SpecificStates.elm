@@ -43,13 +43,15 @@ type alias OpphoeyetHoldeplassState =
     OpphoeyetHoldeplassStatePartial SimpleCommonState
 
 
-type alias BussrenholdState =
-    { dailyCostPerBus : FormattedValue Float
-    , numberOfBusesAffected : FormattedValue Float
-    , bompengeAndel : Float
-    , passengersPerYear : FormattedValue Float
-    , preferredToGraph : String
+type alias BussrenholdStatePartial a =
+    { a
+        | dailyCostPerBus : FormattedValue Float
+        , numberOfBusesAffected : FormattedValue Float
     }
+
+
+type alias BussrenholdState =
+    BussrenholdStatePartial BasicState
 
 
 type alias LaventrebussStatePartial a =

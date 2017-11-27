@@ -191,8 +191,24 @@ updateField model tiltak field stringValue =
         maybeValue =
             stringValue |> String.toFloat |> Result.toMaybe
 
+        updatePreferredToGraph preferredString =
+            case
+                TiltakCharting.maybeFieldToGraph
+                    tiltak
+                    model.tiltakStates
+            of
+                Just field ->
+                    field.name
+
+                Nothing ->
+                    preferredString
+
         newTiltakStates =
-            Focus.set (field.focus => value) maybeValue model.tiltakStates
+            model.tiltakStates
+                |> Focus.set (field.focus => value) maybeValue
+                |> Focus.update
+                    (Tiltak.getAttr tiltak .preferredToGraphFocus)
+                    updatePreferredToGraph
     in
         ( { model
             | tiltakStates = newTiltakStates

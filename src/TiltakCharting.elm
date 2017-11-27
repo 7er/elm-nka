@@ -40,9 +40,8 @@ maybeFieldToGraph tiltak state =
                 Just head
 
             [] ->
-                Nothing
+                sendTo tiltak .preferredField state
 
-            -- Tiltak.preferredField tiltak state
             _ ->
                 Nothing
 

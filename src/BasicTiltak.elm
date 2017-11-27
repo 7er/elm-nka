@@ -1,9 +1,8 @@
 module BasicTiltak exposing (..)
 
 import Regex
-import Focus exposing ((=>))
+import Focus exposing ((=>), Focus)
 import Tiltak exposing (..)
-import TiltakStates exposing (TiltakStates)
 import FormattedValue
     exposing
         ( FormattedValue
@@ -72,11 +71,6 @@ trafikantNytte =
     analysePeriodeNytteFor .yearlyTrafikantNytte
 
 
-analysePeriodeNytteFor :
-    Tiltak.TiltakAccessor (tiltakStates -> Maybe Float)
-    -> Tiltak
-    -> tiltakStates
-    -> Maybe Float
 analysePeriodeNytteFor accessor this state =
     (sendTo this accessor state) |> Maybe.map ((*) GeneralForutsetninger.afaktorVekst)
 
@@ -97,7 +91,6 @@ kostUtenSkyggepris this state =
             (f .driftOgVedlihKost)
 
 
-skyggeprisHelper : Tiltak -> TiltakStates -> Float -> Maybe Float
 skyggeprisHelper this state bompengeAndel =
     let
         calculation kostUtenSkyggepris =
@@ -128,7 +121,31 @@ basicTiltakRecord specificStateFocus =
     , graphId = \this -> sendTo this .domId |> (++) "c3graph"
     , domId = \this -> sendTo this .title |> toDomId
     , bompengeAndelField = { focus = (specificStateFocus => bompengeAndel) }
+    , preferredField = preferredField specificStateFocus
+    , preferredToGraphFocus = (specificStateFocus => preferredToGraph)
     }
+
+
+preferredToGraph : Focus { b | preferredToGraph : a } a
+preferredToGraph =
+    Focus.create
+        .preferredToGraph
+        (\f state -> { state | preferredToGraph = f state.preferredToGraph })
+
+
+preferredField specificStateFocus tiltak tiltakStates =
+    let
+        fieldName =
+            Focus.get
+                (getAttr tiltak .preferredToGraphFocus)
+                tiltakStates
+
+        filterByName field =
+            field.name == fieldName
+    in
+        sendTo tiltak .fields
+            |> List.filter filterByName
+            |> List.head
 
 
 investeringsKostInklRestverdi :

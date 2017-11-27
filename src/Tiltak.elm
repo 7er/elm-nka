@@ -65,6 +65,8 @@ type alias TiltakRecord =
     , graphId : Tiltak -> String
     , domId : Tiltak -> String
     , bompengeAndelField : BompengeAndelField
+    , preferredField : Tiltak -> TiltakStates -> Maybe Field
+    , preferredToGraphFocus : Focus TiltakStates String
     }
 
 
