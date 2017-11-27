@@ -14,3 +14,4 @@ type Msg
     | ChartsChanged (List String)
     | FieldBlur Field
     | FieldFocus Field
+    | UpdateFieldToGraph Tiltak Field

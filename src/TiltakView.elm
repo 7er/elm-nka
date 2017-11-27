@@ -9,6 +9,8 @@ import Bootstrap.Form.Checkbox as Checkbox
 import Bootstrap.Form.Input as Input
 import Bootstrap.Accordion as Accordion
 import Bootstrap.Card as Card
+import Bootstrap.ButtonGroup as ButtonGroup
+import Bootstrap.Button as Button
 import TiltakStates exposing (TiltakStates)
 import Msgs exposing (Msg(..))
 import Tiltak exposing (Tiltak, sendTo)
@@ -31,22 +33,25 @@ chart tiltakStates tiltak =
                 |> Maybe.map .title
                 |> Maybe.withDefault "WAT!!!!"
 
-        alternateFieldNames =
-            TiltakCharting.possibleFieldNamesToGraph tiltak tiltakStates
+        fieldButton field =
+            ButtonGroup.linkButton
+                [ Button.onClick <|
+                    UpdateFieldToGraph tiltak field
+                ]
+                [ text field.title ]
 
         alternateFieldsToGraph =
-            case alternateFieldNames of
+            case TiltakCharting.possibleFieldsToGraph tiltak tiltakStates of
                 [] ->
                     []
 
-                _ as list ->
-                    [ text "Vis heller: " ]
-                        ++ (List.map
-                                (\fieldName ->
-                                    a [ href fieldName ] [ text fieldName ]
-                                )
-                                list
-                           )
+                _ as fields ->
+                    [ text
+                        "Vis heller: "
+                    , fields
+                        |> List.map fieldButton
+                        |> ButtonGroup.linkButtonGroup []
+                    ]
 
         variableToGraphView =
             case (TiltakCharting.graphState tiltak tiltakStates) of
@@ -68,7 +73,7 @@ nettonåverdi varierer med """ ++ fieldToGraphName
                     []
 
                 GraphOff ->
-                    [ h3 [] [ text "Mangler data for å grafe" ] ]
+                    [ h3 [] [ text "Du må legge inn flere tall for å vise grafen" ] ]
     in
         div []
             [ div [ id graphId ] graphNodeContent

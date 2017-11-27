@@ -86,10 +86,14 @@ update msg model =
             updateField model tiltak field stringValue
 
         FieldBlur field ->
-            ( { model | tiltakStates = field.beDisplayMode model.tiltakStates }, Cmd.none )
+            ( { model | tiltakStates = field.beDisplayMode model.tiltakStates }
+            , Cmd.none
+            )
 
         FieldFocus field ->
-            ( { model | tiltakStates = field.beEditMode model.tiltakStates }, Cmd.none )
+            ( { model | tiltakStates = field.beEditMode model.tiltakStates }
+            , Cmd.none
+            )
 
         UpdateBompengeAndel tiltak boolean ->
             ( { model
@@ -101,6 +105,9 @@ update msg model =
 
         ChartsChanged chartIds ->
             ( { model | chartIds = chartIds }, Cmd.none )
+
+        UpdateFieldToGraph tiltak field ->
+            updateFieldToGraph tiltak field model
 
 
 destroyAndCreateCharts : Model -> Model -> Cmd msg
@@ -182,12 +189,6 @@ computeGraphCmd tiltak tiltakStates ( beforeState, afterState ) =
 updateField : Model -> Tiltak -> Field -> String -> ( Model, Cmd Msg )
 updateField model tiltak field stringValue =
     let
-        oldGraphState =
-            TiltakCharting.graphState tiltak model.tiltakStates
-
-        newGraphState =
-            TiltakCharting.graphState tiltak newTiltakStates
-
         maybeValue =
             stringValue |> String.toFloat |> Result.toMaybe
 
@@ -210,6 +211,17 @@ updateField model tiltak field stringValue =
                     (Tiltak.getAttr tiltak .preferredToGraphFocus)
                     updatePreferredToGraph
     in
+        updateGraphingState model tiltak newTiltakStates
+
+
+updateGraphingState model tiltak newTiltakStates =
+    let
+        oldGraphState =
+            TiltakCharting.graphState tiltak model.tiltakStates
+
+        newGraphState =
+            TiltakCharting.graphState tiltak newTiltakStates
+    in
         ( { model
             | tiltakStates = newTiltakStates
           }
@@ -220,6 +232,24 @@ updateField model tiltak field stringValue =
             , newGraphState
             )
         )
+
+
+updateFieldToGraph : Tiltak -> Field -> Model -> ( Model, Cmd Msg )
+updateFieldToGraph tiltak field model =
+    let
+        focus =
+            Tiltak.getAttr tiltak .preferredToGraphFocus
+
+        newTiltakStates =
+            Focus.set
+                focus
+                field.name
+                model.tiltakStates
+    in
+        updateGraphingState
+            model
+            tiltak
+            newTiltakStates
 
 
 decode : Location -> Maybe Page
