@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
+import Bootstrap.Grid.Row as Row
 import NumberFormat
 import Tiltak exposing (AnalyseData)
 import Msgs exposing (Msg(..))
@@ -79,7 +80,7 @@ view data =
             ]
 
         gridRow ( title, value ) =
-            Grid.row []
+            Grid.row [ Row.attrs [ class "analyseColumn" ] ]
                 [ Grid.col [] [ text title ]
                 , Grid.col [ Col.attrs [ class "text-right" ] ]
                     [ text value ]
