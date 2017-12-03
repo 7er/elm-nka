@@ -45,6 +45,7 @@ leskurMedSitteplassTiltak =
         , nytteMultiplikator = verdisettinger.leskurPaaBussholdeplassenMedSitteplass
         , levetid = 12
         , title = "Leskur med sitteplass"
+        , isHoldeplassTiltak = True
         }
 
 
@@ -62,6 +63,7 @@ sitteplassPaaHplTiltak =
         , nytteMultiplikator = verdisettinger.sitteplassPaaHpl
         , levetid = 12
         , title = "Sitteplass på holdeplass"
+        , isHoldeplassTiltak = True
         }
 
 
@@ -111,6 +113,7 @@ skiltingIBussTiltak =
         , nytteMultiplikator = verdisettinger.skiltingIBuss
         , levetid = 7
         , title = "Elektronisk skilting i bussen av neste holdeplass"
+        , isHoldeplassTiltak = False
         }
 
 
@@ -129,24 +132,30 @@ pakkeSkiltOgOppropBussTiltak =
         , levetid = 7
         , title =
             "Elektronisk skilting og opprop i bussen av neste holdeplass"
+        , isHoldeplassTiltak = False
         }
 
 
 avviksinformasjonHoeyttalerTiltak : Tiltak
 avviksinformasjonHoeyttalerTiltak =
+    {-
+         name = "passengersPerYear
+       , placeholder = "Årlig antall påstigende passasjerer på holdeplassen"
+    -}
     SimpleTiltak.createTiltak
         { focus =
             Focus.create
                 .avviksinformasjonHoeyttaler
                 (\func tiltakStates ->
                     { tiltakStates
-                        | avviksinformasjonHoeyttaler = func tiltakStates.avviksinformasjonHoeyttaler
+                        | avviksinformasjonHoeyttaler =
+                            func tiltakStates.avviksinformasjonHoeyttaler
                     }
                 )
         , nytteMultiplikator = verdisettinger.avviksinformasjonHoeyttaler
         , levetid = 20
-        , title =
-            "Informasjon over høyttaler på holdeplass om avvik"
+        , title = "Informasjon over høyttaler på holdeplass om avvik"
+        , isHoldeplassTiltak = True
         }
 
 
@@ -164,6 +173,7 @@ belysningTiltak =
         , nytteMultiplikator = verdisettinger.belysning
         , levetid = 20
         , title = "Belysning på holdeplass"
+        , isHoldeplassTiltak = True
         }
 
 
@@ -172,6 +182,10 @@ tiltakForGroup gruppeType =
     case gruppeType of
         Holdeplasser ->
             [ -- Sykkelparkering.tiltak
+              {-
+                 "Årlig
+                 antall påstigende passasjerer på holdeplassen"
+              -}
               SimpleTiltak.createTiltak
                 { focus =
                     Focus.create
@@ -185,10 +199,20 @@ tiltakForGroup gruppeType =
                     verdisettinger.leskurPaaBussholdeplassenUtenSitteplass
                 , levetid =
                     12
-                , title =
-                    "Leskur uten sitteplass"
+                , title = "Leskur uten sitteplass"
+                , isHoldeplassTiltak = True
                 }
+
+            {-
+               "Årlig
+               antall påstigende passasjerer på holdeplassen"
+            -}
             , sitteplassPaaHplTiltak
+
+            {-
+               "Årlig
+               antall påstigende passasjerer på holdeplassen"
+            -}
             , leskurMedSitteplassTiltak
             , renholdPaaHplTiltak
             , fjerningAvIsSnoePaaHplTiltak
@@ -239,8 +263,8 @@ Dette er mer komplekst, har 2 sett med forutsetninger
                         )
                 , nytteMultiplikator = verdisettinger.destinasjonsSkiltPaaBuss
                 , levetid = 10
-                , title =
-                    "Destinasjonsskilt bak og på siden av bussen"
+                , title = "Destinasjonsskilt bak og på siden av bussen"
+                , isHoldeplassTiltak = False
                 }
             , avviksinformasjonHoeyttalerTiltak
             ]
@@ -259,6 +283,7 @@ Dette er mer komplekst, har 2 sett med forutsetninger
                 , nytteMultiplikator = verdisettinger.alarmsystemPaaHpl
                 , levetid = 20
                 , title = "Alarmsystem / Nødtelefon på holdeplass"
+                , isHoldeplassTiltak = True
                 }
             , SuperSimpleTiltak.createTiltak
                 { focus =

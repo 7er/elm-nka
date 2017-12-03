@@ -22,6 +22,7 @@ type alias SimpleTiltak =
     , nytteMultiplikator : Float
     , focus : Focus TiltakStates SimpleCommonState
     , title : String
+    , isHoldeplassTiltak : Bool
     }
 
 
@@ -35,8 +36,8 @@ initialState =
     }
 
 
-fieldDefinitions : Focus TiltakStates SimpleCommonState -> List SimpleField
-fieldDefinitions tiltakFocus =
+fieldDefinitions : Focus TiltakStates SimpleCommonState -> Bool -> List SimpleField
+fieldDefinitions tiltakFocus isHoldeplassTiltak =
     [ { name = "installationCost"
       , title = "Installasjonskostnad"
       , placeholder = "Kostnaden ved å installere tiltaket en gang, kroner"
@@ -51,7 +52,13 @@ fieldDefinitions tiltakFocus =
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer per år"
-      , placeholder = "Påstigende passasjerer per år"
+      , placeholder =
+            case isHoldeplassTiltak of
+                True ->
+                    "Årlig antall påstigende passasjerer på holdeplassen"
+
+                False ->
+                    "Årlig antall passasjerer om bord"
       , focus = tiltakFocus => passengersPerYear
       , stepSize = 50
       }
@@ -70,7 +77,10 @@ createTiltak simpleTiltak =
                 , fields =
                     \_ ->
                         Field.transformToFields
-                            (fieldDefinitions simpleTiltak.focus)
+                            (fieldDefinitions
+                                simpleTiltak.focus
+                                simpleTiltak.isHoldeplassTiltak
+                            )
                 , skyggepris =
                     \this state ->
                         sendTo this

@@ -174,19 +174,19 @@ fieldDefinitions =
       }
     , { name = "passengersPerYear"
       , title = "Antall passasjerer ombord per år"
-      , placeholder = "Passasjerer ombord"
+      , placeholder = "Antall kollektivpassasjerer som omfattes av tiltaket"
       , focus = specificStateFocus => passengersPerYear
       , stepSize = 50
       }
     , { name = "antallBilerForsinketPerAvgang"
       , title = "Antall forsinkete biler per avgang"
-      , placeholder = "Forsinkete biler på den kryssende veien"
+      , placeholder = "Antall biler som forsinkes per avgang"
       , focus = specificStateFocus => antallBilerForsinketPerAvgang
       , stepSize = 1
       }
     , { name = "forsinkelsePerBilSeconds"
       , title = "Sekunder forsinkelse per bil"
-      , placeholder = "Når de blir forsinket hvor mange sekunder"
+      , placeholder = "Når de blir forsinket, antall sekunder"
       , focus = specificStateFocus => forsinkelsePerBilSeconds
       , stepSize = 1
       }
