@@ -57,7 +57,7 @@ chart tiltakStates tiltak =
         variableToGraphView =
             case (TiltakCharting.graphState tiltak tiltakStates) of
                 GraphOn ->
-                    [ div []
+                    [ div [ class "chartLedetekst" ]
                         [ text <| """Grafen viser hvordan tiltakets
 nettonåverdi varierer med """ ++ fieldToGraphName
                         ]
