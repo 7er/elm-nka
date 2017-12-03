@@ -24,6 +24,7 @@ var charts = {};
 function generateChart(object) {
   var element = document.getElementById(object.domId);
   console.log("chart element is: ", element);
+  var formatter = new Intl.NumberFormat('nb-NO', {maximumFractionDigits: 0});
   var chart = c3.generate({
     bindto: "#" + object.domId,
     type: 'line',
@@ -38,12 +39,12 @@ function generateChart(object) {
           position: 'outer-middle'
         },
         tick: {
-          //format: $scope.tickFormat
+          format: formatter.format
         }
       },
       x: {
         tick: {
-          //format: $scope.tickFormat
+          format: formatter.format
         }
       }
     },

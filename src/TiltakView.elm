@@ -34,9 +34,10 @@ chart tiltakStates tiltak =
                 |> Maybe.withDefault "WAT!!!!"
 
         fieldButton field =
-            ButtonGroup.linkButton
+            ButtonGroup.button
                 [ Button.onClick <|
                     UpdateFieldToGraph tiltak field
+                , Button.secondary
                 ]
                 [ text field.title ]
 
@@ -50,7 +51,7 @@ chart tiltakStates tiltak =
                         "Vis heller: "
                     , fields
                         |> List.map fieldButton
-                        |> ButtonGroup.linkButtonGroup []
+                        |> ButtonGroup.buttonGroup []
                     ]
 
         variableToGraphView =
@@ -105,10 +106,7 @@ tiltakCard tiltakStates tiltak =
                     ]
                 , Accordion.block
                     [ Card.blockAttrs
-                        [ style
-                            [ ( "backgroundColor", "lightGrey" )
-                            , ( "height", "500px" )
-                            ]
+                        [ class "chartBlock"
                         ]
                     ]
                     [ Card.custom <| chart tiltakStates tiltak
