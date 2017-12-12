@@ -74,7 +74,7 @@ nettonåverdi varierer med """ ++ fieldToGraphName
                     []
 
                 GraphOff ->
-                    [ h3 [] [ text "Du må legge inn flere tall for å vise grafen" ] ]
+                    [ h3 [] [ text "Legge inn flere tall for å vise graf" ] ]
     in
         div []
             [ div [ id graphId ] graphNodeContent
