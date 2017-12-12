@@ -110,10 +110,10 @@ footer {
 .jumbotron, .homeHeader {
     min-height: 200px;
     max-height: 500px;
-    background-image: url('images/samuel-foster-199587.jpg');
-    background-position: center center;
     border-radius: 0;
-    color: #e3e3e3;
+    color: #ebebeb;
+    background: linear-gradient( rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) ), url('images/samuel-foster-199587.jpg');
+    background-position: center center;
     background-size: cover;
 }
 
@@ -122,11 +122,29 @@ footer {
     font-style: italic;
     font-family: 'Lora', serif;
     text-shadow: 1px 1px 2px black;
+    filter: drop-shadow(5px 5px 6px #000);
+    display: inline;
+}
+
+.homeHeader h2 {
+    text-shadow: 1px 1px 2px black;
+    filter: drop-shadow(5px 5px 6px #000);
 }
 
 .homeHeader p {
     font-weight: 800;
     font-size: 24px;
+}
+
+.beta {
+    text-shadow: 1px 1px 2px black;
+    filter: drop-shadow(5px 5px 6px #000);
+    display: inline;
+    vertical-align: top;
+}
+
+.ingress {
+    font-weight: 600;
 }
 
 .caretRight {
@@ -191,7 +209,7 @@ img.groupIcon {
 .groupHeader h1 {
     text-align: center;
     font-weight: 700;
-    font-style: italic;
+    // font-style: italic;
     font-size: 36px;
     font-family: 'Lora', serif;
     margin-bottom: 1rem;
@@ -219,6 +237,14 @@ img.groupIcon {
     stroke-width: 5px;
 }
 
+.chartBlock h3 {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-weight: 200 !important;
+    font-size: 1.5rem;
+
+}
+
 .chartLedetekst {
     min-height: 4rem;
 }
@@ -227,3 +253,26 @@ img.groupIcon {
     padding: 8px 0 8px 0;
 }
 
+.card {
+    border: 1px solid #aeaeae;
+    margin-bottom: 8px;
+}
+
+.card h3 {
+    font-weight: 700;
+}
+
+.card-header h4 {
+
+}
+
+h4.card-header {
+    background: none;
+    border-bottom: 1px solid #aeaeae;
+    font-family: 'Lora', serif;
+    font-style: italic;
+}
+
+h4.card-header a:hover {
+    color: black;
+}

@@ -40,7 +40,7 @@ conclusionRow data =
             ]
     in
         div [ class "conclusion" ]
-            [ h4 [] [ text "Konklusjon" ]
+            [ h3 [] [ text "Konklusjon" ]
             , p []
                 (data.isProfitable
                     |> Maybe.map conclusionContent

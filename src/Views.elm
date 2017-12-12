@@ -95,6 +95,7 @@ pageHome model =
         [ div [ class "jumbotron homeHeader" ]
             [ Grid.container [ class "container__narrow" ]
                 [ h1 [] [ text "Kollektivkalkulator" ]
+                , div [class "beta"] [text "beta"]
                 , h2 [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
                 ]
             ]
@@ -102,7 +103,8 @@ pageHome model =
             [ div [ class "forsidetekst" ]
                 [ Grid.row []
                     [ Grid.col []
-                        [ p []
+                        [ p [class "ingress"] [text "Betaversjon – endelig versjon publiseres innen 31.12.2017."]
+                        , p []
                             [ text """
 Kollektivkalkulatoren er et
 nyttekostnadsberegningsverktøy for
@@ -222,12 +224,10 @@ appFooter =
                     []
                 ]
             , div [ class "colophon" ]
-                [ text "Utvikling og design "
-                , a [ href "https://github.com/7er" ]
-                    [ text "Syver Enstad" ]
-                , text " & "
-                , a [ href "https://github.com/thomasfl" ]
-                    [ text "Thomas Flemming" ]
+                [ text "Utvikling og design: "
+                , a [ href "http://www.72web.no" ]
+                    [ text "72web.no" ]
+                , text " ved Syver Enstad & Thomas Flemming"
                 ]
             ]
         ]
