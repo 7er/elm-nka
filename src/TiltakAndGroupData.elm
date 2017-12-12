@@ -323,7 +323,8 @@ Dette er mer komplekst, har 2 sett med forutsetninger
             , pakkeSkiltOgOppropBussTiltak
             , avviksinformasjonHoeyttalerTiltak
             , belysningTiltak
-            , Laventrebuss.tiltak
+
+            -- buggy percent, issue #36 , Laventrebuss.tiltak
             ]
 
 
