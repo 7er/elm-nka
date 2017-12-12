@@ -102,5 +102,5 @@ app.ports.destroyC3.subscribe(function (domId) {
 });
 
 app.ports.setTitle.subscribe(function (title) {
-  document.title = title;
+  document.title = title + " BETA";
 });
