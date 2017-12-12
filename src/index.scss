@@ -208,11 +208,8 @@ img.groupIcon {
 
 .groupHeader h1 {
     text-align: center;
-    font-weight: 700;
-    // font-style: italic;
     font-size: 36px;
-    font-family: 'Lora', serif;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .conclusion {
@@ -262,10 +259,6 @@ img.groupIcon {
     font-weight: 700;
 }
 
-.card-header h4 {
-
-}
-
 h4.card-header {
     background: none;
     border-bottom: 1px solid #aeaeae;
@@ -275,4 +268,8 @@ h4.card-header {
 
 h4.card-header a:hover {
     color: black;
+}
+
+.form-control {
+    background-color: #f8f7f7;
 }
