@@ -96,12 +96,8 @@ update msg model =
             )
 
         UpdateBompengeAndel tiltak boolean ->
-            ( { model
-                | tiltakStates =
-                    Tiltak.updateBompengeAndel tiltak boolean model.tiltakStates
-              }
-            , Cmd.none
-            )
+            Tiltak.updateBompengeAndel tiltak boolean model.tiltakStates
+                |> (updateGraphingState model tiltak)
 
         ChartsChanged chartIds ->
             ( { model | chartIds = chartIds }, Cmd.none )
