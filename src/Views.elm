@@ -95,7 +95,7 @@ pageHome model =
         [ div [ class "jumbotron homeHeader" ]
             [ Grid.container [ class "container__narrow" ]
                 [ h1 [] [ text "Kollektivkalkulator" ]
-                , div [class "beta"] [text "beta"]
+                , div [ class "beta" ] [ text "beta" ]
                 , h2 [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
                 ]
             ]
@@ -103,12 +103,12 @@ pageHome model =
             [ div [ class "forsidetekst" ]
                 [ Grid.row []
                     [ Grid.col []
-                        [ p [class "ingress"] [text "Betaversjon – endelig versjon publiseres innen 31.12.2017."]
+                        [ p [ class "ingress" ] [ text "Betaversjon – endelig versjon publiseres innen 31.12.2017." ]
                         , p []
                             [ text """
 Kollektivkalkulatoren er et
 nyttekostnadsberegningsverktøy for
-enklere kollektivtransporttiltak. Kalkulatoren følger gjeldende
+små og enkeltvise kollektivtransporttiltak. Kalkulatoren følger gjeldende
 tilnærming og metodikk for nyttekostnadsanalyser i
 transportsektoren. Derfor kan NKA-beregningene sammenlignes med andre
 samferdselstiltak.
@@ -121,17 +121,12 @@ Ved å legge inn bakgrunnsinformasjon om prosjektet, beregner kalkulatoren nytte
 ulike aktører, tiltakets nettonåverdi og nettonytte per budsjettkrone (nyttekostnadsbrøk).
 """
                             ]
-                        , p [] [ text """
-Kalkulatoren viser ved hjelp av en graf hvordan tiltakets nettonåverdi
-varierer med nivået på en valgt forutsetning. På den måten kan
-kalkulatoren brukes selv om ikke alle forutsetninger er kjent.
-""" ]
                         , p []
                             [ text "Beregningsopplegget er dokumentert i "
                             , a [ href "https://www.toi.no/publikasjoner/article29858-8.html" ]
                                 [ text "TØI-rapport 1121" ]
                             , text
-                                ". Her fins også nærmere veiledning til utfylling og bruk av kalkulatoren."
+                                ". Her fins også nærmere veiledning til utfylling og bruk av kalkulatoren, samt erfaringsbaserte anslag på tiltakenes kostnader"
                             ]
                         ]
                     ]
