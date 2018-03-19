@@ -24,7 +24,7 @@ suite =
                     , bompengeAndel = 0.2
                     , passengersPerYear = Just 10 |> formattedValue
                     , beleggForbiPassasjererPerBuss = Just 20 |> formattedValue
-                    , aarligTidsbesparelseMinutter = Just 30 |> formattedValue
+                    , yearlyTidsbesparelseMinutter = Just 30 |> formattedValue
                     , preferredToGraph = ""
                     }
             }
