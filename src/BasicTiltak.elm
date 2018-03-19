@@ -166,3 +166,7 @@ driftOgVedlihKost specificState =
     specificState.yearlyMaintenance.value
         |> Maybe.map ((*) GeneralForutsetninger.afaktor)
         |> Maybe.map negate
+
+
+yearlyMaintenancePlaceholder =
+    "Årlige (økninger i) drifts- og vedlikeholdsholdskostnader knyttet til tiltaket, kroner"

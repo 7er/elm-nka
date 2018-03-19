@@ -46,7 +46,7 @@ fieldDefinitions tiltakFocus isHoldeplassTiltak =
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
-      , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
+      , placeholder = BasicTiltak.yearlyMaintenancePlaceholder
       , focus = tiltakFocus => yearlyMaintenance
       , stepSize = 5000
       }

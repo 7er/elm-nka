@@ -168,7 +168,7 @@ fieldDefinitions =
       }
     , { name = "yearlyMaintenance"
       , title = "Årlige drifts- og vedlikeholdskostnader"
-      , placeholder = "Årlige drifts- og vedlikeholdskostnader, kroner"
+      , placeholder = BasicTiltak.yearlyMaintenancePlaceholder
       , focus = specificStateFocus => yearlyMaintenance
       , stepSize = 5000
       }
