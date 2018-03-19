@@ -20,6 +20,24 @@ import NumberFormat
 import Field exposing (Field)
 
 
+fieldLabelContent : Field -> List (Html msg)
+fieldLabelContent field =
+    case field.name of
+        "yearlyTidsbesparelseMinutter" ->
+            [ text field.title
+            , text " (se "
+            , a
+                [ target "_blank"
+                , href "https://www.toi.no/getfile.php?mmfileid=6042"
+                ]
+                [ text "rapport" ]
+            , text ")"
+            ]
+
+        _ ->
+            [ text field.title ]
+
+
 chart : TiltakStates -> Tiltak -> Html Msg
 chart tiltakStates tiltak =
     let
@@ -146,7 +164,7 @@ fieldView tiltak tiltakStates ({ name, title, placeholder } as field) =
             )
     in
         Form.group []
-            [ Form.label [ for name ] [ text title ]
+            [ Form.label [ for name ] (fieldLabelContent field)
             , inputElement
                 [ Input.id name
                 , Input.placeholder placeholder

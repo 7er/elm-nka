@@ -172,8 +172,8 @@ fieldDefinitions =
           , stepSize = 5
           }
         , { name = "yearlyTidsbesparelseMinutter"
-          , title = "Årlig tidsbesparelse ved raskere på- og avstigning, minutter"
-          , placeholder = "Se forklarende tekst i rapport"
+          , title = "Årlig tidsbesparelse"
+          , placeholder = "Tidsbesparelse ved raskere på- og avstigning, minutter"
           , focus = specificState => yearlyTidsbesparelseMinutter
           , stepSize = 1000
           }

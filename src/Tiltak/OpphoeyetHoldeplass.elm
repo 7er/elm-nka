@@ -44,16 +44,16 @@ yearlyPassasjerNytte this ({ opphoeyetHoldeplass } as state) =
         first =
             Maybe.map firstCalc opphoeyetHoldeplass.passengersPerYear.value
 
-        secondCalc beleggForbiPassasjererPerBuss aarligTidsbesparelseMinutter =
+        secondCalc beleggForbiPassasjererPerBuss yearlyTidsbesparelseMinutter =
             beleggForbiPassasjererPerBuss
-                * aarligTidsbesparelseMinutter
+                * yearlyTidsbesparelseMinutter
                 * verdisettinger.reisetidKollektivTransport
 
         second =
             Maybe.map2
                 secondCalc
                 opphoeyetHoldeplass.beleggForbiPassasjererPerBuss.value
-                opphoeyetHoldeplass.aarligTidsbesparelseMinutter.value
+                opphoeyetHoldeplass.yearlyTidsbesparelseMinutter.value
     in
         Maybe.map2 (+) first second
 
@@ -64,7 +64,7 @@ yearlyOperatoerNytte this ({ opphoeyetHoldeplass } as state) =
         verdisettinger =
             GeneralForutsetninger.verdisettinger
     in
-        Maybe.map (\minutter -> minutter * verdisettinger.operatoerKostnad) opphoeyetHoldeplass.aarligTidsbesparelseMinutter.value
+        Maybe.map (\minutter -> minutter * verdisettinger.operatoerKostnad) opphoeyetHoldeplass.yearlyTidsbesparelseMinutter.value
 
 
 levetid : number
@@ -109,7 +109,7 @@ initialState =
     , bompengeAndel = 0
     , passengersPerYear = formattedValueDefault
     , beleggForbiPassasjererPerBuss = formattedValueDefault
-    , aarligTidsbesparelseMinutter = formattedValueDefault
+    , yearlyTidsbesparelseMinutter = formattedValueDefault
     , preferredToGraph = ""
     }
 
@@ -125,12 +125,12 @@ fieldDefinitions =
                     }
                 )
 
-        aarligTidsbesparelseMinutter =
+        yearlyTidsbesparelseMinutter =
             Focus.create
-                .aarligTidsbesparelseMinutter
+                .yearlyTidsbesparelseMinutter
                 (\f specificState ->
                     { specificState
-                        | aarligTidsbesparelseMinutter = f specificState.aarligTidsbesparelseMinutter
+                        | yearlyTidsbesparelseMinutter = f specificState.yearlyTidsbesparelseMinutter
                     }
                 )
     in
@@ -158,10 +158,10 @@ fieldDefinitions =
           , focus = specificState => beleggForbiPassasjererPerBuss
           , stepSize = 5
           }
-        , { name = "aarligTidsbesparelseMinutter"
-          , title = "Årlig tidsbesparelse ved raskere på- og avstigning, minutter"
-          , placeholder = "Se forklarende tekst i rapport"
-          , focus = specificState => aarligTidsbesparelseMinutter
+        , { name = "yearlyTidsbesparelseMinutter"
+          , title = "Årlig tidsbesparelse"
+          , placeholder = " Tidsbesparelse ved raskere på- og avstigning, minutter"
+          , focus = specificState => yearlyTidsbesparelseMinutter
           , stepSize = 1000
           }
         ]

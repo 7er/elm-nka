@@ -35,7 +35,7 @@ type alias SimpleCommonState =
 type alias OpphoeyetHoldeplassStatePartial a =
     { a
         | beleggForbiPassasjererPerBuss : FormattedValue Float
-        , aarligTidsbesparelseMinutter : FormattedValue Float
+        , yearlyTidsbesparelseMinutter : FormattedValue Float
     }
 
 
