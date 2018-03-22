@@ -287,3 +287,32 @@ h4.card-header a:hover {
         font-size: 16px !important;
     }
 }
+
+.nkaTooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.nkaTooltip .nkaTooltipContent {
+    visibility: hidden;
+    width: 240px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+    font-size: smaller;
+
+    top: -5px;
+    left: 105%;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.nkaTooltip:hover .nkaTooltipContent {
+    visibility: visible;
+}
