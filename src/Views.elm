@@ -95,16 +95,15 @@ pageHome model =
         [ div [ class "jumbotron homeHeader" ]
             [ Grid.container [ class "container__narrow" ]
                 [ h1 [] [ text "Kollektivkalkulator" ]
-                , div [ class "beta" ] [ text "beta" ]
                 , h2 [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
+                , p [] [ text "Publisert 2018" ]
                 ]
             ]
         , Grid.container [ class "groupPanels container__narrow" ]
             [ div [ class "forsidetekst" ]
                 [ Grid.row []
                     [ Grid.col []
-                        [ p [ class "ingress" ] [ text "Betaversjon – endelig versjon publiseres innen 31.12.2017." ]
-                        , p []
+                        [ p []
                             [ text """
 Kollektivkalkulatoren er et
 nyttekostnadsberegningsverktøy for
