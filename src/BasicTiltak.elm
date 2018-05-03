@@ -169,4 +169,4 @@ driftOgVedlihKost specificState =
 
 
 yearlyMaintenancePlaceholder =
-    "Årlige (økninger i) drifts- og vedlikeholdsholdskostnader knyttet til tiltaket, kroner"
+    "Årlige (økninger i) kostnader til drift og vedlikehold som knytter seg til dette tiltaket"

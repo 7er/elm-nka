@@ -28,9 +28,20 @@ fieldLabelContent field =
             , text " (se "
             , a
                 [ target "_blank"
-                , href "https://www.toi.no/getfile.php?mmfileid=6042"
+                , href "https://www.toi.no/getfile.php?mmfileid=16420"
                 ]
                 [ text "rapport" ]
+            , text ")"
+            ]
+
+        "installationCost" ->
+            [ text field.title
+            , text " (se evt. veiledning i "
+            , a
+                [ target "_blank"
+                , href "https://www.toi.no/getfile.php?mmfileid=16420"
+                ]
+                [ text "rapport 1121" ]
             , text ")"
             ]
 
