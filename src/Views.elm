@@ -96,7 +96,7 @@ pageHome model =
             [ Grid.container [ class "container__narrow" ]
                 [ h1 [] [ text "Kollektivkalkulator" ]
                 , h2 [] [ text "Nyttekostnadsverktøy for enkle kollektivtiltak" ]
-                , p [] [ text "Publisert 2018" ]
+                , p [] [ text "Publisert 2020" ]
                 ]
             ]
         , Grid.container [ class "groupPanels container__narrow" ]
