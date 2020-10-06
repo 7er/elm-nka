@@ -53,12 +53,15 @@ suite =
                 [ checkWithState
                     "passasjerNytte"
                     .passasjerNytte
-                    (closeTo 4257.35 2)
+                    (closeTo 6796.75 2)
                 , checkWithState
                     "yearlyPassasjerNytte"
                     .yearlyPassasjerNytte
-                    (closeTo 174.35 2)
-                , checkWithState "nytte" .nytte (closeTo 4257.35 2)
+                    (closeTo 302.4 2)
+                , checkWithState
+                    "nytte"
+                    .nytte
+                    (closeTo 6796.75 2)
                 ]
             , describe "kost calculations"
                 [ checkWithState
@@ -85,7 +88,7 @@ suite =
                 [ checkWithState
                     "nettoNytte"
                     .nettoNytte
-                    (closeTo -580.44 2)
+                    (closeTo 1958.96 2)
                 ]
             , describe
                 "bompengeAndel"
