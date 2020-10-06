@@ -5,70 +5,70 @@ verdisettinger =
     -- alle verdier i NOK
     { reisetidKollektivTransport =
         -- pr min pr passasjer
-        1.02560673902046
+        1.29
     , reisetidBil =
         -- pr min pr bil
-        1.53841010853069
+        2.46
     , sitteplassPaaHpl =
         -- pr kollektivreise
-        2.25633482584501
+        3.99
     , leskurPaaBussholdeplassenUtenSitteplass =
         -- pr kollektivreise
-        3.55543669527093
+        7.87
     , leskurPaaBussholdeplassenMedSitteplass =
         -- pr kollektivreise
-        5.81177152111594
+        10.08
     , renholdPaaHpl =
         -- pr kollektivreise
-        4.12521821694896
+        8.61
     , fjerningAvIsSnoePaaHpl =
         -- pr kollektivreise
-        5.66362832547965
+        12.67
     , opphoyetHoldeplass =
         -- pr kollektivreise
-        0.951535141202315
+        1.04
     , rutekartPaaHpl =
         -- pr kollektivreise
-        0.490012108643109
+        2.79
     , lokalkartPaaHpl =
         -- pr kollektivreise
-        0.490012108643109
+        4.09
     , skiltingIBuss =
         -- pr kollektivreise
-        4.18219636911676
+        5.05
     , destinasjonsSkiltPaaBuss =
         -- pr kollektivreise
-        0.694635934120579
+        0.76
     , avviksinformasjonHoeyttaler =
         -- pr kollektivreise
-        0.786298499915686
+        0.86
     , hplOpprop =
         -- pr kollektivreise
-        4.12521821694896
+        3.52
     , bussrenhold =
         -- pr kollektivreise
-        2.83411461121196
+        3.64
     , belysning =
         -- pr kollektivreise
-        3.21356778226411
+        6.93
     , vektere =
         -- pr kollektivreise
-        3.65378501347425
+        4.0
     , alarmsystemPaaHpl =
         -- pr kollektivreise
-        1.94498061553762
+        4.08
     , lavgulvUtenTilpassetHoldeplass =
         -- pr kollektivreise
-        1.90307028240463
+        2.08
     , lavgulvMedTilpassetHoldeplass =
         -- pr kollektivreise
-        2.35889549974706
+        2.17
     , pakkeSkiltOgOppropBuss =
         -- pr kollektivreise
-        4.78616478209548
+        5.24
     , operatoerKostnad =
         -- per minutt
-        7.30197811291267
+        7.81
     }
 
 
