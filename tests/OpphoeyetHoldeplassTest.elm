@@ -30,18 +30,18 @@ suite =
             }
 
         expectedRecord =
-            { yearlyPassasjerNytte = 624.88
+            { yearlyPassasjerNytte = 784.4
             , yearlyTrafikantNytte = 0
-            , yearlyOperatoerNytte = 219.06
-            , nytte = 20607.26
-            , passasjerNytte = 15258.28
+            , yearlyOperatoerNytte = 234.3
+            , nytte = 22896.32
+            , passasjerNytte = 17630.19
             , trafikantNytte = 0
-            , operatoerNytte = 5348.98
+            , operatoerNytte = 5266.13
             , investeringsKostInklRestverdi = -129.18
             , driftOgVedlihKost = -3958.55
             , kostUtenSkyggepris = -4087.73
             , skyggepris = -654.04
-            , nettoNytte = 15865.49
+            , nettoNytte = 18154.55
             }
 
         checkWithState : CheckWithStateFunction
