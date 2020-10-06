@@ -79,7 +79,7 @@ drente =
 
 vekstrate : Float
 vekstrate =
-    1.3 / 100
+    0.8 / 100
 
 
 drenteVekst : Float

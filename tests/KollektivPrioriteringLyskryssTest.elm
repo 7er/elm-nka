@@ -42,28 +42,28 @@ suite =
                 [ checkWithState
                     "passasjerNytte"
                     .passasjerNytte
-                    (closeTo 250.43 2)
+                    (closeTo 289.94 2)
                 , checkWithState
                     "yearlyPassasjerNytte"
                     .yearlyPassasjerNytte
-                    (closeTo 10.26 2)
+                    (closeTo 12.9 2)
                 , checkWithState
                     "yearlyTrafikantNytte"
                     .yearlyTrafikantNytte
-                    (closeTo -153.84 2)
+                    (closeTo -246 2)
                 , checkWithState
                     "trafikantNytte"
                     .trafikantNytte
-                    (closeTo -3756.48 2)
+                    (closeTo -5529.1 2)
                 , checkWithState
                     "yearlyOperatoerNytte"
                     .yearlyOperatoerNytte
-                    (closeTo 2433.99 2)
+                    (closeTo 2603.33 2)
                 , checkWithState
                     "operatoerNytte"
                     .operatoerNytte
-                    (closeTo 59433.13 2)
-                , checkWithState "nytte" .nytte (closeTo 55927.08 2)
+                    (closeTo 58512.56 2)
+                , checkWithState "nytte" .nytte (closeTo 53273.4 2)
                 ]
             , describe "kost calculations"
                 [ checkWithState
@@ -87,6 +87,6 @@ suite =
                 [ checkWithState
                     "nettoNytte"
                     .nettoNytte
-                    (closeTo 50961.51 2)
+                    (closeTo 48307.84 2)
                 ]
             ]
