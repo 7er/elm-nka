@@ -13,7 +13,7 @@ import TiltakAndGroupData
 import TiltakView
 
 
-groupIcon : Group -> Assets.Image
+groupIcon : Group -> Assets.Path
 groupIcon group =
     case group of
         Holdeplasser ->
@@ -122,12 +122,18 @@ ulike aktører, tiltakets nettonåverdi og nettonytte per budsjettkrone (nytteko
                             ]
                         , p []
                             [ text "Beregningsopplegget er dokumentert i "
-                            , a [ href "https://www.toi.no/publikasjoner/article29858-8.html" ]
+                            , a
+                                [ target "_blank"
+                                , href "https://www.toi.no/publikasjoner/article29858-8.html"
+                                ]
                                 [ text "TØI-rapport 1121" ]
                             , text
                                 ". Her fins også nærmere veiledning til utfylling og bruk av kalkulatoren, samt erfaringsbaserte anslag på tiltakenes kostnader."
                             , text " I 2020 ble verktøyet oppdatert med nye inngangsverdier. Dette er dokumentert i "
-                            , a [ Assets.href Assets.arbeidsdokument51690 ]
+                            , a
+                                [ target "_blank"
+                                , Assets.href Assets.arbeidsdokument51690
+                                ]
                                 [ text "arbeidsdokument 51690" ]
                             , text "."
                             ]

@@ -42,7 +42,7 @@ const makeConfig = (isDevelopment) => {
               loader: 'elm-assets-loader',
               options: {
                 module: 'Assets',
-                tagger: 'Image'
+                tagger: 'Path'
               }
             },            
             {
@@ -64,7 +64,7 @@ const makeConfig = (isDevelopment) => {
           loader: 'file-loader',
         },
         {
-          test: /\.(jpe?g|png|gif|svg)$/i,
+          test: /\.(jpe?g|png|gif|svg|pdf)$/i,
           loader: 'file-loader',
           options: {
             name: '[name]-[hash].[ext]'
@@ -76,10 +76,6 @@ const makeConfig = (isDevelopment) => {
           options: {
             name: '[name].[ext]'
           }
-        },
-        {
-          test: /\.(pdf)$/,
-          loader: 'file-loader',
         },
       ],
 

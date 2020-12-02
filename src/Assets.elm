@@ -9,12 +9,8 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 
 
-type Image
-    = Image String
-
-
-type Document
-    = Document String
+type Path
+    = Path String
 
 
 
@@ -22,41 +18,35 @@ type Document
 
 
 arbeidsdokument51690 =
-    Document "./docs/arbeidsdok-51690-kollektivkalkulator-2020.pdf"
+    Path "./docs/arbeidsdok-51690-kollektivkalkulator-2020.pdf"
 
 
 
 -- IMAGES --
 
 
-byvaapen : Image
 byvaapen =
-    Image "./images/oslo_byvaapen_liten.png"
+    Path "./images/oslo_byvaapen_liten.png"
 
 
-toiLogo : Image
 toiLogo =
-    Image "./images/toi_logo_navn.png"
+    Path "./images/toi_logo_navn.png"
 
 
-backArrow : Image
 backArrow =
-    Image "./images/689246_arrows_512x512.png"
+    Path "./images/689246_arrows_512x512.png"
 
 
-trikkRikshospitalet : Image
 trikkRikshospitalet =
-    Image "./images/trikk_rikshospitalet.jpg"
+    Path "./images/trikk_rikshospitalet.jpg"
 
 
-bussholdeplass : Image
 bussholdeplass =
-    Image "./images/samuel-foster-199587.jpg"
+    Path "./images/samuel-foster-199587.jpg"
 
 
-caretRight : Image
 caretRight =
-    Image "./images/caret_right.gif"
+    Path "./images/caret_right.gif"
 
 
 
@@ -64,41 +54,41 @@ caretRight =
 
 
 holdeplasser =
-    Image
+    Path
         "./images/holdeplass_noun_1230795_cc.gif"
 
 
 informasjon =
-    Image
+    Path
         "./images/info_noun_45.gif"
 
 
 trygghet =
-    Image "./images/sikkerhet.gif"
+    Path "./images/sikkerhet.gif"
 
 
 kjoeremateriell =
-    Image
+    Path
         "./images/buss_noun_1308908_cc.gif"
 
 
 strekningOgFramkommelighet =
-    Image "./images/gatekryss_noun_1277963_cc.gif"
+    Path "./images/gatekryss_noun_1277963_cc.gif"
 
 
 tilgjengelighet =
-    Image "./images/noun_1050600_cc.gif"
+    Path "./images/noun_1050600_cc.gif"
 
 
 
 -- USING IMAGES --
 
 
-src : Image -> Attribute msg
-src (Image url) =
+src : Path -> Attribute msg
+src (Path url) =
     Attr.src url
 
 
-href : Document -> Attribute msg
-href (Document url) =
+href : Path -> Attribute msg
+href (Path url) =
     Attr.href url
