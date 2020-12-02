@@ -77,7 +77,10 @@ const makeConfig = (isDevelopment) => {
             name: '[name].[ext]'
           }
         },
-        
+        {
+          test: /\.(pdf)$/,
+          loader: 'file-loader',
+        },
       ],
 
       //noParse: /\.elm$/,

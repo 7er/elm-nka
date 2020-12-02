@@ -3,6 +3,7 @@
 require('./index.html');
 require('./index.scss');
 require('../favicon.ico');
+// require('./docs/arbeidsdok-51690-kollektivkalkulator-2020.pdf');
 
 require("c3/c3.css");
 
