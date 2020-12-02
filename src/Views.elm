@@ -1,15 +1,15 @@
 module Views exposing (view)
 
+import Assets
+import Bootstrap.Accordion as Accordion
+import Bootstrap.Card as Card
+import Bootstrap.Grid as Grid
+import Group
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Bootstrap.Grid as Grid
-import Bootstrap.Card as Card
-import Bootstrap.Accordion as Accordion
-import Models exposing (Model, Page(..), Group(..))
+import Models exposing (Group(..), Model, Page(..))
 import Msgs exposing (Msg(..))
-import Group
 import TiltakAndGroupData
-import Assets
 import TiltakView
 
 
@@ -125,7 +125,11 @@ ulike aktører, tiltakets nettonåverdi og nettonytte per budsjettkrone (nytteko
                             , a [ href "https://www.toi.no/publikasjoner/article29858-8.html" ]
                                 [ text "TØI-rapport 1121" ]
                             , text
-                                ". Her fins også nærmere veiledning til utfylling og bruk av kalkulatoren, samt erfaringsbaserte anslag på tiltakenes kostnader"
+                                ". Her fins også nærmere veiledning til utfylling og bruk av kalkulatoren, samt erfaringsbaserte anslag på tiltakenes kostnader."
+                            , text " I 2020 ble verktøyet oppdatert med nye inngangsverdier. Dette er dokumentert i "
+                            , a [ Assets.href Assets.arbeidsdokument51690 ]
+                                [ text "arbeidsdokument 51690" ]
+                            , text "."
                             ]
                         ]
                     ]
@@ -188,10 +192,10 @@ pageGroup group model =
                 |> Accordion.cards allCards
                 |> Accordion.view model.accordionState
     in
-        div []
-            [ Grid.containerFluid [] [ pageHeader ]
-            , Grid.container [ class "container__narrow" ] [ tiltakAccordions ]
-            ]
+    div []
+        [ Grid.containerFluid [] [ pageHeader ]
+        , Grid.container [ class "container__narrow" ] [ tiltakAccordions ]
+        ]
 
 
 pageNotFound : Html Msg

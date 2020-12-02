@@ -1,12 +1,78 @@
 module TiltakChartingTest exposing (suite)
 
 import Expect exposing (Expectation)
-import Test exposing (Test, describe, test, only, skip)
-import Tiltak exposing (TiltakAccessor, sendTo)
 import FormattedValue exposing (formattedValue)
-import TiltakCharting
+import Test exposing (Test, describe, only, skip, test)
+import Tiltak exposing (TiltakAccessor, sendTo)
 import Tiltak.OpphoeyetHoldeplass as OpphoeyetHoldeplass exposing (tiltak)
 import TiltakAndGroupData
+import TiltakCharting
+
+
+precision =
+    2
+
+
+epsilon =
+    toFloat (10 ^ negate precision) / 2
+
+
+isCloseEnough expected actual =
+    let
+        difference =
+            abs (expected - actual)
+    in
+    difference < epsilon
+
+
+expectGraphDataToBeCloseTo expected actual =
+    case expected of
+        [] ->
+            if List.isEmpty actual then
+                Expect.pass
+
+            else
+                toString actual
+                    ++ " has more items than"
+                    ++ toString expected
+                    |> Expect.fail
+
+        ( expectedX, expectedY ) :: expectedTail ->
+            case actual of
+                [] ->
+                    toString actual
+                        ++ " has fewer items than"
+                        ++ toString expected
+                        |> Expect.fail
+
+                ( actualX, actualY ) :: actualTail ->
+                    let
+                        context =
+                            "when comparing\nexpected "
+                                ++ toString ( expectedX, expectedY )
+                                ++ "\n"
+                                ++ "actual "
+                                ++ toString ( actualX, actualY )
+                    in
+                    if isCloseEnough expectedX actualX then
+                        if isCloseEnough expectedY actualY then
+                            expectGraphDataToBeCloseTo expectedTail actualTail
+
+                        else
+                            context
+                                ++ "\n"
+                                ++ toString actualY
+                                ++ " is not close enough to "
+                                ++ toString expectedY
+                                |> Expect.fail
+
+                    else
+                        context
+                            ++ "\n"
+                            ++ toString actualX
+                            ++ " is not close enough to "
+                            ++ toString expectedX
+                            |> Expect.fail
 
 
 suite : Test
@@ -40,60 +106,60 @@ suite =
                     Nothing ->
                         Debug.crash "TODO"
          in
-            [ test "graphFor" <|
+         [ test "graphFor" <|
+            \() ->
+                state
+                    |> TiltakCharting.graphData tiltak
+                    |> expectGraphDataToBeCloseTo
+                        [ ( 0, 17920.8 )
+                        , ( 50, 19089.55 )
+                        , ( 100, 20258.3 )
+                        , ( 150, 21427.05 )
+                        , ( 200, 22595.81 )
+                        , ( 250, 23764.56 )
+                        , ( 300, 24933.31 )
+                        , ( 350, 26102.07 )
+                        , ( 400, 27270.82 )
+                        ]
+         , describe "maybeFieldToGraph"
+            [ test "passengersPerYear" <|
                 \() ->
-                    state
-                        |> TiltakCharting.graphData tiltak
-                        |> Expect.equal
-                            [ ( 0, 17920.795510263626 )
-                            , ( 50, 19089.54839671369 )
-                            , ( 100, 20258.301283163753 )
-                            , ( 150, 21427.054169613817 )
-                            , ( 200, 22595.80705606388 )
-                            , ( 250, 23764.559942513944 )
-                            , ( 300, 24933.312828964008 )
-                            , ( 350, 26102.065715414064 )
-                            , ( 400, 27270.818601864128 )
-                            ]
-            , describe "maybeFieldToGraph"
-                [ test "passengersPerYear" <|
-                    \() ->
-                        TiltakCharting.maybeFieldToGraph tiltak state
-                            |> Expect.equal (Just passengersPerYear)
-                , test "all fields are valid chooses the last chosen field" <|
-                    \() ->
-                        let
-                            opphoeyetHoldeplassFelt =
-                                state.opphoeyetHoldeplass
+                    TiltakCharting.maybeFieldToGraph tiltak state
+                        |> Expect.equal (Just passengersPerYear)
+            , test "all fields are valid chooses the last chosen field" <|
+                \() ->
+                    let
+                        opphoeyetHoldeplassFelt =
+                            state.opphoeyetHoldeplass
 
-                            modifiedState =
-                                { state
-                                    | opphoeyetHoldeplass =
-                                        { opphoeyetHoldeplassFelt
-                                            | passengersPerYear = Just 10 |> formattedValue
-                                        }
-                                }
-                        in
-                            TiltakCharting.maybeFieldToGraph tiltak modifiedState
-                                |> Expect.equal (Just passengersPerYear)
-                , test "two fields are invalid" <|
-                    \() ->
-                        let
-                            opphoeyetHoldeplassFelt =
-                                state.opphoeyetHoldeplass
+                        modifiedState =
+                            { state
+                                | opphoeyetHoldeplass =
+                                    { opphoeyetHoldeplassFelt
+                                        | passengersPerYear = Just 10 |> formattedValue
+                                    }
+                            }
+                    in
+                    TiltakCharting.maybeFieldToGraph tiltak modifiedState
+                        |> Expect.equal (Just passengersPerYear)
+            , test "two fields are invalid" <|
+                \() ->
+                    let
+                        opphoeyetHoldeplassFelt =
+                            state.opphoeyetHoldeplass
 
-                            modifiedState =
-                                { state
-                                    | opphoeyetHoldeplass =
-                                        { opphoeyetHoldeplassFelt
-                                            | yearlyMaintenance =
-                                                Nothing
-                                                    |> formattedValue
-                                        }
-                                }
-                        in
-                            TiltakCharting.maybeFieldToGraph tiltak modifiedState
-                                |> Expect.equal Nothing
-                ]
+                        modifiedState =
+                            { state
+                                | opphoeyetHoldeplass =
+                                    { opphoeyetHoldeplassFelt
+                                        | yearlyMaintenance =
+                                            Nothing
+                                                |> formattedValue
+                                    }
+                            }
+                    in
+                    TiltakCharting.maybeFieldToGraph tiltak modifiedState
+                        |> Expect.equal Nothing
             ]
+         ]
         )

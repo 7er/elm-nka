@@ -13,6 +13,18 @@ type Image
     = Image String
 
 
+type Document
+    = Document String
+
+
+
+-- DOCUMENTS --
+
+
+arbeidsdokument51690 =
+    Document "./docs/arbeidsdok-51690-kollektivkalkulator-2020.pdf"
+
+
 
 -- IMAGES --
 
@@ -85,3 +97,8 @@ tilgjengelighet =
 src : Image -> Attribute msg
 src (Image url) =
     Attr.src url
+
+
+href : Document -> Attribute msg
+href (Document url) =
+    Attr.href url
